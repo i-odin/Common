@@ -6,9 +6,9 @@ namespace Common.Core.Model
     public abstract class HasIdBase<TKey> : IHasId<TKey>
         where TKey : IEquatable<TKey>
     {
-        public TKey Id { get; set; }
-
         object IHasId.Id => Id;
+        
+        public TKey Id { get; set; }
 
         public override bool Equals(object obj)
         {

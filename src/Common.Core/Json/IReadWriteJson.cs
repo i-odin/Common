@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 
 namespace Common.Core.Json
 {
-    public interface IReadWriteJson<T> : IReadJson<T>, IWriteJson<T> where T : class { }
+    public interface IReadWriteJson<T> : IReadJson<T>, IWriteJson<T> 
+        where T : class { }
 
-    public interface IReadJson<T> where T : class
+    public interface IReadJson<T> 
+        where T : class
     {
         string Path => "Data.json";
 
@@ -18,7 +20,8 @@ namespace Common.Core.Json
         }
     }
 
-    public interface IWriteJson<T> where T : class
+    public interface IWriteJson<T> 
+        where T : class
     {
         string Path => "Data.json";
 

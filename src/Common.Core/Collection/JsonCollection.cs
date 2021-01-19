@@ -4,7 +4,8 @@ using Common.Core.Json;
 
 namespace Common.Core.Collection
 {
-    public interface IJsonCollection<T> where T : class
+    public interface IJsonCollection<T> 
+        where T : class
     {
         Task InitializeAsync();
         Task AddAsync(T item);
@@ -13,9 +14,10 @@ namespace Common.Core.Collection
         Task<IReadOnlyCollection<T>> ReadAsync();
     }
 
-    public abstract class JsonCollection<T> : IJsonCollection<T>, IReadWriteJson<T> where T : class
+    public abstract class JsonCollection<T> : IJsonCollection<T>, IReadWriteJson<T> 
+        where T : class
     {
-        protected readonly List<T> _collection = new();
+        protected readonly List<T> Collection = new();
 
         public abstract string Path { get; }
 
@@ -24,9 +26,9 @@ namespace Common.Core.Collection
             if (item == null)
                 return;
 
-            if (_collection.Contains(item) == false)
+            if (Collection.Contains(item) == false)
             {
-                _collection.Add(item);
+                Collection.Add(item);
                 var collection = await ((IReadWriteJson<T>)this).ReadAsync();
                 if (collection.Contains(item) == false)
                 {
@@ -41,9 +43,9 @@ namespace Common.Core.Collection
             if (item == null)
                 return;
 
-            if (_collection.Contains(item))
+            if (Collection.Contains(item))
             {
-                _collection.Remove(item);
+                Collection.Remove(item);
                 var collection = await ((IReadWriteJson<T>)this).ReadAsync();
                 if (collection.Contains(item))
                 {
@@ -53,12 +55,12 @@ namespace Common.Core.Collection
             }
         }
 
-        public async Task<IReadOnlyCollection<T>> ReadAsync() => _collection;
-        public IReadOnlyCollection<T> Read() => _collection;
+        public async Task<IReadOnlyCollection<T>> ReadAsync() => Collection;
+        public IReadOnlyCollection<T> Read() => Collection;
 
         public virtual async Task InitializeAsync()
         {
-            _collection.AddRange(await ((IReadWriteJson<T>)this).ReadAsync());
+            Collection.AddRange(await ((IReadWriteJson<T>)this).ReadAsync());
         }
     }
 }
