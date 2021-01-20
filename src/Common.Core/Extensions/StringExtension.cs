@@ -14,6 +14,9 @@ namespace Common.Core.Extensions
             if (string.IsNullOrEmpty(str))
                 return Array.Empty<T>();
 
+            if (string.IsNullOrWhiteSpace(str))
+                return Array.Empty<T>();
+
             var strArray = str.Split(separator);
             var result = new T[strArray.Length];
 

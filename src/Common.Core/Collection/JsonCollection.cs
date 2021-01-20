@@ -10,8 +10,8 @@ namespace Common.Core.Collection
         Task InitializeAsync();
         Task AddAsync(T item);
         Task RemoveAsync(T item);
-        IReadOnlyCollection<T> Read();
-        Task<IReadOnlyCollection<T>> ReadAsync();
+        IReadOnlyCollection<T> GetAll();
+        Task<IReadOnlyCollection<T>> GetAllAsync();
     }
 
     public abstract class JsonCollection<T> : IJsonCollection<T>, IReadWriteJson<T> 
@@ -37,7 +37,7 @@ namespace Common.Core.Collection
                 }
             }
         }
-
+        
         public virtual async Task RemoveAsync(T item)
         {
             if (item == null)
@@ -55,8 +55,8 @@ namespace Common.Core.Collection
             }
         }
 
-        public async Task<IReadOnlyCollection<T>> ReadAsync() => Collection;
-        public IReadOnlyCollection<T> Read() => Collection;
+        public async Task<IReadOnlyCollection<T>> GetAllAsync() => Collection;
+        public IReadOnlyCollection<T> GetAll() => Collection;
 
         public virtual async Task InitializeAsync()
         {
