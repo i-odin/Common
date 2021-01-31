@@ -17,6 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2.1.0
       - name: Build
-      - run: dotnet build ${{ env.ApplicationDir }}
-        name: Test
-      - run: dotnet test ${{ env.ApplicationDir }}
+        run: dotnet build ${{ env.ApplicationDir }}
+      - name: Test
+        run: dotnet test ${{ env.ApplicationDir }}
