@@ -16,7 +16,7 @@ namespace Common.Core.Test.Providers
             jsonProvider.Add(entityTest);
             var jsonCount = jsonProvider.Read().Count;
 
-            Assert.Equal(expected: 1, jsonCount);
+            Assert.Equal(expected: 1, actual: jsonCount);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Common.Core.Test.Providers
             jsonProvider.Remove(entityTest);
             var jsonCount = jsonProvider.Read().Count;
 
-            Assert.Equal(expected: 0, jsonCount);
+            Assert.Equal(expected: 0, actual: jsonCount);
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace Common.Core.Test.Providers
 
             var jsonCount = jsonProvider.Read().Count;
 
-            Assert.Equal(expected: 0, jsonCount);
+            Assert.Equal(expected: 0, actual: jsonCount);
         }
 
         private class EntityTest : HasIdBase<int> { }

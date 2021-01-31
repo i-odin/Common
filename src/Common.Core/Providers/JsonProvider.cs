@@ -23,7 +23,7 @@ namespace Common.Core.Providers
         
         public void Add(TEntity item)
         {
-            var collection = Read();
+            var collection = Read() as ICollection<TEntity>;
             if (collection.Contains(item)) return;
             collection.Add(item);
             Write(collection);
@@ -31,14 +31,15 @@ namespace Common.Core.Providers
 
         public void Remove(TEntity item)
         {
-            var collection = Read();
+            var collection = Read() as ICollection<TEntity>;
+            
             if (collection.Contains(item) == false) return;
             collection.Remove(item);
             Write(collection);
         }
 
         //TODO: Вынести JsonSerializer ?
-        public ICollection<TEntity> Read() => JsonSerializer.Deserialize<ICollection<TEntity>>(_fileWrapper.ReadAllText(Path));
+        public IReadOnlyCollection<TEntity> Read() => JsonSerializer.Deserialize<IReadOnlyCollection<TEntity>>(_fileWrapper.ReadAllText(Path));
 
         private void Write(ICollection<TEntity> source) => _fileWrapper.WriteAllText(Path, JsonSerializer.Serialize(source));
     }

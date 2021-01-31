@@ -8,23 +8,13 @@ namespace Common.Core.Test.Providers
     public class CacheProviderTests
     {
         [Fact]
-        public void CacheProviderInitializeCollection()
-        {
-            var cacheProvider = new CacheProviderTest();
-
-            var collectionCount = cacheProvider.Collection.Count;
-
-            Assert.Equal(expected: 1, collectionCount);
-        }
-
-        [Fact]
         public void CacheProviderRead()
         {
             var cacheProvider = new CacheProviderTest();
 
             var collectionCount = cacheProvider.Read().Count;
 
-            Assert.Equal(expected: 1, collectionCount);
+            Assert.Equal(expected: 1, actual: collectionCount);
         }
 
         [Fact]
@@ -34,9 +24,9 @@ namespace Common.Core.Test.Providers
             var cacheProvider = new CacheProviderTest();
 
             cacheProvider.Add(entityTest);
-            var collectionCount = cacheProvider.Collection.Count;
+            var collectionCount = cacheProvider.Read().Count;
 
-            Assert.Equal(expected: 2, collectionCount);
+            Assert.Equal(expected: 2, actual: collectionCount);
         }
 
         [Fact]
@@ -46,9 +36,9 @@ namespace Common.Core.Test.Providers
             var cacheProvider = new CacheProviderTest();
 
             cacheProvider.Remove(entityTest);
-            var collectionCount = cacheProvider.Collection.Count;
+            var collectionCount = cacheProvider.Read().Count;
 
-            Assert.Equal(expected: 0, collectionCount);
+            Assert.Equal(expected: 0, actual: collectionCount);
         }
 
         private class CacheProviderTest : CacheProvider<List<EntityTest>, EntityTest>
@@ -66,7 +56,7 @@ namespace Common.Core.Test.Providers
 
             public void Remove(EntityTest item) { }
 
-            public ICollection<EntityTest> Read()
+            public IReadOnlyCollection<EntityTest> Read()
             {
                 return new List<EntityTest> { new() { Id = 1 } };
             }

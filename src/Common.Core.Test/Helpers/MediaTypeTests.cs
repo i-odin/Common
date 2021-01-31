@@ -8,7 +8,7 @@ namespace Common.Core.Test.Helpers
         [Fact]
         public void MediaTypeApplicationJsonEqual()
         {
-            Assert.Equal("application/json", MediaType.ApplicationJson);
+            Assert.Equal(expected: "application/json", actual: MediaType.ApplicationJson);
         }
     }
 }

@@ -8,19 +8,19 @@ namespace Common.Core.Test.Helpers
         [Fact]
         public void SymbolNineEqual()
         {
-            Assert.Equal('9', Symbol.Nine);
+            Assert.Equal(expected: '9', actual: Symbol.Nine);
         }
 
         [Fact]
         public void SymbolSemicolonEqual()
         {
-            Assert.Equal(';', Symbol.Semicolon);
+            Assert.Equal(expected: ';', actual: Symbol.Semicolon);
         }
 
         [Fact]
         public void SymbolZeroEqual()
         {
-            Assert.Equal('0', Symbol.Zero);
+            Assert.Equal(expected: '0', actual: Symbol.Zero);
         }
     }
 }

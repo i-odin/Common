@@ -8,6 +8,6 @@ namespace Common.Core.Providers
     {
         void Add(TEntity item);
         void Remove(TEntity item);
-        ICollection<TEntity> Read();
+        IReadOnlyCollection<TEntity> Read();
     }
 }

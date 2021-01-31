@@ -16,15 +16,6 @@ namespace Common.Core.Providers
             _provider = provider;
         }
 
-        public TCollection Collection
-        {
-            get
-            {
-                InitializeCollection();
-                return _collection;
-            }
-        }
-
         public void Add(TEntity item)
         {
             InitializeCollection();
@@ -41,10 +32,10 @@ namespace Common.Core.Providers
             _provider.Remove(item);
         }
 
-        public ICollection<TEntity> Read()
+        public IReadOnlyCollection<TEntity> Read()
         {
             InitializeCollection();
-            return _collection;
+            return _collection as IReadOnlyCollection<TEntity>;
         }
 
         private void InitializeCollection()

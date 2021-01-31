@@ -7,6 +7,5 @@ namespace Common.Core.Providers
         where TCollection : ICollection<TEntity>
         where TEntity : IHasId
     {
-        public TCollection Collection { get; }
     }
 }
