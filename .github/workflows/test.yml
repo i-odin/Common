@@ -1,5 +1,8 @@
 name: Tests
 
+env:
+  ApplicationDir : "./src/Common.sln"
+
 on: 
   push:
     branches: [ main ]
@@ -13,4 +16,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2.1.0
-      - run: dotnet test
+      - name: Build
+        run: dotnet build ${{ env.ApplicationDir }}
+      - name: Test
+        run: dotnet test ${{ env.ApplicationDir }}
