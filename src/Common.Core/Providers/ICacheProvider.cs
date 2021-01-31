@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using Common.Core.Models;
+﻿using Common.Core.Models;
 
 namespace Common.Core.Providers
 {
-    public interface ICacheProvider<out TCollection, TEntity> : IProvider<TEntity>
-        where TCollection : ICollection<TEntity>
+    public interface ICacheProvider<TEntity> : IProvider<TEntity>
         where TEntity : IHasId
     {
     }

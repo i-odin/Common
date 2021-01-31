@@ -3,12 +3,11 @@ using Common.Core.Models;
 
 namespace Common.Core.Providers
 {
-    public abstract class CacheProvider<TCollection, TEntity> : ICacheProvider<TCollection, TEntity>
-        where TCollection : ICollection<TEntity>, new()
+    public abstract class CacheProvider<TEntity> : ICacheProvider<TEntity>
         where TEntity : IHasId
     {
         private bool _initializeCollection;
-        private TCollection _collection = new();
+        private List<TEntity> _list = new();
         private readonly IProvider<TEntity> _provider;
         
         protected CacheProvider(IStorageProvider<TEntity> provider)
@@ -19,30 +18,30 @@ namespace Common.Core.Providers
         public void Add(TEntity item)
         {
             InitializeCollection();
-            if (_collection.Contains(item)) return;
-            _collection.Add(item);
+            if (_list.Contains(item)) return;
+            _list.Add(item);
             _provider.Add(item);
         }
 
         public void Remove(TEntity item)
         {
             InitializeCollection();
-            if (_collection.Contains(item) == false) return;
-            _collection.Remove(item);
+            if (_list.Contains(item) == false) return;
+            _list.Remove(item);
             _provider.Remove(item);
         }
 
         public IReadOnlyCollection<TEntity> Read()
         {
             InitializeCollection();
-            return _collection as IReadOnlyCollection<TEntity>;
+            return _list;
         }
 
         private void InitializeCollection()
         {
             if (_initializeCollection == false)
             {
-                _collection = (TCollection)_provider.Read();
+                _list = _provider.Read() as List<TEntity>;
                 _initializeCollection = true;
             }
         }

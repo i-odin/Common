@@ -32,7 +32,6 @@ namespace Common.Core.Providers
         public void Remove(TEntity item)
         {
             var collection = Read() as ICollection<TEntity>;
-            
             if (collection.Contains(item) == false) return;
             collection.Remove(item);
             Write(collection);

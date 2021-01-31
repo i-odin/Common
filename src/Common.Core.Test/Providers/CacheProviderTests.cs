@@ -41,7 +41,7 @@ namespace Common.Core.Test.Providers
             Assert.Equal(expected: 0, actual: collectionCount);
         }
 
-        private class CacheProviderTest : CacheProvider<List<EntityTest>, EntityTest>
+        private class CacheProviderTest : CacheProvider<EntityTest>
         {
             public CacheProviderTest() : base(new StorageProviderMock())
             {
