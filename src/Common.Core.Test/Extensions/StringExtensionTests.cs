@@ -64,8 +64,8 @@ namespace Common.Core.Test.Extensions
             const string str = "1611151178";
 
             var dateTime = str.UnixTimeToDateTime();
-
-            Assert.Equal(new DateTime(2021,01,20, 16,59,38, DateTimeKind.Utc), dateTime);
+            
+            Assert.Equal(new DateTime(2021,01,20, 13,59,38, DateTimeKind.Utc), dateTime);
         }
 
         [Fact]

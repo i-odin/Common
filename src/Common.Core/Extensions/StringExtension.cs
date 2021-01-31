@@ -35,7 +35,7 @@ namespace Common.Core.Extensions
                 if (str.Length == 13)
                     value /= 1000;
 
-                return origin.AddSeconds(value).ToLocalTime();
+                return origin.AddSeconds(value);
             }
 
             return origin;
