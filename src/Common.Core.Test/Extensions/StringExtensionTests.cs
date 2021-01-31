@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Common.Core.Test.Extensions
 {
-    public class StringExtensionTest
+    public class StringExtensionTests
     {
         [Fact]
         public void IsDigitsOnlyTrue()
@@ -19,7 +19,6 @@ namespace Common.Core.Test.Extensions
         [Fact]
         public void IsDigitsOnlyFalse()
         {
-
             const string str = "11199wqeqe8746513qweqweqwe1511";
 
             bool strTrue = str.IsDigitsOnly();
@@ -41,7 +40,6 @@ namespace Common.Core.Test.Extensions
         [Fact]
         public void ToArrayEmptyWhiteSpace()
         {
-
             const string str = " ";
 
             var array = str.ToArray<int>();

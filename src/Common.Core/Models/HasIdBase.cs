@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Common.Core.Model
+namespace Common.Core.Models
 {
     public abstract class HasIdBase<TKey> : IHasId<TKey>
         where TKey : IEquatable<TKey>

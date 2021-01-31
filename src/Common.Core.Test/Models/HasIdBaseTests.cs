@@ -1,9 +1,9 @@
-﻿using Common.Core.Model;
+﻿using Common.Core.Models;
 using Xunit;
 
-namespace Common.Core.Test.Model
+namespace Common.Core.Test.Models
 {
-    public class HasIdBaseTest
+    public class HasIdBaseTests
     {
         [Fact]
         public void HasIdBaseEquals()
@@ -82,7 +82,7 @@ namespace Common.Core.Test.Model
             Assert.False(entityEqual1);
             Assert.False(entityEqual2);
         }
-    }
 
-    public class EntityTest : HasIdBase<int> { }
+        private class EntityTest : HasIdBase<int> { }
+    }
 }

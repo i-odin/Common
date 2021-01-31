@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Common.Core.Helper;
+using Common.Core.Helpers;
 
 namespace Common.Core.Extensions
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Core.Model
+namespace Common.Core.Models
 {
     public interface IHasId
     {

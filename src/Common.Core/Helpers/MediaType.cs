@@ -1,4 +1,4 @@
-﻿namespace Common.Core.Helper
+﻿namespace Common.Core.Helpers
 {
     public class MediaType
     {
