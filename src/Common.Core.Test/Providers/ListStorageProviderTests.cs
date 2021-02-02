@@ -5,12 +5,12 @@ using Xunit;
 
 namespace Common.Core.Test.Providers
 {
-    public class CacheProviderTests
+    public class ListStorageProviderTests
     {
         [Fact]
-        public void CacheProviderRead()
+        public void ListStorageProviderRead()
         {
-            var cacheProvider = new CacheProviderTest();
+            var cacheProvider = new ListStorageProviderTest();
 
             var collectionCount = cacheProvider.Read().Count;
 
@@ -18,10 +18,10 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void CacheProviderAdd()
+        public void ListStorageProviderAdd()
         {
             var entityTest = new EntityTest {Id = 2};
-            var cacheProvider = new CacheProviderTest();
+            var cacheProvider = new ListStorageProviderTest();
 
             cacheProvider.Add(entityTest);
             var collectionCount = cacheProvider.Read().Count;
@@ -30,10 +30,10 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void CacheProviderRemove()
+        public void ListStorageProviderRemove()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var cacheProvider = new CacheProviderTest();
+            var cacheProvider = new ListStorageProviderTest();
 
             cacheProvider.Remove(entityTest);
             var collectionCount = cacheProvider.Read().Count;
@@ -41,9 +41,9 @@ namespace Common.Core.Test.Providers
             Assert.Equal(expected: 0, actual: collectionCount);
         }
 
-        private class CacheProviderTest : CacheProvider<EntityTest>
+        private class ListStorageProviderTest : ListStorageProvider<EntityTest>
         {
-            public CacheProviderTest() : base(new StorageProviderMock())
+            public ListStorageProviderTest() : base(new StorageProviderMock())
             {
             }
         }

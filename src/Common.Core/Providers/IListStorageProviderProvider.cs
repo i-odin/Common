@@ -2,7 +2,7 @@
 
 namespace Common.Core.Providers
 {
-    public interface ICacheProvider<TEntity> : IProvider<TEntity>
+    public interface IListStorageProviderProvider<TEntity> : IProvider<TEntity>
         where TEntity : IHasId
     {
     }

@@ -3,14 +3,14 @@ using Common.Core.Models;
 
 namespace Common.Core.Providers
 {
-    public abstract class CacheProvider<TEntity> : ICacheProvider<TEntity>
+    public abstract class ListStorageProvider<TEntity> : IListStorageProviderProvider<TEntity>
         where TEntity : IHasId
     {
         private bool _initializeCollection;
         private List<TEntity> _list = new();
         private readonly IProvider<TEntity> _provider;
         
-        protected CacheProvider(IStorageProvider<TEntity> provider)
+        protected ListStorageProvider(IStorageProvider<TEntity> provider)
         {
             _provider = provider;
         }
