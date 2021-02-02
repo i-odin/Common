@@ -1,18 +1,25 @@
 ﻿using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using Common.Core.Helpers;
+using Common.Core.Serializers;
 
 namespace Common.Core.Http
 {
     public class JsonContent<T> : StringContent where T : class
     {
-        //TODO: Вынести JsonSerializer ?
-        public JsonContent(T value) : base(JsonSerializer.Serialize(value), Encoding.UTF8, MediaType.ApplicationJson)
+        public JsonContent(T value) : this(value, new TextJsonSerializer(), MediaType.ApplicationJson)
         {
         }
 
-        public JsonContent(T value, string mediaType) : base(JsonSerializer.Serialize(value), Encoding.UTF8, mediaType)
+        public JsonContent(T value, string mediaType) : this(value, new TextJsonSerializer(), mediaType)
+        {
+        }
+
+        public JsonContent(T value, ISerializer serializer) : base(serializer.Serialize(value), Encoding.UTF8, MediaType.ApplicationJson)
+        {
+        }
+
+        public JsonContent(T value, ISerializer serializer, string mediaType) : base(serializer.Serialize(value), Encoding.UTF8, mediaType)
         {
         }
     }

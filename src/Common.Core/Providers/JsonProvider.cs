@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Text.Json;
 using Common.Core.Models;
+using Common.Core.Serializers;
 using Common.Core.Wrappers;
 
 namespace Common.Core.Providers
@@ -9,16 +9,25 @@ namespace Common.Core.Providers
         where TEntity : IHasId
     {
         private readonly IFileWrapper _fileWrapper;
+        private readonly ISerializer _serializer;
 
-        public string Path { get; set; }
+        public string Path { get; }
 
         //TODO: Фабрика?
-        protected JsonProvider(string path) : this(path, new FileWrapper()) { }
+        protected JsonProvider(string path) : this(path, new FileWrapper(), new TextJsonSerializer())
+        {
+        }
 
-        protected JsonProvider(string path, IFileWrapper fileWrapper)
+        //TODO: Фабрика?
+        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new TextJsonSerializer())
+        {
+        }
+
+        protected JsonProvider(string path, IFileWrapper fileWrapper, ISerializer serializer)
         {
             Path = path;
             _fileWrapper = fileWrapper;
+            _serializer = serializer;
         }
         
         public void Add(TEntity item)
@@ -37,9 +46,8 @@ namespace Common.Core.Providers
             Write(collection);
         }
 
-        //TODO: Вынести JsonSerializer ?
-        public IReadOnlyCollection<TEntity> Read() => JsonSerializer.Deserialize<IReadOnlyCollection<TEntity>>(_fileWrapper.ReadAllText(Path));
+        public IReadOnlyCollection<TEntity> Read() => _serializer.Deserialize<IReadOnlyCollection<TEntity>>(_fileWrapper.ReadAllText(Path));
 
-        private void Write(ICollection<TEntity> source) => _fileWrapper.WriteAllText(Path, JsonSerializer.Serialize(source));
+        private void Write(ICollection<TEntity> source) => _fileWrapper.WriteAllText(Path, _serializer.Serialize(source));
     }
 }
