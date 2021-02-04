@@ -77,5 +77,25 @@ namespace Common.Core.Test.Extensions
 
             Assert.Equal(expected: new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), actual: dateTime);
         }
+
+        [Fact]
+        public void IsEmptyTrue()
+        {
+            const string str = " ";
+
+            var result = str.IsEmpty();
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsEmptyFalse()
+        {
+            const string str = "1;1;1;9;9";
+
+            var result = str.IsEmpty();
+
+            Assert.False(result);
+        }
     }
 }

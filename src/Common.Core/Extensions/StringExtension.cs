@@ -28,7 +28,7 @@ namespace Common.Core.Extensions
 
         public static DateTime UnixTimeToDateTime(this string str)
         {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            var origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             if (long.TryParse(str, out long value))
             {
                 // миллисекунды нужно убрать
@@ -39,6 +39,11 @@ namespace Common.Core.Extensions
             }
 
             return origin;
+        }
+
+        public static bool IsEmpty(this string str)
+        {
+            return string.IsNullOrEmpty(str) || str.Trim().Length == 0;
         }
     }
 }
