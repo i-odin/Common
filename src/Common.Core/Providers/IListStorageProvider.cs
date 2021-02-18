@@ -2,7 +2,7 @@
 
 namespace Common.Core.Providers
 {
-    public interface IListStorageProviderProvider<TEntity> : IProvider<TEntity>
+    public interface IListStorageProvider<TEntity> : IProvider<TEntity>
         where TEntity : IHasId
     {
     }

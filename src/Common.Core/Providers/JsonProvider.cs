@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Common.Core.Models;
-using Common.Core.Serializers;
 using Common.Core.Wrappers;
 
 namespace Common.Core.Providers
@@ -9,21 +8,21 @@ namespace Common.Core.Providers
         where TEntity : IHasId
     {
         private readonly IFileWrapper _fileWrapper;
-        private readonly ISerializer _serializer;
+        private readonly ISerializerWrapper _serializer;
 
         public string Path { get; }
 
         //TODO: Фабрика?
-        protected JsonProvider(string path) : this(path, new FileWrapper(), new TextJsonSerializer())
+        protected JsonProvider(string path) : this(path, new FileWrapper(), new JsonTextSerializer())
         {
         }
 
         //TODO: Фабрика?
-        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new TextJsonSerializer())
+        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new JsonTextSerializer())
         {
         }
 
-        protected JsonProvider(string path, IFileWrapper fileWrapper, ISerializer serializer)
+        protected JsonProvider(string path, IFileWrapper fileWrapper, ISerializerWrapper serializer)
         {
             Path = path;
             _fileWrapper = fileWrapper;

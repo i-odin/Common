@@ -3,7 +3,7 @@ using Common.Core.Models;
 
 namespace Common.Core.Providers
 {
-    public abstract class ListStorageProvider<TEntity> : IListStorageProviderProvider<TEntity>
+    public abstract class ListStorageProvider<TEntity> : IListStorageProvider<TEntity>
         where TEntity : IHasId
     {
         private bool _initializeCollection;

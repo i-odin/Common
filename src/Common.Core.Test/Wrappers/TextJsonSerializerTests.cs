@@ -1,8 +1,8 @@
 ﻿using Common.Core.Models;
-using Common.Core.Serializers;
+using Common.Core.Wrappers;
 using Xunit;
 
-namespace Common.Core.Test.Serializers
+namespace Common.Core.Test.Wrappers
 {
     public class TextJsonSerializerTests
     {
@@ -10,7 +10,7 @@ namespace Common.Core.Test.Serializers
         public void TextJsonSerializeSerialize()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var serializer = new TextJsonSerializer();
+            var serializer = new JsonTextSerializer();
 
             var result = serializer.Serialize(entityTest);
 
@@ -20,7 +20,7 @@ namespace Common.Core.Test.Serializers
         [Fact]
         public void TextJsonSerializeDeserialize()
         {
-            var serializer = new TextJsonSerializer();
+            var serializer = new JsonTextSerializer();
 
             var result = serializer.Deserialize<EntityTest>("{\"Id\":1}");
 
