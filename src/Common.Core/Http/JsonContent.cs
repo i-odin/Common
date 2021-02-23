@@ -7,11 +7,11 @@ namespace Common.Core.Http
 {
     public class JsonContent<T> : StringContent where T : class
     {
-        public JsonContent(T value) : this(value, new JsonTextSerializer(), MediaTypeHelper.ApplicationJson)
+        public JsonContent(T value) : this(value, new JsonTextSerializerWrapper(), MediaTypeHelper.ApplicationJson)
         {
         }
 
-        public JsonContent(T value, string mediaType) : this(value, new JsonTextSerializer(), mediaType)
+        public JsonContent(T value, string mediaType) : this(value, new JsonTextSerializerWrapper(), mediaType)
         {
         }
 

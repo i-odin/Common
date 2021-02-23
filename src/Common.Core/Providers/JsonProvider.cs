@@ -4,6 +4,12 @@ using Common.Core.Wrappers;
 
 namespace Common.Core.Providers
 {
+    public interface IJsonProvider<TEntity> : IStorageProvider<TEntity>
+        where TEntity : IHasId
+    {
+        public string Path { get; }
+    }
+
     public abstract class JsonProvider<TEntity> : IJsonProvider<TEntity>
         where TEntity : IHasId
     {
@@ -13,12 +19,12 @@ namespace Common.Core.Providers
         public string Path { get; }
 
         //TODO: Фабрика?
-        protected JsonProvider(string path) : this(path, new FileWrapper(), new JsonTextSerializer())
+        protected JsonProvider(string path) : this(path, new FileWrapper(), new JsonTextSerializerWrapper())
         {
         }
 
         //TODO: Фабрика?
-        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new JsonTextSerializer())
+        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new JsonTextSerializerWrapper())
         {
         }
 

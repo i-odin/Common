@@ -3,6 +3,17 @@ using System.Collections.Generic;
 
 namespace Common.Core.Models
 {
+    public interface IHasId
+    {
+        object Id { get; }
+    }
+
+    public interface IHasId<out TKey> : IHasId
+        where TKey : IEquatable<TKey>
+    {
+        new TKey Id { get; }
+    }
+
     public abstract class HasIdBase<TKey> : IHasId<TKey>
         where TKey : IEquatable<TKey>
     {

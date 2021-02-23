@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Common.Core.Test.Wrappers
 {
-    public class TextJsonSerializerTests
+    public class JsonTextSerializerWrapperTests
     {
         [Fact]
         public void TextJsonSerializeSerialize()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var serializer = new JsonTextSerializer();
+            var serializer = new JsonTextSerializerWrapper();
 
             var result = serializer.Serialize(entityTest);
 
@@ -20,7 +20,7 @@ namespace Common.Core.Test.Wrappers
         [Fact]
         public void TextJsonSerializeDeserialize()
         {
-            var serializer = new JsonTextSerializer();
+            var serializer = new JsonTextSerializerWrapper();
 
             var result = serializer.Deserialize<EntityTest>("{\"Id\":1}");
 
