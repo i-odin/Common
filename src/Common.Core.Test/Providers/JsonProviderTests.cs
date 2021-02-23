@@ -42,7 +42,7 @@ namespace Common.Core.Test.Providers
             Assert.Equal(expected: 0, actual: jsonCount);
         }
 
-        private class EntityTest : HasIdBase<int> { }
+        private class EntityTest : HasId<int> { }
 
         private class JsonProviderTest : JsonProvider<EntityTest>
         {

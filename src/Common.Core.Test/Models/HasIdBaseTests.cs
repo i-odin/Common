@@ -83,6 +83,6 @@ namespace Common.Core.Test.Models
             Assert.False(entityEqual2);
         }
 
-        private class EntityTest : HasIdBase<int> { }
+        private class EntityTest : HasId<int> { }
     }
 }

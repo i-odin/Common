@@ -14,7 +14,7 @@ namespace Common.Core.Models
         new TKey Id { get; }
     }
 
-    public abstract class HasIdBase<TKey> : IHasId<TKey>
+    public abstract class HasId<TKey> : IHasId<TKey>
         where TKey : IEquatable<TKey>
     {
         object IHasId.Id => Id;
@@ -23,19 +23,19 @@ namespace Common.Core.Models
 
         public override bool Equals(object obj)
         {
-            if (!(obj is HasIdBase<TKey> other)) return false;
+            if (!(obj is HasId<TKey> other)) return false;
             if (ReferenceEquals(this, other)) return true;
             return EqualityComparer<TKey>.Default.Equals(Id, other.Id);
         }
 
-        public static bool operator ==(HasIdBase<TKey> a, HasIdBase<TKey> b)
+        public static bool operator ==(HasId<TKey> a, HasId<TKey> b)
         {
             if (a is null && b is null) return true;
             if (a is null || b is null) return false;
             return a.Equals(b);
         }
 
-        public static bool operator !=(HasIdBase<TKey> a, HasIdBase<TKey> b) => !(a == b);
+        public static bool operator !=(HasId<TKey> a, HasId<TKey> b) => !(a == b);
 
         public override int GetHashCode() => EqualityComparer<TKey>.Default.GetHashCode(Id);
     }

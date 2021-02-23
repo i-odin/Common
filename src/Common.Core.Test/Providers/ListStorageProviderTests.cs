@@ -48,7 +48,7 @@ namespace Common.Core.Test.Providers
             }
         }
 
-        private class EntityTest : HasIdBase<int> { }
+        private class EntityTest : HasId<int> { }
 
         private class StorageProviderMock : IStorageProvider<EntityTest>
         {

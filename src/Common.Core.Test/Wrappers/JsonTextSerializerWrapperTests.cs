@@ -27,6 +27,6 @@ namespace Common.Core.Test.Wrappers
             Assert.Equal(expected: 1, actual: result.Id);
         }
 
-        private class EntityTest : HasIdBase<int> { }
+        private class EntityTest : HasId<int> { }
     }
 }
