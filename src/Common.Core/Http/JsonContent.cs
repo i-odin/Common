@@ -7,7 +7,7 @@ namespace Common.Core.Http
 {
     public class JsonContent<T> : StringContent where T : class
     {
-        public JsonContent(T value) : this(value, new JsonTextSerializer(), MediaType.ApplicationJson)
+        public JsonContent(T value) : this(value, new JsonTextSerializer(), MediaTypeHelper.ApplicationJson)
         {
         }
 
@@ -15,7 +15,7 @@ namespace Common.Core.Http
         {
         }
 
-        public JsonContent(T value, ISerializerWrapper serializer) : base(serializer.Serialize(value), Encoding.UTF8, MediaType.ApplicationJson)
+        public JsonContent(T value, ISerializerWrapper serializer) : base(serializer.Serialize(value), Encoding.UTF8, MediaTypeHelper.ApplicationJson)
         {
         }
 

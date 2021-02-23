@@ -7,9 +7,9 @@ namespace Common.Core.Extensions
     public static class StringExtension
     {
         public static bool IsDigitsOnly(this string str) =>
-            str.All(c => c >= Symbol.Zero && c <= Symbol.Nine);
+            str.All(c => c >= SymbolHelper.Zero && c <= SymbolHelper.Nine);
 
-        public static T[] ToArray<T>(this string str, char separator = Symbol.Semicolon) where T : struct
+        public static T[] ToArray<T>(this string str, char separator = SymbolHelper.Semicolon) where T : struct
         {
             if (string.IsNullOrEmpty(str))
                 return Array.Empty<T>();

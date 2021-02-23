@@ -3,24 +3,24 @@ using Xunit;
 
 namespace Common.Core.Test.Helpers
 {
-    public class SymbolTests
+    public class SymbolHelperTests
     {
         [Fact]
         public void SymbolNineEqual()
         {
-            Assert.Equal(expected: '9', actual: Symbol.Nine);
+            Assert.Equal(expected: '9', actual: SymbolHelper.Nine);
         }
 
         [Fact]
         public void SymbolSemicolonEqual()
         {
-            Assert.Equal(expected: ';', actual: Symbol.Semicolon);
+            Assert.Equal(expected: ';', actual: SymbolHelper.Semicolon);
         }
 
         [Fact]
         public void SymbolZeroEqual()
         {
-            Assert.Equal(expected: '0', actual: Symbol.Zero);
+            Assert.Equal(expected: '0', actual: SymbolHelper.Zero);
         }
     }
 }

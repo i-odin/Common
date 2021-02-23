@@ -3,12 +3,12 @@ using Xunit;
 
 namespace Common.Core.Test.Helpers
 {
-    public class MediaTypeTests
+    public class MediaTypeHelperTests
     {
         [Fact]
         public void MediaTypeApplicationJsonEqual()
         {
-            Assert.Equal(expected: "application/json", actual: MediaType.ApplicationJson);
+            Assert.Equal(expected: "application/json", actual: MediaTypeHelper.ApplicationJson);
         }
     }
 }
