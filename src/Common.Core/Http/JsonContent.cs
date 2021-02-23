@@ -7,20 +7,8 @@ namespace Common.Core.Http
 {
     public class JsonContent<T> : StringContent where T : class
     {
-        public JsonContent(T value) : this(value, new JsonTextSerializerWrapper(), MediaTypeHelper.ApplicationJson)
-        {
-        }
-
-        public JsonContent(T value, string mediaType) : this(value, new JsonTextSerializerWrapper(), mediaType)
-        {
-        }
-
-        public JsonContent(T value, ISerializerWrapper serializer) : base(serializer.Serialize(value), Encoding.UTF8, MediaTypeHelper.ApplicationJson)
-        {
-        }
-
-        public JsonContent(T value, ISerializerWrapper serializer, string mediaType) : base(serializer.Serialize(value), Encoding.UTF8, mediaType)
-        {
-        }
+        private JsonContent(string content) : base(content, Encoding.UTF8, MediaTypeHelper.ApplicationJson) { }
+        public JsonContent(T value) : this(value, JsonTextSerializerWrapper.Create()) { }
+        public JsonContent(T value, ISerializerWrapper serializer) : this(serializer.Serialize(value)) { }
     }
 }

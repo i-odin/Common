@@ -10,6 +10,9 @@ namespace Common.Core.Wrappers
 
     public class JsonTextSerializerWrapper : ISerializerWrapper
     {
+        private JsonTextSerializerWrapper() { }
+        public static JsonTextSerializerWrapper Create() => new();
+
         public string Serialize<T>(T source) => JsonSerializer.Serialize(source);
         public T Deserialize<T>(string source) => JsonSerializer.Deserialize<T>(source);
     }

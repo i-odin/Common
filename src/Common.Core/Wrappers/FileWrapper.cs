@@ -11,6 +11,9 @@ namespace Common.Core.Wrappers
 
     public class FileWrapper : IFileWrapper
     {
+        private FileWrapper() { }
+        public static FileWrapper Create() => new ();
+
         public string ReadAllText(string path) => File.ReadAllText(path);
 
         public void WriteAllText(string path, string content) => File.WriteAllText(path, content);
