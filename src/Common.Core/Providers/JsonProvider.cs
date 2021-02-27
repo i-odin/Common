@@ -19,8 +19,8 @@ namespace Common.Core.Providers
 
         public string Path { get; }
 
-        protected JsonProvider(string path) : this(path, FileWrapper.Create()) { }
-        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, JsonTextSerializerWrapper.Create()) { }
+        protected JsonProvider(string path) : this(path, new FileWrapper()) { }
+        protected JsonProvider(string path, IFileWrapper fileWrapper) : this(path, fileWrapper, new JsonTextSerializerWrapper()) { }
         protected JsonProvider(string path, IFileWrapper fileWrapper, ISerializerWrapper serializer)
         {
             Path = path;

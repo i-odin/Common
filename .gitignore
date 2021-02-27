@@ -7,3 +7,8 @@
 /src/Common.Core.Test/bin/Debug/net5.0
 /src/Common.Core.Test/obj
 /src/Common.Core.Test/bin/Release/net5.0
+/src/Common.AspNetCore/obj
+/src/Common.AspNetCore/bin
+/src/Common.AspNetCore.Test/bin/Debug/net5.0
+/src/Common.AspNetCore.Test/obj
+/src/Common.AspNetCore.Test/bin/Release/net5.0

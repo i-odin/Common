@@ -10,7 +10,7 @@ namespace Common.Core.Test.Wrappers
         public void TextJsonSerializeSerialize()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var serializer = JsonTextSerializerWrapper.Create();
+            var serializer = new JsonTextSerializerWrapper();
 
             var result = serializer.Serialize(entityTest);
 
@@ -20,7 +20,7 @@ namespace Common.Core.Test.Wrappers
         [Fact]
         public void TextJsonSerializeDeserialize()
         {
-            var serializer = JsonTextSerializerWrapper.Create();
+            var serializer = new JsonTextSerializerWrapper();
 
             var result = serializer.Deserialize<EntityTest>("{\"Id\":1}");
 
