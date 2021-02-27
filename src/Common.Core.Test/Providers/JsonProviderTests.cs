@@ -52,16 +52,9 @@ namespace Common.Core.Test.Providers
 
         private class FileWrapperMock : IFileWrapper
         {
-            private string _source = "[]";
-            public string ReadAllText(string path)
-            {
-                return _source;
-            }
-
-            public void WriteAllText(string path, string content)
-            {
-                _source = content;
-            }
+            private string _source = string.Empty;
+            public string ReadAllText(string path) => _source;
+            public void WriteAllText(string path, string content) => _source = content;
         }
     }
 }

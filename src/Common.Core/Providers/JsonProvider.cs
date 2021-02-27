@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common.Core.Extensions;
 using Common.Core.Models;
 using Common.Core.Wrappers;
 
@@ -29,7 +30,7 @@ namespace Common.Core.Providers
         
         public void Add(TEntity item)
         {
-            var collection = Read() as ICollection<TEntity>;
+            if (Read() is not ICollection<TEntity> collection) return;
             if (collection.Contains(item)) return;
             collection.Add(item);
             Write(collection);
@@ -37,13 +38,17 @@ namespace Common.Core.Providers
 
         public void Remove(TEntity item)
         {
-            var collection = Read() as ICollection<TEntity>;
+            if (Read() is not ICollection<TEntity> collection) return;
             if (collection.Contains(item) == false) return;
             collection.Remove(item);
             Write(collection);
         }
 
-        public IReadOnlyCollection<TEntity> Read() => _serializer.Deserialize<IReadOnlyCollection<TEntity>>(_fileWrapper.ReadAllText(Path));
+        public IReadOnlyCollection<TEntity> Read()
+        {
+            var content = _fileWrapper.ReadAllText(Path);
+            return content.IsEmpty() ? new List<TEntity>(0) : _serializer.Deserialize<IReadOnlyCollection<TEntity>>(content);
+        }
 
         private void Write(ICollection<TEntity> source) => _fileWrapper.WriteAllText(Path, _serializer.Serialize(source));
     }
