@@ -5,10 +5,11 @@ namespace Common.Core.Test.Helpers
 {
     public class MediaTypeHelperTests
     {
-        [Fact]
-        public void MediaTypeApplicationJsonEqual()
+        [Theory]
+        [InlineData(MediaTypeHelper.ApplicationJson, "application/json")]
+        public void MediaType_String_ReturnTrue(string input, string expected)
         {
-            Assert.Equal(expected: "application/json", actual: MediaTypeHelper.ApplicationJson);
+            Assert.Equal(expected, input);
         }
     }
 }

@@ -6,95 +6,61 @@ namespace Common.Core.Test.Extensions
 {
     public class StringExtensionTests
     {
-        [Fact]
-        public void IsDigitsOnlyTrue()
+        [Theory]
+        [InlineData("1119987465131511")]
+        public void IsDigitsOnly_StringOfNumbers_ReturnTrue(string input)
         {
-            const string str = "1119987465131511";
-
-            bool strTrue = str.IsDigitsOnly();
-
-            Assert.True(strTrue);
-        }
-
-        [Fact]
-        public void IsDigitsOnlyFalse()
-        {
-            const string str = "11199wqeqe8746513qweqweqwe1511";
-
-            bool strTrue = str.IsDigitsOnly();
-
-            Assert.False(strTrue);
-        }
-        
-        [Fact]
-        public void ToArrayEmptyNull()
-        {
-
-            const string str = "";
-
-            var array = str.ToArray<int>();
-
-            Assert.Empty(array);
-        }
-
-        [Fact]
-        public void ToArrayEmptyWhiteSpace()
-        {
-            const string str = " ";
-
-            var array = str.ToArray<int>();
-
-            Assert.Empty(array);
-        }
-
-        
-        [Fact]
-        public void ToArrayTrue()
-        {
-            const string str = "1;1;1;9;9";
-
-            var array = str.ToArray<int>();
-
-            Assert.Equal(5, array.Length);
-        }
-
-        [Fact]
-        public void UnixTimeToDateTimeConvert()
-        {
-            const string str = "1611151178";
-
-            var dateTime = str.UnixTimeToDateTime();
-            
-            Assert.Equal(expected: new DateTime(2021,01,20, 13,59,38, DateTimeKind.Utc), actual: dateTime);
-        }
-
-        [Fact]
-        public void UnixTimeToDateTimeNotConvert()
-        {
-            const string str = "1;1;1;9;9";
-
-            var dateTime = str.UnixTimeToDateTime();
-
-            Assert.Equal(expected: new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), actual: dateTime);
-        }
-
-        [Fact]
-        public void IsEmptyTrue()
-        {
-            const string str = " ";
-
-            var result = str.IsEmpty();
-
+            var result = input.IsDigitsOnly();
             Assert.True(result);
         }
 
-        [Fact]
-        public void IsEmptyFalse()
+        [Theory]
+        [InlineData("11199wqeqe8746513qweqweqwe1511")]
+        public void IsDigitsOnly_StringMultipleCharts_ReturnFalse(string input)
         {
-            const string str = "1;1;1;9;9";
+            var result = input.IsDigitsOnly();
+            Assert.False(result);
+        }
 
-            var result = str.IsEmpty();
+        [Theory]
+        [InlineData("", 0)]
+        [InlineData(" ", 0)]
+        [InlineData("1", 1)]
+        [InlineData("1;", 1)]
+        [InlineData(";1;", 1)]
+        [InlineData("1;q;", 1)]
+        [InlineData("1#q#", 0)]
+        [InlineData("1;1;1;9;9", 5)]
+        [InlineData("1;q;1;9;9", 4)]
+        public void ToArray_StringOfNumbers_ReturnTrue(string input, int expected)
+        {
+            var result = input.ToArray<int>();
+            Assert.Equal(expected, result.Length);
+        }
 
+        [Theory]
+        [InlineData("1611151178", 2021, 01, 20, 13, 59, 38, 0, DateTimeKind.Utc)]
+        [InlineData("1;1;1;9;9", 1970, 01, 1, 0, 0, 0, 0, DateTimeKind.Utc)]
+        public void UnixTimeToDateTime_StringConvert_ReturnTrue(string input, int year, int month, int day, int hour, int minute, int second, int millisecond, DateTimeKind kind)
+        {
+            var result = input.UnixTimeToDateTime();
+            Assert.Equal(expected: new DateTime(year, month, day, hour, minute, second, millisecond, kind), actual: result);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void IsEmpty_StringCheck_ReturnTrue(string input)
+        {
+            var result = input.IsEmpty();
+            Assert.True(result);
+        }
+
+        [Theory]
+        [InlineData("1;1;1;9;9")]
+        public void IsEmpty_StringCheck_ReturnFalse(string input)
+        {
+            var result = input.IsEmpty();
             Assert.False(result);
         }
     }

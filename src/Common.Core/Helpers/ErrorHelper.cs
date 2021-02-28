@@ -8,9 +8,9 @@ namespace Common.Core.Helpers
         public static class System
         {
             public static Error InternalServer() =>
-                new Error(СodeHelper.InternalServer, MessageHelper.InternalServer);
+                new Error(CodeHelper.InternalServer, MessageHelper.InternalServer);
             public static Error InternalServerInnerException() =>
-                new Error(СodeHelper.InternalServerInnerException, MessageHelper.InternalServerInnerException);
+                new Error(CodeHelper.InternalServerInnerException, MessageHelper.InternalServerInnerException);
         }
     }
 }

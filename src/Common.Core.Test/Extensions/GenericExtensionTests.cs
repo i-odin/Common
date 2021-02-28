@@ -5,27 +5,25 @@ namespace Common.Core.Test.Extensions
 {
     public class GenericExtensionTest
     {
-        [Fact]
-        public void InTrue()
+        [Theory]
+        [InlineData(EnumTest.One, EnumTest.Two)]
+        public void In_MultipleEnums_ReturnTrue(EnumTest inputOne, EnumTest inputTwo)
         {
-            const EnumTest enumTest = EnumTest.One;
-
-            var result = enumTest.In(EnumTest.One, EnumTest.Two);
-
+            const EnumTest enumOne = EnumTest.One;
+            var result = enumOne.In(inputOne, inputTwo);
             Assert.True(result);
         }
 
-        [Fact]
-        public void InFalse()
+        [Theory]
+        [InlineData(EnumTest.Two, EnumTest.Three)]
+        public void In_MultipleEnums_ReturnFalse(EnumTest inputOne, EnumTest inputTwo)
         {
-            const EnumTest enumTest = EnumTest.One;
-
-            var result = enumTest.In(EnumTest.Two, EnumTest.Three);
-
+            const EnumTest enumOne = EnumTest.One;
+            var result = enumOne.In(inputOne, inputTwo);
             Assert.False(result);
         }
 
-        private enum EnumTest : byte
+        public enum EnumTest : byte
         {
             One,
             Two,

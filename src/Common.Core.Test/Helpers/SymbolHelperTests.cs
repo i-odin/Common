@@ -5,22 +5,13 @@ namespace Common.Core.Test.Helpers
 {
     public class SymbolHelperTests
     {
-        [Fact]
-        public void SymbolNineEqual()
+        [Theory]
+        [InlineData(SymbolHelper.Zero, '0')]
+        [InlineData(SymbolHelper.Semicolon, ';')]
+        [InlineData(SymbolHelper.Nine, '9')]
+        public void Symbol_String_ReturnTrue(char input, char expected)
         {
-            Assert.Equal(expected: '9', actual: SymbolHelper.Nine);
-        }
-
-        [Fact]
-        public void SymbolSemicolonEqual()
-        {
-            Assert.Equal(expected: ';', actual: SymbolHelper.Semicolon);
-        }
-
-        [Fact]
-        public void SymbolZeroEqual()
-        {
-            Assert.Equal(expected: '0', actual: SymbolHelper.Zero);
+            Assert.Equal(expected, input);
         }
     }
 }

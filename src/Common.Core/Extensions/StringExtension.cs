@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Common.Core.Helpers;
 
@@ -6,24 +7,22 @@ namespace Common.Core.Extensions
 {
     public static class StringExtension
     {
-        public static bool IsDigitsOnly(this string str) =>
-            str.All(c => c >= SymbolHelper.Zero && c <= SymbolHelper.Nine);
-
+        public static bool IsEmpty(this string str) => string.IsNullOrEmpty(str) || str.Trim().Length == 0;
+        public static bool IsDigitsOnly(this string str) => str.All(c => c >= SymbolHelper.Zero && c <= SymbolHelper.Nine);
         public static T[] ToArray<T>(this string str, char separator = SymbolHelper.Semicolon) where T : struct
         {
-            if (string.IsNullOrEmpty(str))
-                return Array.Empty<T>();
-
-            if (string.IsNullOrWhiteSpace(str))
+            if(str.IsEmpty())
                 return Array.Empty<T>();
 
             var strArray = str.Split(separator);
-            var result = new T[strArray.Length];
-
-            for (var i = 0; i < strArray.Length; i++)
-                result[i] = (T)Convert.ChangeType(strArray[i], typeof(T));
-
-            return result;
+            var result = new List<T>(strArray.Length);
+            foreach (var item in strArray)
+            {
+                if (item.IsEmpty() || item.IsDigitsOnly() == false)
+                    continue;
+                result.Add((T)Convert.ChangeType(item, typeof(T)));
+            }
+            return result.ToArray();
         }
 
         public static DateTime UnixTimeToDateTime(this string str)
@@ -41,9 +40,6 @@ namespace Common.Core.Extensions
             return origin;
         }
 
-        public static bool IsEmpty(this string str)
-        {
-            return string.IsNullOrEmpty(str) || str.Trim().Length == 0;
-        }
+        
     }
 }

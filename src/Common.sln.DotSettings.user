@@ -4,6 +4,6 @@
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8a1fe1cb_002Dc266_002D4367_002D8ff6_002Da1a57a3cf892/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TextJsonSerializeSerialize" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::EAAA6CC7-B0BC-4AB6-9F91-D845A8DB7B61::net5.0::Common.Core.Test.Serializers.TextJsonSerializerTests.TextJsonSerializeSerialize&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::EAAA6CC7-B0BC-4AB6-9F91-D845A8DB7B61::net5.0::Common.Core.Test.Extensions.StringExtensionTests.ToArray_StringOfNumbers_ReturnTrue&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
