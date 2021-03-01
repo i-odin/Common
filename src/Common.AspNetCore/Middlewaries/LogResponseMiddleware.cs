@@ -1,24 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Common.AspNetCore.Middlewaries
 {
+    //TODO: Test
     public class LogResponseMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<LogResponseMiddleware> _logger;
         private readonly LogLevel _logLevel;
 
-        public LogResponseMiddleware(RequestDelegate next, ILogger<LogResponseMiddleware> logger)
+        public LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = logger;
+            _logger = loggerFactory?.CreateLogger<LogResponseMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory)); ;
             _logLevel = LogLevel.Information;
         }
 
@@ -31,7 +30,7 @@ namespace Common.AspNetCore.Middlewaries
                 context.Response.Body = responseBodyStream;
                 await _next(context);
                 responseBodyStream.Seek(0, SeekOrigin.Begin);
-                _logger.Log(_logLevel, MessageBuild(context, new StreamReader(responseBodyStream).ReadToEnd()));
+                _logger.Log(_logLevel, MessageBuild(context, await new StreamReader(responseBodyStream).ReadToEndAsync()));
                 responseBodyStream.Seek(0, SeekOrigin.Begin);
                 await responseBodyStream.CopyToAsync(originalResponseBody);
             }

@@ -8,7 +8,7 @@ namespace Common.Core.Test.Providers
     public class ListStorageProviderTests
     {
         [Fact]
-        public void ListStorageProviderRead()
+        public void Read_ReadAll_ReturnOneCount()
         {
             var cacheProvider = new ListStorageProviderTest();
 
@@ -18,7 +18,7 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void ListStorageProviderAdd()
+        public void Add_AddObject_ReturnTwoCount()
         {
             var entityTest = new EntityTest {Id = 2};
             var cacheProvider = new ListStorageProviderTest();
@@ -30,7 +30,7 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void ListStorageProviderRemove()
+        public void Remove_RemoveObject_ReturnZeroCount()
         {
             var entityTest = new EntityTest { Id = 1 };
             var cacheProvider = new ListStorageProviderTest();
@@ -43,14 +43,15 @@ namespace Common.Core.Test.Providers
 
         private class ListStorageProviderTest : ListStorageProvider<EntityTest>
         {
-            public ListStorageProviderTest() : base(new StorageProviderMock())
+            public ListStorageProviderTest() : base(new StabStorageProvider())
             {
             }
         }
 
         private class EntityTest : HasId<int> { }
 
-        private class StorageProviderMock : IStorageProvider<EntityTest>
+        //TODO: Использовать библиотеку Mock
+        private class StabStorageProvider : IStorageProvider<EntityTest>
         {
             public void Add(EntityTest item) { }
 

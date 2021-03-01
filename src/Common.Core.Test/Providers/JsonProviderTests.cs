@@ -8,7 +8,7 @@ namespace Common.Core.Test.Providers
     public class JsonProviderTests
     {
         [Fact]
-        public void JsonProviderAdd()
+        public void Add_AddObject_ReturnOneCount()
         {
             var entityTest = new EntityTest {Id = 1};
             var jsonProvider = new JsonProviderTest();
@@ -20,7 +20,7 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void JsonProviderRemove()
+        public void Remove_AddAndRemoveObject_ReturnZeroCount()
         {
             var entityTest = new EntityTest { Id = 1 };
             var jsonProvider = new JsonProviderTest();
@@ -33,7 +33,7 @@ namespace Common.Core.Test.Providers
         }
 
         [Fact]
-        public void JsonProviderRead()
+        public void Read_ReadAllFile_ReturnZeroCount()
         {
             var jsonProvider = new JsonProviderTest();
 
@@ -46,11 +46,12 @@ namespace Common.Core.Test.Providers
 
         private class JsonProviderTest : JsonProvider<EntityTest>
         {
-            public JsonProviderTest() : this(string.Empty, new FileWrapperMock()) { }
+            public JsonProviderTest() : this(string.Empty, new StubFileWrapper()) { }
             private JsonProviderTest(string path, IFileWrapper fileWrapper) : base(path, fileWrapper) { }
         }
 
-        private class FileWrapperMock : IFileWrapper
+        //TODO: Использовать библиотеку Mock
+        private class StubFileWrapper : IFileWrapper
         {
             private string _source = string.Empty;
             public string ReadAllText(string path) => _source;

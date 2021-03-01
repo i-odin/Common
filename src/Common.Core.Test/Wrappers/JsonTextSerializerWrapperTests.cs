@@ -7,7 +7,7 @@ namespace Common.Core.Test.Wrappers
     public class JsonTextSerializerWrapperTests
     {
         [Fact]
-        public void TextJsonSerializeSerialize()
+        public void Serialize_ObjectToString_ReturnTrue()
         {
             var entityTest = new EntityTest { Id = 1 };
             var serializer = new JsonTextSerializerWrapper();
@@ -18,7 +18,7 @@ namespace Common.Core.Test.Wrappers
         }
 
         [Fact]
-        public void TextJsonSerializeDeserialize()
+        public void Deserialize_StringToObject_ReturnTrue()
         {
             var serializer = new JsonTextSerializerWrapper();
 
