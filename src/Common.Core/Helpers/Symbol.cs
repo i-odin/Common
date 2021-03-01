@@ -1,6 +1,6 @@
 ﻿namespace Common.Core.Helpers
 {
-    public class SymbolHelper
+    public class Symbol
     {
         public const char Semicolon = ';';
         public const char Zero = '0';

@@ -1,6 +1,6 @@
 ﻿namespace Common.Core.Helpers
 {
-    public class MediaTypeHelper
+    public class MediaType
     {
         public const string ApplicationJson = "application/json";
     }

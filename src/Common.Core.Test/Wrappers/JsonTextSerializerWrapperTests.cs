@@ -6,25 +6,32 @@ namespace Common.Core.Test.Wrappers
 {
     public class JsonTextSerializerWrapperTests
     {
-        [Fact]
-        public void Serialize_ObjectToString_ReturnTrue()
+        [Theory]
+        [InlineData(1, "{\"Id\":1}")]
+        [InlineData(null, "")]
+        public void Serialize_EntityTestToString_ReturnTrue(int? input, string expected)
         {
-            var entityTest = new EntityTest { Id = 1 };
+            EntityTest entityTest = null;
+            if (input.HasValue)
+                entityTest = new EntityTest { Id = input.Value };
             var serializer = new JsonTextSerializerWrapper();
 
             var result = serializer.Serialize(entityTest);
 
-            Assert.Equal(expected: "{\"Id\":1}", actual: result);
+            Assert.Equal(expected: expected, actual: result);
         }
 
-        [Fact]
-        public void Deserialize_StringToObject_ReturnTrue()
+        [Theory]
+        [InlineData("{\"Id\":1}", 1)]
+        [InlineData("", null)]
+        [InlineData(" ", null)]
+        public void Deserialize_StringToEntityTest_ReturnTrue(string input, int? expected)
         {
             var serializer = new JsonTextSerializerWrapper();
 
-            var result = serializer.Deserialize<EntityTest>("{\"Id\":1}");
+            var result = serializer.Deserialize<EntityTest>(input);
 
-            Assert.Equal(expected: 1, actual: result.Id);
+            Assert.Equal(expected, actual: result?.Id);
         }
 
         private class EntityTest : HasId<int> { }

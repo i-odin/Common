@@ -8,8 +8,8 @@ namespace Common.Core.Extensions
     public static class StringExtension
     {
         public static bool IsEmpty(this string str) => string.IsNullOrEmpty(str) || str.Trim().Length == 0;
-        public static bool IsDigitsOnly(this string str) => str.All(c => c >= SymbolHelper.Zero && c <= SymbolHelper.Nine);
-        public static T[] ToArray<T>(this string str, char separator = SymbolHelper.Semicolon) where T : struct
+        public static bool IsDigitsOnly(this string str) => str.All(c => c >= Symbol.Zero && c <= Symbol.Nine);
+        public static T[] ToArray<T>(this string str, char separator = Symbol.Semicolon) where T : struct
         {
             if(str.IsEmpty())
                 return Array.Empty<T>();

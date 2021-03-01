@@ -46,7 +46,7 @@ namespace Common.Core.Providers
         {
             if (_initializeCollection == false)
             {
-                _list = _provider.Read() as List<TEntity>;
+                _list = (List<TEntity>)_provider.Read();
                 _initializeCollection = true;
             }
         }

@@ -47,7 +47,7 @@ namespace Common.Core.Providers
         public IReadOnlyCollection<TEntity> Read()
         {
             var content = _fileWrapper.ReadAllText(Path);
-            return content.IsEmpty() ? new List<TEntity>(0) : _serializer.Deserialize<IReadOnlyCollection<TEntity>>(content);
+            return content.IsEmpty() ? new List<TEntity>(0) : _serializer.Deserialize<IReadOnlyCollection<TEntity>>(content) ?? new List<TEntity>(0);
         }
 
         private void Write(ICollection<TEntity> source) => _fileWrapper.WriteAllText(Path, _serializer.Serialize(source));
