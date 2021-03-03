@@ -2,9 +2,9 @@
 using Common.Core.Extensions;
 using Xunit;
 
-namespace Common.Core.Test.Extensions
+namespace Common.Core.Tests.Extensions
 {
-    public class StringExtensionTests
+    public class StringExtensionTest
     {
         [Theory]
         [InlineData("1119987465131511")]

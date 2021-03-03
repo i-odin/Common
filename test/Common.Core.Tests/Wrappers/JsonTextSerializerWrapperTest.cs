@@ -2,9 +2,9 @@
 using Common.Core.Wrappers;
 using Xunit;
 
-namespace Common.Core.Test.Wrappers
+namespace Common.Core.Tests.Wrappers
 {
-    public class JsonTextSerializerWrapperTests
+    public class JsonTextSerializerWrapperTest
     {
         [Theory]
         [InlineData(1, "{\"Id\":1}")]

@@ -1,9 +1,9 @@
 ﻿using Common.Core.Helpers;
 using Xunit;
 
-namespace Common.Core.Test.Helpers
+namespace Common.Core.Tests.Helpers
 {
-    public class SymbolTests
+    public class SymbolTest
     {
         [Theory]
         [InlineData(Symbol.Zero, '0')]

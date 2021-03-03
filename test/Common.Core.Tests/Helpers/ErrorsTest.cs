@@ -2,9 +2,9 @@
 using Common.Core.Models;
 using Xunit;
 
-namespace Common.Core.Test.Helpers
+namespace Common.Core.Tests.Helpers
 {
-    public class ErrorsTests
+    public class ErrorsTest
     {
         [Theory]
         [InlineData(Errors.Message.InternalServer, "Internal Server Error")]

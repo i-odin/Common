@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.AspNetCore.Middlewares
+namespace Common.AspNetCore.Middleware
 {
     //TODO: Test
     public class LogResponseMiddleware
@@ -17,6 +18,7 @@ namespace Common.AspNetCore.Middlewares
         public LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
+            //TODO: сделать универсальную проверку на null
             _logger = loggerFactory?.CreateLogger<LogResponseMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory)); ;
             _logLevel = LogLevel.Information;
         }
@@ -43,6 +45,11 @@ namespace Common.AspNetCore.Middlewares
         //TODO: сделать строитель предложений? 
         private static string MessageBuild(HttpContext context, string body)
         {
+            //return new StringBuilderWrapper().GetMessage(new Dictionary<string, string> {{ "TRACE IDENTIFIER", context.TraceIdentifier}, { "BODY", body}});
+
+
+
+
             var sb = new StringBuilder(body.Length);
             //TODO: Вынести
             sb.Append("TRACE IDENTIFIER= ");
@@ -53,4 +60,29 @@ namespace Common.AspNetCore.Middlewares
             return sb.ToString();
         }
     }
+
+    /*
+    public interface ITextWrapper { }
+
+    public class StringBuilderWrapper : ITextWrapper
+    {
+        private readonly StringBuilder _sb = new();
+        public string GetMessage(Dictionary<string, string> value, string format = "{0}{1}{2}{3}", char separatorKeyValue = '=', char separator = ';')
+        {
+            if (value.Count < 0)
+                return string.Empty;
+
+            foreach (var item in value)
+            {
+                _sb.AppendFormat(format, item.Key, separatorKeyValue, item.Value, separator);
+                _sb.Append(item.Key);
+                _sb.Append(separatorKeyValue);
+                _sb.Append(item.Value);
+                _sb.Append(separator);
+            }
+            
+            return _sb.ToString();
+        }
+    }
+        */
 }

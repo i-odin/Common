@@ -3,14 +3,14 @@ using Common.Core.Models;
 using Common.Core.Providers;
 using Xunit;
 
-namespace Common.Core.Test.Providers
+namespace Common.Core.Tests.Providers
 {
-    public class ListStorageProviderTests
+    public class ListStorageProviderTest
     {
         [Fact]
         public void Read_ReadAll_ReturnOneCount()
         {
-            var cacheProvider = new ListStorageProviderTest();
+            var cacheProvider = new MockListStorageProvider();
 
             var collectionCount = cacheProvider.Read().Count;
 
@@ -21,7 +21,7 @@ namespace Common.Core.Test.Providers
         public void Add_AddObject_ReturnTwoCount()
         {
             var entityTest = new EntityTest {Id = 2};
-            var cacheProvider = new ListStorageProviderTest();
+            var cacheProvider = new MockListStorageProvider();
 
             cacheProvider.Add(entityTest);
             var collectionCount = cacheProvider.Read().Count;
@@ -33,7 +33,7 @@ namespace Common.Core.Test.Providers
         public void Remove_RemoveObject_ReturnZeroCount()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var cacheProvider = new ListStorageProviderTest();
+            var cacheProvider = new MockListStorageProvider();
 
             cacheProvider.Remove(entityTest);
             var collectionCount = cacheProvider.Read().Count;
@@ -41,9 +41,9 @@ namespace Common.Core.Test.Providers
             Assert.Equal(expected: 0, actual: collectionCount);
         }
 
-        private class ListStorageProviderTest : ListStorageProvider<EntityTest>
+        private class MockListStorageProvider : ListStorageProvider<EntityTest>
         {
-            public ListStorageProviderTest() : base(new StabStorageProvider())
+            public MockListStorageProvider() : base(new StabStorageProvider())
             {
             }
         }

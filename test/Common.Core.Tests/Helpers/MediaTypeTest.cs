@@ -1,9 +1,9 @@
 ﻿using Common.Core.Helpers;
 using Xunit;
 
-namespace Common.Core.Test.Helpers
+namespace Common.Core.Tests.Helpers
 {
-    public class MediaTypeTests
+    public class MediaTypeTest
     {
         [Theory]
         [InlineData(MediaType.ApplicationJson, "application/json")]

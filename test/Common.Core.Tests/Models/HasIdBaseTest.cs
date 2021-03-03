@@ -1,9 +1,9 @@
 ﻿using Common.Core.Models;
 using Xunit;
 
-namespace Common.Core.Test.Models
+namespace Common.Core.Tests.Models
 {
-    public class HasIdBaseTests
+    public class HasIdBaseTest
     {
         [Fact]
         public void Equals_CompareTwoObjects_ReturnTrue()

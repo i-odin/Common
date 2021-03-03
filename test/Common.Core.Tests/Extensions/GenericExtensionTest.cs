@@ -1,7 +1,7 @@
 ﻿using Common.Core.Extensions;
 using Xunit;
 
-namespace Common.Core.Test.Extensions
+namespace Common.Core.Tests.Extensions
 {
     public class GenericExtensionTest
     {

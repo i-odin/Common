@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Common.AspNetCore.Middlewares
+namespace Common.AspNetCore.Middleware
 {
     //TODO: Test
     public class LogRequestMiddleware

@@ -12,3 +12,11 @@
 /src/Common.AspNetCore.Test/bin/Debug/net5.0
 /src/Common.AspNetCore.Test/obj
 /src/Common.AspNetCore.Test/bin/Release/net5.0
+/test/Common.Core.Test/bin
+/test/Common.Core.Test/obj
+/test/Common.AspNetCore.Test/bin
+/test/Common.AspNetCore.Test/obj
+/test/Common.AspNetCore.Tests/bin
+/test/Common.AspNetCore.Tests/obj
+/test/Common.Core.Tests/bin
+/test/Common.Core.Tests/obj

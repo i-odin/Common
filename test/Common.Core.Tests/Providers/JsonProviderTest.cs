@@ -3,15 +3,15 @@ using Common.Core.Providers;
 using Common.Core.Wrappers;
 using Xunit;
 
-namespace Common.Core.Test.Providers
+namespace Common.Core.Tests.Providers
 {
-    public class JsonProviderTests
+    public class JsonProviderTest
     {
         [Fact]
         public void Add_AddObject_ReturnOneCount()
         {
             var entityTest = new EntityTest {Id = 1};
-            var jsonProvider = new JsonProviderTest();
+            var jsonProvider = new MockJsonProvider();
             
             jsonProvider.Add(entityTest);
             var jsonCount = jsonProvider.Read().Count;
@@ -23,7 +23,7 @@ namespace Common.Core.Test.Providers
         public void Remove_AddAndRemoveObject_ReturnZeroCount()
         {
             var entityTest = new EntityTest { Id = 1 };
-            var jsonProvider = new JsonProviderTest();
+            var jsonProvider = new MockJsonProvider();
 
             jsonProvider.Add(entityTest);
             jsonProvider.Remove(entityTest);
@@ -35,7 +35,7 @@ namespace Common.Core.Test.Providers
         [Fact]
         public void Read_ReadAllFile_ReturnZeroCount()
         {
-            var jsonProvider = new JsonProviderTest();
+            var jsonProvider = new MockJsonProvider();
 
             var jsonCount = jsonProvider.Read().Count;
 
@@ -44,10 +44,10 @@ namespace Common.Core.Test.Providers
 
         private class EntityTest : HasId<int> { }
 
-        private class JsonProviderTest : JsonProvider<EntityTest>
+        private class MockJsonProvider : JsonProvider<EntityTest>
         {
-            public JsonProviderTest() : this(string.Empty, new StubFileWrapper()) { }
-            private JsonProviderTest(string path, IFileWrapper fileWrapper) : base(path, fileWrapper) { }
+            public MockJsonProvider() : this(string.Empty, new StubFileWrapper()) { }
+            private MockJsonProvider(string path, IFileWrapper fileWrapper) : base(path, fileWrapper) { }
         }
 
         //TODO: Использовать библиотеку Mock
