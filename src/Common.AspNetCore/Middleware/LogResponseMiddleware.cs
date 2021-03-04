@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Core.Utilities;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -15,11 +15,13 @@ namespace Common.AspNetCore.Middleware
         private readonly ILogger<LogResponseMiddleware> _logger;
         private readonly LogLevel _logLevel;
 
-        public LogResponseMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public LogResponseMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
         {
+            Throw.NotNull(next, nameof(next));
+            Throw.NotNull(loggerFactory, nameof(loggerFactory));
+
             _next = next;
-            //TODO: сделать универсальную проверку на null
-            _logger = loggerFactory?.CreateLogger<LogResponseMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory)); ;
+            _logger = loggerFactory.CreateLogger<LogResponseMiddleware>();
             _logLevel = LogLevel.Information;
         }
 

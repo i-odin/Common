@@ -3,9 +3,11 @@ using Common.Core.Wrappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading.Tasks;
 using Common.Core.Models;
+using Common.Core.Utilities;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -16,11 +18,13 @@ namespace Common.AspNetCore.Middleware
         private readonly ILogger<LogErrorMiddleware> _logger;
         private readonly ISerializerWrapper _serializer;
 
-        public LogErrorMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public LogErrorMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
         {
+            Throw.NotNull(next, nameof(next));
+            Throw.NotNull(loggerFactory, nameof(loggerFactory));
+            
             _next = next;
-            //TODO: сделать универсальную проверку на null
-            _logger = loggerFactory?.CreateLogger<LogErrorMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory.CreateLogger<LogErrorMiddleware>();
             _serializer = new JsonTextSerializerWrapper();
         }
 

@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Core.Utilities;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -13,11 +14,13 @@ namespace Common.AspNetCore.Middleware
         private readonly RequestDelegate _next;
         private readonly ILogger<LogRequestMiddleware> _logger;
         private readonly LogLevel _logLevel;
-        public LogRequestMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public LogRequestMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
         {
+            Throw.NotNull(next, nameof(next));
+            Throw.NotNull(loggerFactory, nameof(loggerFactory));
+
             _next = next;
-            //TODO: сделать универсальную проверку на null
-            _logger = loggerFactory?.CreateLogger<LogRequestMiddleware>() ?? throw new ArgumentNullException(nameof(loggerFactory));
+            _logger = loggerFactory.CreateLogger<LogRequestMiddleware>();
             _logLevel = LogLevel.Information;
         }
 
@@ -62,7 +65,7 @@ namespace Common.AspNetCore.Middleware
             var requestBody = new MemoryStream();
             await context.Request.Body.CopyToAsync(requestBody);
             requestBody.Seek(0, SeekOrigin.Begin);
-            string body = new StreamReader(requestBody).ReadToEnd();
+            string body = await new StreamReader(requestBody).ReadToEndAsync();
             requestBody.Seek(0, SeekOrigin.Begin);
             return (requestBody, body);
         }
