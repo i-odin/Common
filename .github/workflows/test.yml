@@ -1,7 +1,7 @@
 name: Tests
 
 env:
-  ApplicationDir : "./src/Common.sln"
+  ApplicationDir : "./Common.sln"
 
 on: 
   push:
