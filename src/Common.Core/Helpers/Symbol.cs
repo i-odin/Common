@@ -5,5 +5,6 @@
         public const char Semicolon = ';';
         public const char Zero = '0';
         public const char Nine = '9';
+        public const char Equal = '=';
     }
 }

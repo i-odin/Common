@@ -1,10 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Core.Helpers;
 using Common.Core.Utilities;
+using Common.Core.Extensions;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -44,47 +47,9 @@ namespace Common.AspNetCore.Middleware
             }
         }
 
-        //TODO: сделать строитель предложений? 
-        private static string MessageBuild(HttpContext context, string body)
-        {
-            //return new StringBuilderWrapper().GetMessage(new Dictionary<string, string> {{ "TRACE IDENTIFIER", context.TraceIdentifier}, { "BODY", body}});
-
-
-
-
-            var sb = new StringBuilder(body.Length);
-            //TODO: Вынести
-            sb.Append("TRACE IDENTIFIER= ");
-            sb.Append(context.TraceIdentifier);
-            sb.Append(", ");
-            sb.Append("BODY= ");
-            sb.Append(body);
-            return sb.ToString();
-        }
+        private static string MessageBuild(HttpContext context, string body) => 
+            new StringBuilder(body.Length)
+                .AppendJoin(new Dictionary<string, string> { { Messages.TraceIdentifier, context.TraceIdentifier }, { Messages.Body, body } })
+                .ToString();
     }
-
-    /*
-    public interface ITextWrapper { }
-
-    public class StringBuilderWrapper : ITextWrapper
-    {
-        private readonly StringBuilder _sb = new();
-        public string GetMessage(Dictionary<string, string> value, string format = "{0}{1}{2}{3}", char separatorKeyValue = '=', char separator = ';')
-        {
-            if (value.Count < 0)
-                return string.Empty;
-
-            foreach (var item in value)
-            {
-                _sb.AppendFormat(format, item.Key, separatorKeyValue, item.Value, separator);
-                _sb.Append(item.Key);
-                _sb.Append(separatorKeyValue);
-                _sb.Append(item.Value);
-                _sb.Append(separator);
-            }
-            
-            return _sb.ToString();
-        }
-    }
-        */
 }

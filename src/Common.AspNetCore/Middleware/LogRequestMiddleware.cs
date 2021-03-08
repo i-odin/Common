@@ -1,10 +1,13 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Core.Helpers;
 using Common.Core.Utilities;
+using Common.Core.Extensions;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -41,24 +44,10 @@ namespace Common.AspNetCore.Middleware
             }
         }
 
-        //TODO: сделать строитель предложений? 
-        private static string MessageBuild(HttpContext context, string body)
-        {
-            //TODO: Вынести
-            var sb = new StringBuilder(body.Length);
-            sb.Append("TRACE IDENTIFIER= ");
-            sb.Append(context.TraceIdentifier);
-            sb.Append(", ");
-            sb.Append("URL= ");
-            sb.Append(context.Request.Host.ToString());
-            sb.Append(", ");
-            sb.Append("METHOD= ");
-            sb.Append(context.Request.Method);
-            sb.Append(", ");
-            sb.Append("BODY= ");
-            sb.Append(body);
-            return sb.ToString();
-        }
+        private static string MessageBuild(HttpContext context, string body) => 
+            new StringBuilder(body.Length)
+                .AppendJoin(new Dictionary<string, string> { { Messages.TraceIdentifier, context.TraceIdentifier }, { Messages.Url, context.Request.Host.ToString() }, { Messages.Method, context.Request.Method }, { Messages.Body, body } })
+                .ToString();
 
         private static async Task<(MemoryStream, string)> ReadBody(HttpContext context)
         {
