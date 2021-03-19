@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Common.Core.Helpers;
 using Common.Core.Utilities;
 using Common.Core.Extensions;
+using Common.Core.Structs;
 
 namespace Common.AspNetCore.Middleware
 {
@@ -47,9 +48,14 @@ namespace Common.AspNetCore.Middleware
             }
         }
 
-        private static string MessageBuild(HttpContext context, string body) => 
-            new StringBuilder(body.Length)
-                .AppendJoin(new Dictionary<string, string> { { Messages.TraceIdentifier, context.TraceIdentifier }, { Messages.Body, body } })
-                .ToString();
+        private static string MessageBuild(HttpContext context, string body)
+        {
+            var spanValues = new ReadOnlySpan<KeyValueString>(new[]
+            {
+                new KeyValueString(Messages.TraceIdentifier, context.TraceIdentifier),
+                new KeyValueString(Messages.Body, body)
+            });
+            return new StringBuilder(body.Length).AppendJoin(in spanValues).ToString();
+        }
     }
 }
