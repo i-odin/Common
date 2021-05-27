@@ -1,4 +1,6 @@
-﻿using Common.Core.Models;
+﻿using System;
+using System.Collections.Generic;
+using Common.Core.Models;
 using Common.Core.Wrappers;
 using Xunit;
 
@@ -7,33 +9,44 @@ namespace Common.Core.Tests.Wrappers
     public class JsonTextSerializerWrapperTest
     {
         [Theory]
-        [InlineData(1, "{\"Id\":1}")]
-        [InlineData(null, "")]
-        public void Serialize_EntityTestToString_ReturnTrue(int? input, string expected)
+        [MemberData(nameof(SerializeData))]
+        public void Serialize_EntityTestToString_ReturnTrue(Guid? input, string expected)
         {
-            EntityTest entityTest = null;
+            Entity entity = null;
             if (input.HasValue)
-                entityTest = new EntityTest { Id = input.Value };
+                entity = new Entity { Id = input.Value };
             var serializer = new JsonTextSerializerWrapper();
 
-            var result = serializer.Serialize(entityTest);
+            var result = serializer.Serialize(entity);
 
             Assert.Equal(expected: expected, actual: result);
         }
+        
 
         [Theory]
-        [InlineData("{\"Id\":1}", 1)]
-        [InlineData("", null)]
-        [InlineData(" ", null)]
-        public void Deserialize_StringToEntityTest_ReturnTrue(string input, int? expected)
+        [MemberData(nameof(DeserializeData))]
+        public void Deserialize_StringToEntityTest_ReturnTrue(string input, Guid? expected)
         {
             var serializer = new JsonTextSerializerWrapper();
-
-            var result = serializer.Deserialize<EntityTest>(input);
+            
+            var result = serializer.Deserialize<Entity>(input);
 
             Assert.Equal(expected, actual: result?.Id);
         }
 
-        private class EntityTest : HasId<int> { }
+        public static IEnumerable<object[]> SerializeData =>
+            new List<object[]>
+            {
+                new object[] { Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450"), "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\"}" },
+                new object[] { null , "" }
+            };
+
+        public static IEnumerable<object[]> DeserializeData =>
+            new List<object[]>
+            {
+                new object[] { "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\"}", Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450") },
+                new object[] { "", null },
+                new object[] { " ", null }
+            };
     }
 }

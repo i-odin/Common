@@ -10,7 +10,7 @@ namespace Common.Core.Tests.Providers
         [Fact]
         public void Add_AddObject_ReturnOneCount()
         {
-            var entityTest = new EntityTest {Id = 1};
+            var entityTest = new Entity { Id = Entity.NewId() };
             var jsonProvider = new MockJsonProvider();
             
             jsonProvider.Add(entityTest);
@@ -22,7 +22,7 @@ namespace Common.Core.Tests.Providers
         [Fact]
         public void Remove_AddAndRemoveObject_ReturnZeroCount()
         {
-            var entityTest = new EntityTest { Id = 1 };
+            var entityTest = new Entity { Id = Entity.NewId() };
             var jsonProvider = new MockJsonProvider();
 
             jsonProvider.Add(entityTest);
@@ -41,10 +41,8 @@ namespace Common.Core.Tests.Providers
 
             Assert.Equal(expected: 0, actual: jsonCount);
         }
-
-        private class EntityTest : HasId<int> { }
-
-        private class MockJsonProvider : JsonProvider<EntityTest>
+        
+        private class MockJsonProvider : JsonProvider<Entity>
         {
             public MockJsonProvider() : this(string.Empty, new StubFileWrapper()) { }
             private MockJsonProvider(string path, IFileWrapper fileWrapper) : base(path, fileWrapper) { }

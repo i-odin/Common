@@ -8,8 +8,9 @@ namespace Common.Core.Tests.Models
         [Fact]
         public void Equals_CompareTwoObjects_ReturnTrue()
         {
-            var entity1 = new EntityTest { Id = 1 };
-            var entity2 = new EntityTest { Id = 1 };
+            var guid = Entity.NewId();
+            var entity1 = new Entity { Id = guid };
+            var entity2 = new Entity { Id = guid };
 
             bool entityEqual1 = entity1.Equals(entity2);
             bool entityEqual2 = entity2.Equals(entity1);
@@ -25,8 +26,8 @@ namespace Common.Core.Tests.Models
         [Fact]
         public void Equals_CompereTwoObjects_ReturnFalse()
         {
-            var entity1 = new EntityTest { Id = 1 };
-            var entity2 = new EntityTest { Id = 2 };
+            var entity1 = new Entity { Id = Entity.NewId() };
+            var entity2 = new Entity { Id = Entity.NewId() };
 
             bool entityEqual1 = entity1.Equals(entity2);
             bool entityEqual2 = entity2.Equals(entity1);
@@ -42,8 +43,9 @@ namespace Common.Core.Tests.Models
         [Fact]
         public void GetHashCode_CompareTwoObjects_ReturnTrue()
         {
-            var entity1 = new EntityTest { Id = 1 };
-            var entity2 = new EntityTest { Id = 1 };
+            var guid = Entity.NewId();
+            var entity1 = new Entity { Id = guid };
+            var entity2 = new Entity { Id = guid };
 
             bool entityEqual1 = entity1.GetHashCode() == entity2.GetHashCode();
             bool entityEqual2 = entity2.GetHashCode() == entity1.GetHashCode();
@@ -55,8 +57,8 @@ namespace Common.Core.Tests.Models
         [Fact]
         public void GetHashCode_CompareTwoObjects_ReturnFalse()
         {
-            var entity1 = new EntityTest { Id = 1 };
-            var entity2 = new EntityTest { Id = 2 };
+            var entity1 = new Entity { Id = Entity.NewId() };
+            var entity2 = new Entity { Id = Entity.NewId() };
 
             bool entityEqual1 = entity1.GetHashCode() == entity2.GetHashCode();
             bool entityEqual2 = entity2.GetHashCode() == entity1.GetHashCode();
@@ -64,7 +66,5 @@ namespace Common.Core.Tests.Models
             Assert.False(entityEqual1);
             Assert.False(entityEqual2);
         }
-
-        private class EntityTest : HasId<int> { }
     }
 }

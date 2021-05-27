@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Core.Models;
 using Common.Core.Providers;
 using Xunit;
@@ -20,7 +21,7 @@ namespace Common.Core.Tests.Providers
         [Fact]
         public void Add_AddObject_ReturnTwoCount()
         {
-            var entityTest = new EntityTest {Id = 2};
+            var entityTest = new Entity {Id = Entity.NewId()};
             var cacheProvider = new MockListStorageProvider();
 
             cacheProvider.Add(entityTest);
@@ -32,7 +33,7 @@ namespace Common.Core.Tests.Providers
         [Fact]
         public void Remove_RemoveObject_ReturnZeroCount()
         {
-            var entityTest = new EntityTest { Id = 1 };
+            var entityTest = new Entity { Id = StabStorageProvider.Id };
             var cacheProvider = new MockListStorageProvider();
 
             cacheProvider.Remove(entityTest);
@@ -41,25 +42,25 @@ namespace Common.Core.Tests.Providers
             Assert.Equal(expected: 0, actual: collectionCount);
         }
 
-        private class MockListStorageProvider : ListStorageProvider<EntityTest>
+        private class MockListStorageProvider : ListStorageProvider<Entity>
         {
             public MockListStorageProvider() : base(new StabStorageProvider())
             {
             }
         }
 
-        private class EntityTest : HasId<int> { }
-
         //TODO: Использовать библиотеку Mock
-        private class StabStorageProvider : IStorageProvider<EntityTest>
+        private class StabStorageProvider : IStorageProvider<Entity>
         {
-            public void Add(EntityTest item) { }
+            public static Guid Id = Entity.NewId();
 
-            public void Remove(EntityTest item) { }
+            public void Add(Entity item) { }
 
-            public IReadOnlyCollection<EntityTest> Read()
+            public void Remove(Entity item) { }
+
+            public IReadOnlyCollection<Entity> Read()
             {
-                return new List<EntityTest> { new() { Id = 1 } };
+                return new List<Entity> { new() { Id = Id } };
             }
         }
     }

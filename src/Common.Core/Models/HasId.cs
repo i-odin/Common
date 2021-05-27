@@ -23,7 +23,7 @@ namespace Common.Core.Models
 
         public override bool Equals(object? obj)
         {
-            if (!(obj is HasId<TKey> other)) return false;
+            if (obj is not HasId<TKey> other) return false;
             if (ReferenceEquals(this, other)) return true;
             return EqualityComparer<TKey>.Default.Equals(Id, other.Id);
         }
@@ -38,5 +38,10 @@ namespace Common.Core.Models
         public static bool operator !=(HasId<TKey>? a, HasId<TKey>? b) => !(a == b);
 
         public override int GetHashCode() => EqualityComparer<TKey>.Default.GetHashCode(Id);
+    }
+    
+    public class Entity : HasId<Guid>
+    {
+        public static Guid NewId() => Guid.NewGuid();
     }
 }
