@@ -5,13 +5,13 @@ using Common.Core.Wrappers;
 
 namespace Common.Core.Providers
 {
-    public interface IJsonProvider<TEntity> : IStorageProvider<TEntity>
+    public interface IFileProvider<TEntity> : IStorageProvider<TEntity>
         where TEntity : IHasId
     {
         public string Path { get; }
     }
 
-    public abstract class JsonProvider<TEntity> : IJsonProvider<TEntity>
+    public abstract class JsonProvider<TEntity> : IFileProvider<TEntity>
         where TEntity : IHasId
     {
         private readonly IFileWrapper _fileWrapper;

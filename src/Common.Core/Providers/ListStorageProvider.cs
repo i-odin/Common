@@ -3,17 +3,17 @@ using Common.Core.Models;
 
 namespace Common.Core.Providers
 {
-    public interface IListStorageProvider<TEntity> : IProvider<TEntity>
+    public interface ICacheProvider<TEntity> : IProvider<TEntity>
         where TEntity : IHasId
     {
     }
 
-    public abstract class ListStorageProvider<TEntity> : IListStorageProvider<TEntity>
+    public abstract class ListStorageProvider<TEntity> : ICacheProvider<TEntity>
         where TEntity : IHasId
     {
         private bool _initializeCollection;
         private List<TEntity> _list = new();
-        private readonly IProvider<TEntity> _provider;
+        private readonly IStorageProvider<TEntity> _provider;
         
         protected ListStorageProvider(IStorageProvider<TEntity> provider)
         {
