@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Common.Core.Helpers;
 
 namespace Common.Core.Extensions
 {
@@ -11,18 +12,17 @@ namespace Common.Core.Extensions
 
         public static DateTime FirstDateOfWeekIso8601(int year, int weekOfYear)
         {
-            //TODO: message
             if (year is < 1 or > _maxYear)
-                throw new ArgumentException("the year should be in the range 1 to 9999");
+                throw new ArgumentException(Messages.DateTimeYearRange1To9999);
 
             if ((year - 1) * 52 <= weekOfYear)
-                throw new ArgumentException("Test");
+                throw new ArgumentException(Messages.DateTimeWeekNumberRange1To9999);
 
             var jan = new DateTime(year, 1, 1);
             int daysOffset = DayOfWeek.Thursday - jan.DayOfWeek;
 
             DateTime firstThursday = jan.AddDays(daysOffset);
-            var cal = CultureInfo.CurrentCulture.Calendar;
+            Calendar cal = CultureInfo.CurrentCulture.Calendar;
             int firstWeek = cal.GetWeekOfYear(firstThursday, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
 
             if (firstWeek == 1)
