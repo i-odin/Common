@@ -8,7 +8,7 @@ namespace Common.Core.Models
     {
         object IHasId.Id => Id;
         public Guid Id { get; init; }
-        public long TimeStamp { get; init; }
+        public long Timestamp { get; init; }
 
         public override bool Equals([MaybeNull] object? obj)
         {
@@ -23,7 +23,7 @@ namespace Common.Core.Models
             return ((IHasId<Guid>)this).Equals(hasId) && ((ITimeStamp<long>)this).Equals(timeStamp);
         }
 
-        public override int GetHashCode() => HashCode.Combine(Id, TimeStamp);
+        public override int GetHashCode() => HashCode.Combine(Id, Timestamp);
 
         public static bool operator ==(Entity? a, Entity? b)
         {
@@ -58,13 +58,13 @@ namespace Common.Core.Models
     public interface ITimeStamp<TKey>
         where TKey : IEquatable<TKey>
     {
-        TKey TimeStamp { get; }
+        TKey Timestamp { get; }
 
         bool Equals(ITimeStamp<TKey>? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return EqualityComparer<TKey>.Default.Equals(TimeStamp, other.TimeStamp);
+            return EqualityComparer<TKey>.Default.Equals(Timestamp, other.Timestamp);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Common.Core.Tests.Wrappers
         public static IEnumerable<object[]> SerializeData =>
             new List<object[]>
             {
-                new object[] { Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450"), "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"TimeStamp\":0}" },
+                new object[] { Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450"), "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"Timestamp\":0}" },
                 new object[] { null , "" }
             };
 
@@ -32,7 +32,7 @@ namespace Common.Core.Tests.Wrappers
         public static IEnumerable<object[]> DeserializeData =>
             new List<object[]>
             {
-                new object[] { "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"TimeStamp\":0}", Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450") },
+                new object[] { "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"Timestamp\":0}", Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450") },
                 new object[] { "", null },
                 new object[] { " ", null }
             };

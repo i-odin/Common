@@ -18,10 +18,10 @@ namespace Common.Core.Tests.Models
 
         [Theory]
         [MemberData(nameof(Entities))]
-        public void Equals_CompareTwoObjects(Guid obj1Id, long obj1TimeStamp, Guid obj2Id, long obj2TimeStamp, bool expected)
+        public void Equals_CompareTwoObjects(Guid obj1Id, long obj1Timestamp, Guid obj2Id, long obj2Timestamp, bool expected)
         {
-            var entity1 = new Entity { Id = obj1Id, TimeStamp =  obj1TimeStamp };
-            var entity2 = new Entity { Id = obj2Id, TimeStamp =  obj2TimeStamp };
+            var entity1 = new Entity { Id = obj1Id, Timestamp =  obj1Timestamp };
+            var entity2 = new Entity { Id = obj2Id, Timestamp =  obj2Timestamp };
 
             bool resultEqual = entity1 == entity2;
             bool resultEqualHashCode = entity1.GetHashCode() == entity2.GetHashCode();
