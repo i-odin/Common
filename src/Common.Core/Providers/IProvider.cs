@@ -6,8 +6,8 @@ namespace Common.Core.Providers
     public interface IProvider<TEntity>
         where TEntity : IHasId
     {
-        void Add(TEntity item);
-        void Remove(TEntity item);
+        void Add(TEntity entity);
+        void Remove(TEntity entity);
         IReadOnlyCollection<TEntity> Read();
     }
 }
