@@ -11,8 +11,7 @@ namespace Common.EFCore.Configurations
         {
             builder.HasKey(o => o.Id);
             builder.HasIndex(o => o.Id).IsUnique();
-            //TODO: Добавить генерацию timeStamp 
-            //builder.Property(o => o.TimeStamp).HasColumnName("Name").IsRequired();
+            builder.Property(o => o.Timestamp).IsRequired();
         }
     }
 }

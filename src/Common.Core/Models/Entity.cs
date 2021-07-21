@@ -4,11 +4,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Core.Models
 {
-    public class Entity : IHasId<Guid>, ITimeStamp<long>, IEquatable<Entity>
+    public class Entity : IHasId<Guid>, ITimeStamp, IEquatable<Entity>
     {
         object IHasId.Id => Id;
         public Guid Id { get; init; }
-        public long Timestamp { get; init; }
+        public long Timestamp { get; set; }
 
         public override bool Equals([MaybeNull] object? obj)
         {
@@ -19,8 +19,8 @@ namespace Common.Core.Models
         public bool Equals([MaybeNull] Entity? other)
         {
             var hasId = other as IHasId<Guid>;
-            var timeStamp = other as ITimeStamp<long>;
-            return ((IHasId<Guid>)this).Equals(hasId) && ((ITimeStamp<long>)this).Equals(timeStamp);
+            var timeStamp = other as ITimeStamp;
+            return ((IHasId<Guid>)this).Equals(hasId) && ((ITimeStamp)this).Equals(timeStamp);
         }
 
         public override int GetHashCode() => HashCode.Combine(Id, Timestamp);
@@ -55,16 +55,15 @@ namespace Common.Core.Models
         }
     }
 
-    public interface ITimeStamp<TKey>
-        where TKey : IEquatable<TKey>
+    public interface ITimeStamp
     {
-        TKey Timestamp { get; }
+        long Timestamp { get; set; }
 
-        bool Equals(ITimeStamp<TKey>? other)
+        bool Equals(ITimeStamp? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return EqualityComparer<TKey>.Default.Equals(Timestamp, other.Timestamp);
+            return EqualityComparer<long>.Default.Equals(Timestamp, other.Timestamp);
         }
     }
 }
