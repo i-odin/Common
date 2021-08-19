@@ -11,9 +11,9 @@ namespace Common.Core.Tests.Extensions
         [InlineData(EnumTest.One, typeof(EnumExtensionTest), false)]
         [InlineData(EnumTest.One, null, false)]
         [InlineData(EnumTest.Two, typeof(TestAttribute), false)]
-        public void CheckAttribute_MultipleEnums_ReturnExpected(EnumTest inputOne, Type inputTwo, bool expected)
+        public void HasAttribute_MultipleEnums_ReturnExpected(EnumTest inputOne, Type inputTwo, bool expected)
         {
-            var result = inputOne.CheckAttribute(inputTwo);
+            var result = inputOne.HasAttribute(inputTwo);
             Assert.Equal(expected, result);
         }
 

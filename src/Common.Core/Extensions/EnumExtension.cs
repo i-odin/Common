@@ -4,7 +4,7 @@ namespace Common.Core.Extensions
 {
     public static class EnumExtension
     {
-        public static bool CheckAttribute(this Enum @enum, Type typeAttribute)
+        public static bool HasAttribute(this Enum @enum, Type typeAttribute)
         {
             var result = false;
             if (typeAttribute?.BaseType == typeof(Attribute))
