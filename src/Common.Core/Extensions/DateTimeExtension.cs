@@ -8,7 +8,8 @@ namespace Common.Core.Extensions
     {
         private const int _maxYear = 9999;
 
-        public static DateTime FirstDateOfWeekIso8601(this DateTime datetime, int year = _maxYear, int weekOfYear = 0) => FirstDateOfWeekIso8601(year == _maxYear ? datetime.Year : year, weekOfYear);
+        public static DateTime FirstDateOfWeekIso8601(this DateTime datetime, int year = _maxYear, int weekOfYear = 0) => 
+            FirstDateOfWeekIso8601(year == _maxYear ? datetime.Year : year, weekOfYear);
 
         public static DateTime FirstDateOfWeekIso8601(int year, int weekOfYear)
         {
@@ -30,5 +31,9 @@ namespace Common.Core.Extensions
             
             return firstThursday.AddDays(weekOfYear * 7 - 3);
         }
+
+        //TODO: Test
+        public static string ToStringIso8601(this DateTime datetime) =>
+            datetime.ToString(Messages.S, CultureInfo.InvariantCulture);
     }
 }

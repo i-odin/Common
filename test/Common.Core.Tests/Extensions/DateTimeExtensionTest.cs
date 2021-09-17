@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Core.Extensions;
 using Xunit;
 
@@ -6,6 +7,12 @@ namespace Common.Core.Tests.Extensions
 {
     public class DateTimeExtensionTest
     {
+        public static IEnumerable<object[]> DateTimes =>
+            new List<object[]>
+            {
+                new object[] { DateTime.Parse("2021-09-17"), "2021-09-17T00:00:00" }
+            };
+
         [Theory]
         [InlineData(2021, -1, 21)]
         [InlineData(2021, 0, 28)]
@@ -30,6 +37,15 @@ namespace Common.Core.Tests.Extensions
         {
             void Act() => DateTimeExtension.FirstDateOfWeekIso8601(year, weekOfYear);
             Assert.Throws<ArgumentException>(Act);
+        }
+
+        [Theory]
+        [MemberData(nameof(DateTimes))]
+        public void ToStringIso8601_ConvertDateTimeToString_ReturnTrue(DateTime input, string expected)
+        {
+            var result = input.ToStringIso8601();
+
+            Assert.Equal(expected, result);
         }
     }
 }
