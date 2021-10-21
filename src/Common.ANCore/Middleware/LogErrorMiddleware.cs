@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Common.Core.Models;
 using Common.Core.Utilities;
 
-namespace Common.AspNetCore.Middleware
+namespace Common.ANCore.Middleware
 {
     //TODO: Тест
     public class LogErrorMiddleware

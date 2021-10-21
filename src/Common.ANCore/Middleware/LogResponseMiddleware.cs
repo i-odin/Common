@@ -10,7 +10,7 @@ using Common.Core.Utilities;
 using Common.Core.Extensions;
 using Common.Core.Structs;
 
-namespace Common.AspNetCore.Middleware
+namespace Common.ANCore.Middleware
 {
     //TODO: Test
     public class LogResponseMiddleware
