@@ -32,7 +32,6 @@ namespace Common.Core.Extensions
             return firstThursday.AddDays(weekOfYear * 7 - 3);
         }
 
-        //TODO: Test
         public static string ToStringIso8601(this DateTime datetime) =>
             datetime.ToString(Messages.S, CultureInfo.InvariantCulture);
     }

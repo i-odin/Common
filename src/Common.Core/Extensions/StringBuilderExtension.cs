@@ -5,7 +5,6 @@ using Common.Core.Structs;
 
 namespace Common.Core.Extensions
 {
-    //TODO: Test
     public static class StringBuilderExtension
     {
         public static StringBuilder AppendJoin(

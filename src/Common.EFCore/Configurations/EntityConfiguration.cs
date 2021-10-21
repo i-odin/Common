@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Common.EFCore.Configurations
 {
-    //TODO: Test
     public class EntityConfiguration : IEntityTypeConfiguration<Entity>
     {
         public void Configure(EntityTypeBuilder<Entity> builder)
