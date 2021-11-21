@@ -35,31 +35,6 @@
         grid-template-rows: 50px auto 50px;
         height: 100%;
     }
-
-    header {
-        display: flex;
-        grid-column: span 12;
-        background-color: cadetblue;
-    }
-
-        header > div:nth-child(3) {
-            margin-left: auto;
-        }
-
-    aside {
-        grid-column: span 2;
-        background-color: red;
-    }
-
-    main {
-        grid-column: span 10;
-        background-color: orange;
-    }
-
-    footer {
-        grid-column: span 12;
-        background-color: cadetblue;
-    }   
 }
 
 /*Большие экраны*/

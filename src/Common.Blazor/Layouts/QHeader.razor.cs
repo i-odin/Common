@@ -1,6 +1,6 @@
 ﻿namespace Common.Blazor.Layouts
 {
-    public partial class QMainLayout
+    public partial class QHeader
     {
     }
 }
