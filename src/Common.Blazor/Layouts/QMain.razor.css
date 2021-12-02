@@ -28,7 +28,7 @@
 }
 
 /*Настольные компьютеры и ноутбуки*/
-@media only screen and (min-width : 1224px) {
+@media only screen and (min-width : 1224px) and (max-width : 1824px) {
     .main-col-10 {
         grid-column: span 10;
         background-color: orange;

@@ -28,7 +28,7 @@
 }
 
 /*Настольные компьютеры и ноутбуки*/
-@media only screen and (min-width : 1224px) {
+@media only screen and (min-width : 1224px) and (max-width : 1824px) {
     aside {
         grid-column: span 2;
         background-color: red;
