@@ -33,6 +33,6 @@ namespace Common.Core.Extensions
         }
 
         public static string ToStringIso8601(this DateTime datetime) =>
-            datetime.ToString(Messages.S, CultureInfo.InvariantCulture);
+            datetime.ToString(Messages.O, CultureInfo.InvariantCulture);
     }
 }

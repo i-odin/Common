@@ -10,7 +10,8 @@ namespace Common.Core.Tests.Extensions
         public static IEnumerable<object[]> DateTimes =>
             new List<object[]>
             {
-                new object[] { DateTime.Parse("2021-09-17"), "2021-09-17T00:00:00" }
+                new object[] { DateTime.Parse("2022-02-09T19:15:37.9043446Z"), "2022-02-09T19:15:37.9043446Z" },
+                new object[] { DateTime.Parse("2022-02-09 19:15:37"), "2022-02-09T19:15:37.0000000" }
             };
 
         [Theory]
@@ -43,7 +44,7 @@ namespace Common.Core.Tests.Extensions
         [MemberData(nameof(DateTimes))]
         public void ToStringIso8601_ConvertDateTimeToString_ReturnTrue(DateTime input, string expected)
         {
-            var result = input.ToStringIso8601();
+            var result = input.Kind == DateTimeKind.Unspecified ? input.ToStringIso8601() : input.ToUniversalTime().ToStringIso8601();
 
             Assert.Equal(expected, result);
         }

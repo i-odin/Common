@@ -10,7 +10,7 @@ namespace Common.EFCore.Extensions
         public static void SetTimeStamp(this EntityEntry entry)
         {
             if (entry.Entity is ITimeStamp timeStamp && entry.State is EntityState.Modified or EntityState.Added)
-                timeStamp.Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                timeStamp.Timestamp = DateTime.UtcNow;
         }
     }
 }

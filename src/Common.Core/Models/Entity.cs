@@ -8,7 +8,7 @@ namespace Common.Core.Models
     {
         object IHasId.Id => Id;
         public Guid Id { get; init; }
-        public long Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
         public override bool Equals([MaybeNull] object? obj)
         {
@@ -43,7 +43,6 @@ namespace Common.Core.Models
     }
 
     public interface IHasId<TKey> : IHasId
-        where TKey : IEquatable<TKey>
     {
         new TKey Id { get; }
 
@@ -57,13 +56,13 @@ namespace Common.Core.Models
 
     public interface ITimeStamp
     {
-        long Timestamp { get; set; }
+        DateTime Timestamp { get; set; }
 
         bool Equals(ITimeStamp? other)
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return EqualityComparer<long>.Default.Equals(Timestamp, other.Timestamp);
+            return EqualityComparer<DateTime>.Default.Equals(Timestamp, other.Timestamp);
         }
     }
 }
