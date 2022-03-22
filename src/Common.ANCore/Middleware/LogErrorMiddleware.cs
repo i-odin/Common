@@ -20,8 +20,8 @@ namespace Common.ANCore.Middleware
 
         public LogErrorMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
         {
-            Throw.NotNull(next, nameof(next));
-            Throw.NotNull(loggerFactory, nameof(loggerFactory));
+            Throw.NotNull(next);
+            Throw.NotNull(loggerFactory);
 
             _next = next;
             _logger = loggerFactory.CreateLogger<LogErrorMiddleware>();

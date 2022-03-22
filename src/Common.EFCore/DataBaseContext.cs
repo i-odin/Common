@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Common.EFCore
 {
-    public class AppContext : DbContext
+    public class DataBaseContext : DbContext
     {
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
         {

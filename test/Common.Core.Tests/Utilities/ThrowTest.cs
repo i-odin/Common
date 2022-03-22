@@ -9,15 +9,17 @@ namespace Common.Core.Tests.Utilities
         [Fact]
         public void NotNull_CheckException_ReturnArgumentNullException()
         {
-            void Act() => Throw.NotNull<string>(null, "testMethod");
+            string[]? array = null;
+            void Act() => Throw.NotNull(array);
             Assert.Throws<ArgumentNullException>(Act);
         }
 
         [Fact]
         public void NotEmpty_CheckException_ReturnArgumentException()
         {
-            void ActCollection() => Throw.NotEmpty(Array.Empty<string>(), "testMethod");
-            void ActString() => Throw.NotEmpty(null, "testMethod");
+            string str = string.Empty;
+            void ActCollection() => Throw.NotEmpty(Array.Empty<string>());
+            void ActString() => Throw.NotEmpty(str);
             Assert.Throws<ArgumentException>(ActString);
             Assert.Throws<ArgumentException>(ActCollection);
         }

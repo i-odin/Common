@@ -9,8 +9,8 @@ namespace Common.EFCore
     public class Repository : IRepository, IDisposable
     {
         private bool _disposed;
-        private readonly AppContext _context;
-        public Repository(AppContext context)
+        private readonly DataBaseContext _context;
+        public Repository(DataBaseContext context)
         {
             _context = context;
         }
