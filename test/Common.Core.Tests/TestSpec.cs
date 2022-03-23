@@ -12,6 +12,7 @@ using Xunit;
 
 namespace Common.Core.Tests
 {
+    //https://github.com/hightechgroup/force - источник паттерна спецификация
     public class Order
     {
         public int Id { get; set; }
@@ -19,9 +20,18 @@ namespace Common.Core.Tests
         public string Comments { get; set; }
         public bool IsForSell { get; set; }
         public int InStock { get; set; }
-        
-        public static Spec<Order> IsStockExpretion => new Spec<Order>(x => x.InStock > 0);
-        public static Spec<Order> IsForSellExpretion => new Spec<Order>(x => x.IsForSell);
+        public List<OrderLine> Lines { get; set; }
+        //public OrderLine Line { get; set; }
+
+        public static readonly Spec<Order> IsStockExpretion = new(x => x.InStock > 0);
+        public static readonly Spec<Order> IsForSellExpretion = new(x => x.IsForSell);
+    }
+
+    public class OrderLine
+    {
+        public int Id { get; set; }
+        public int Category { get; set; }
+        public static readonly Spec<List<OrderLine>> IsNiceCategory = new(x => x.Any(x=>x.Category > 50));
     }
 
     internal class MyAppContext : DbContext
@@ -48,21 +58,18 @@ namespace Common.Core.Tests
         public void test()
         {
             var myAppContext = new MyAppContext(dbContextOptions);
-            myAppContext.Orders.Add(new Order() { Number = 1, Comments = "Новый-1", IsForSell = true });
-            myAppContext.Orders.Add(new Order() { Number = 2, Comments = "Новый-2", InStock = 10, IsForSell = true });
-            myAppContext.Orders.Add(new Order() { Number = 3, Comments = "Новый-3", InStock = 10 });
+            //myAppContext.Orders.Add(new Order() { Number = 1, Comments = "Новый-1", IsForSell = true, Line = new OrderLine { Category = 51 } });
+            myAppContext.Orders.Add(new Order() { Number = 1, Comments = "Новый-1", IsForSell = true, Lines = new List<OrderLine> { new OrderLine { Category = 10 }, new OrderLine { Category = 51 } } });
+            //myAppContext.Orders.Add(new Order() { Number = 2, Comments = "Новый-2", InStock = 10, IsForSell = true, Lines = new List<OrderLine> { new OrderLine { Category = 10 } } });
+            //myAppContext.Orders.Add(new Order() { Number = 3, Comments = "Новый-3", InStock = 10, Lines = new List<OrderLine> { new OrderLine { Category = 10 } } });
 
             myAppContext.SaveChanges();
 
             var qwe = myAppContext.Orders.Where(Order.IsForSellExpretion).ToList();
 
-            //Func<Order, bool> IsAvvereble = x => x.InStock > 0 && x.IsForSell;
-            //Expression<Func<Order, bool>> IsAvvereble = x => x.InStock > 0 && x.IsForSell;
-            //IsAvvereble.ToFunc();
-            //CompiledExpressions<Order, bool>.ToFunc(IsAvvereble);
-            var qwe1 = myAppContext.Orders.Where(Order.IsForSellExpretion && Order.IsStockExpretion).ToList();
-            //var qwe1 = myAppContext.Orders.Where(x => x.IsAvvereble).ToList();
+            var qwe2 = myAppContext.Orders.Where(Order.IsForSellExpretion && Order.IsStockExpretion).ToList();
 
+            var qwe5 = myAppContext.Orders.Where(OrderLine.IsNiceCategory.From<Order>(x => x.Lines)).ToList();
         }
     }
 
@@ -100,6 +107,12 @@ namespace Common.Core.Tests
 
         public static implicit operator Spec<T>(Expression<Func<T, bool>> expression)
             => new Spec<T>(expression);
+    }
+
+    public static class IQueryableExtensions
+    {
+        public static IQueryable<T> Where<T, TParam>(this IQueryable<T> queryable, Expression<Func<T, TParam>> prop, Expression<Func<TParam, bool>> where) =>
+            queryable.Where(prop.Compose<Func<T, bool>>(where, Expression.AndAlso));
     }
 
     public static class ExpressionExtensions
