@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Common.Core.Tests
+namespace Common.Core.Tests.Models
 {
     //https://github.com/hightechgroup/force - источник паттерна спецификация
     public class Order
@@ -107,12 +107,6 @@ namespace Common.Core.Tests
 
         public static implicit operator Spec<T>(Expression<Func<T, bool>> expression)
             => new Spec<T>(expression);
-    }
-
-    public static class IQueryableExtensions
-    {
-        public static IQueryable<T> Where<T, TParam>(this IQueryable<T> queryable, Expression<Func<T, TParam>> prop, Expression<Func<TParam, bool>> where) =>
-            queryable.Where(prop.Compose<Func<T, bool>>(where, Expression.AndAlso));
     }
 
     public static class ExpressionExtensions
