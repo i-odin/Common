@@ -39,7 +39,5 @@ namespace Common.Core.Extensions
 
             return origin;
         }
-
-        
     }
 }
