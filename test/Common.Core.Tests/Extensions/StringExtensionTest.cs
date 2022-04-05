@@ -48,8 +48,11 @@ namespace Common.Core.Tests.Extensions
         }
 
         [Theory]
+        [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
+        [InlineData("\n")]
+        [InlineData("\t")]
         public void IsEmpty_StringCheck_ReturnTrue(string input)
         {
             var result = input.IsEmpty();
