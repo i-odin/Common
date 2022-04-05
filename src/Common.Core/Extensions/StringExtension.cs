@@ -3,7 +3,7 @@
 namespace Common.Core.Extensions;
 public static class StringExtension
 {
-    public static bool IsEmpty(this string str) => string.IsNullOrWhiteSpace(str);
+    public static bool IsEmpty(this string str) => str == null || str.Length == 0 || string.IsNullOrWhiteSpace(str);
     public static bool IsDigitsOnly(this string str) => str.All(c => c is >= Symbol.Zero and <= Symbol.Nine);
     public static T[] ToArray<T>(this string str, char separator = Symbol.Semicolon) where T : struct
     {

@@ -4,14 +4,17 @@ namespace Common.Core.Benchmarks.Extensions;
 
 [RankColumn]
 [MemoryDiagnoser]
-public class StringExtensionBenchmark
+public class StringExtensionBenchmarkIsEmpty
 {
     [Params(null, "", " ", "\n", "\t")]
     public string Params;
 
     [Benchmark]
-    public bool IsNullOrWhiteSpace() => Params.IsEmpty();
+    public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(Params);
+    
+    [Benchmark]
+    public bool IsNullOrWhiteSpaceAndIsNullAndIsEmpty() => Params.IsEmpty();
 
     [Benchmark]
-    public bool IsNullOrEmptyAndTrim() => string.IsNullOrEmpty(Params) || Params.Trim().Length == 0;
+    public bool IsNullOrEmptyAndIsNullOrWhiteSpace() => string.IsNullOrEmpty(Params) || string.IsNullOrWhiteSpace(Params); 
 }
