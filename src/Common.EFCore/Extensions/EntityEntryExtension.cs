@@ -1,16 +1,14 @@
-﻿using System;
-using Common.Core.Models;
+﻿using Common.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Common.EFCore.Extensions
+namespace Common.EFCore.Extensions;
+
+public static class EntityEntryExtension
 {
-    public static class EntityEntryExtension
+    public static void SetTimeStamp(this EntityEntry entry)
     {
-        public static void SetTimeStamp(this EntityEntry entry)
-        {
-            if (entry.Entity is ITimeStamp timeStamp && entry.State is EntityState.Modified or EntityState.Added)
-                timeStamp.Timestamp = DateTime.UtcNow;
-        }
+        if (entry.Entity is ITimeStamp timeStamp && entry.State is EntityState.Modified or EntityState.Added)
+            timeStamp.Timestamp = DateTime.UtcNow;
     }
 }

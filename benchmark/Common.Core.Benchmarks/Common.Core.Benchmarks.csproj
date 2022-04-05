@@ -21,4 +21,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="BenchmarkDotNet.Attributes" />
+  </ItemGroup>
+
 </Project>

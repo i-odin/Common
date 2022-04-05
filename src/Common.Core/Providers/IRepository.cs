@@ -1,12 +1,10 @@
-﻿using System.Threading.Tasks;
-using Common.Core.Models;
+﻿using Common.Core.Models;
 
-namespace Common.Core.Providers
+namespace Common.Core.Providers;
+
+public interface IRepository : IProvider<IHasId>
 {
-    public interface IRepository : IProvider<IHasId>
-    {
-        ValueTask<IHasId> GetByIdAsync(IHasId entity);
-        void Update(IHasId entity);
-        ValueTask SaveAsync();
-    }
+    ValueTask<IHasId> GetByIdAsync(IHasId entity);
+    void Update(IHasId entity);
+    ValueTask SaveAsync();
 }

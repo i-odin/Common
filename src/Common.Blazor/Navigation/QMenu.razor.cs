@@ -1,7 +1,4 @@
-﻿
-namespace Common.Blazor.Navigation
+﻿namespace Common.Blazor.Navigation;
+public partial class QMenu
 {
-    public partial class QMenu
-    {
-    }
 }

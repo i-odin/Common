@@ -1,44 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using Common.Core.Extensions;
 
-namespace Common.Core.Utilities
+namespace Common.Core.Utilities;
+
+public static class Throw
 {
-    public static class Throw
+    public static T NotNull<T>(T value, [CallerArgumentExpression("value")] string parameterName = "")
     {
-        public static T NotNull<T>(T value, [CallerArgumentExpression("value")] string parameterName = "")
+        if (value is null)
         {
-            if (value is null)
-            {
-                NotEmpty(parameterName);
-                throw new ArgumentNullException(parameterName);
-            }
-
-            return value;
+            NotEmpty(parameterName);
+            throw new ArgumentNullException(parameterName);
         }
 
-        public static string NotEmpty(string value, [CallerArgumentExpression("value")] string parameterName = "")
-        {
-            if (value.IsEmpty())
-            {
-                NotEmpty(parameterName);
-                throw new ArgumentException(parameterName);
-            }
+        return value;
+    }
 
-            return value;
+    public static string NotEmpty(string value, [CallerArgumentExpression("value")] string parameterName = "")
+    {
+        if (value.IsEmpty())
+        {
+            NotEmpty(parameterName);
+            throw new ArgumentException(parameterName);
         }
 
-        public static IReadOnlyCollection<T> NotEmpty<T>(IReadOnlyCollection<T> value, [CallerArgumentExpression("value")] string parameterName = "")
-        {
-            NotNull(value);
-            if (value.Count == 0)
-            {
-                NotEmpty(parameterName);
-                throw new ArgumentException(parameterName);
-            }
+        return value;
+    }
 
-            return value;
+    public static IReadOnlyCollection<T> NotEmpty<T>(IReadOnlyCollection<T> value, [CallerArgumentExpression("value")] string parameterName = "")
+    {
+        NotNull(value);
+        if (value.Count == 0)
+        {
+            NotEmpty(parameterName);
+            throw new ArgumentException(parameterName);
         }
+
+        return value;
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Common.Core.Helpers
+﻿namespace Common.Core.Helpers;
+
+public class MediaType
 {
-    public class MediaType
-    {
-        public const string ApplicationJson = "application/json";
-    }
+    public const string ApplicationJson = "application/json";
 }

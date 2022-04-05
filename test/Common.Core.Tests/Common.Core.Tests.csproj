@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -23,6 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Common.Core\Common.Core.csproj" />
     <ProjectReference Include="..\..\src\Common.EFCore\Common.EFCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

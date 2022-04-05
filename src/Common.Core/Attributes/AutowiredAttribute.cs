@@ -1,7 +1,4 @@
-﻿using System;
+﻿namespace Common.Core.Attributes;
 
-namespace Common.Core.Attributes
-{
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
-    public class AutowiredAttribute : Attribute { }
-}
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+public class AutowiredAttribute : Attribute { }

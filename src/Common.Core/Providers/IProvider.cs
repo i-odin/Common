@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using Common.Core.Models;
+﻿using Common.Core.Models;
 
-namespace Common.Core.Providers
+namespace Common.Core.Providers;
+
+public interface IProvider<TEntity>
+    where TEntity : IHasId
 {
-    public interface IProvider<TEntity>
-        where TEntity : IHasId
-    {
-        void Add(TEntity entity);
-        void Remove(TEntity entity);
-        IReadOnlyCollection<TEntity> Read();
-    }
+    void Add(TEntity entity);
+    void Remove(TEntity entity);
+    IReadOnlyCollection<TEntity> Read();
 }

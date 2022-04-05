@@ -2,54 +2,51 @@
 using Common.Core.Wrappers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Threading.Tasks;
 using Common.Core.Models;
 using Common.Core.Utilities;
 
-namespace Common.ANCore.Middleware
+namespace Common.ANCore.Middleware;
+
+//TODO: Тест
+public class LogErrorMiddleware
 {
-    //TODO: Тест
-    public class LogErrorMiddleware
+    private readonly RequestDelegate _next;
+    private readonly ILogger<LogErrorMiddleware> _logger;
+    private readonly ISerializerWrapper _serializer;
+
+    public LogErrorMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<LogErrorMiddleware> _logger;
-        private readonly ISerializerWrapper _serializer;
+        Throw.NotNull(next);
+        Throw.NotNull(loggerFactory);
 
-        public LogErrorMiddleware([NotNull] RequestDelegate next, [NotNull] ILoggerFactory loggerFactory)
+        _next = next;
+        _logger = loggerFactory.CreateLogger<LogErrorMiddleware>();
+        _serializer = new JsonTextSerializerWrapper();
+    }
+
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            Throw.NotNull(next);
-            Throw.NotNull(loggerFactory);
-
-            _next = next;
-            _logger = loggerFactory.CreateLogger<LogErrorMiddleware>();
-            _serializer = new JsonTextSerializerWrapper();
+            await _next(context);
         }
-
-        public async Task Invoke(HttpContext context)
+        catch (Exception ex)
         {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex);
-            }
+            await HandleExceptionAsync(context, ex);
         }
+    }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            _logger.LogError(exception, Errors.Message.InternalServer);
-            if (exception is AggregateException aggregateException && aggregateException.InnerExceptions.Count > 0)
-                foreach (Exception innerException in aggregateException.InnerExceptions)
-                    _logger.LogError(innerException, Errors.Message.InternalServerInnerException);
+    private Task HandleExceptionAsync(HttpContext context, Exception exception)
+    {
+        _logger.LogError(exception, Errors.Message.InternalServer);
+        if (exception is AggregateException aggregateException && aggregateException.InnerExceptions.Count > 0)
+            foreach (Exception innerException in aggregateException.InnerExceptions)
+                _logger.LogError(innerException, Errors.Message.InternalServerInnerException);
 
-            var error = new Error(nameof(HttpStatusCode.InternalServerError), exception.Message);
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            return context.Response.WriteAsync(_serializer.Serialize(error));
-        }
+        var error = new Error(nameof(HttpStatusCode.InternalServerError), exception.Message);
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        return context.Response.WriteAsync(_serializer.Serialize(error));
     }
 }

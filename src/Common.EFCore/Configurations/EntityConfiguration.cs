@@ -2,15 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Common.EFCore.Configurations
+namespace Common.EFCore.Configurations;
+
+public class EntityConfiguration : IEntityTypeConfiguration<Entity>
 {
-    public class EntityConfiguration : IEntityTypeConfiguration<Entity>
+    public void Configure(EntityTypeBuilder<Entity> builder)
     {
-        public void Configure(EntityTypeBuilder<Entity> builder)
-        {
-            builder.HasKey(o => o.Id);
-            builder.HasIndex(o => o.Id).IsUnique();
-            builder.Property(o => o.Timestamp).IsRequired();
-        }
+        builder.HasKey(o => o.Id);
+        builder.HasIndex(o => o.Id).IsUnique();
+        builder.Property(o => o.Timestamp).IsRequired();
     }
 }

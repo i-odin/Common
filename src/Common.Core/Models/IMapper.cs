@@ -1,7 +1,6 @@
-﻿namespace Common.Core.Models
+﻿namespace Common.Core.Models;
+
+public interface IMapper<out TOut>
 {
-    public interface IMapper<out TOut>
-    {
-        TOut Map();
-    }
+    TOut Map();
 }

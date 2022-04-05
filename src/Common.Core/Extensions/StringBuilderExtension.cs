@@ -1,23 +1,20 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Common.Core.Structs;
 
-namespace Common.Core.Extensions
+namespace Common.Core.Extensions;
+public static class StringBuilderExtension
 {
-    public static class StringBuilderExtension
+    public static StringBuilder AppendJoin(
+        [NotNull] this StringBuilder sb,
+        [NotNull] in ReadOnlySpan<KeyValueString> values)
     {
-        public static StringBuilder AppendJoin(
-            [NotNull] this StringBuilder sb,
-            [NotNull] in ReadOnlySpan<KeyValueString> values)
-        {
-            if (values.Length <= 0)
-                return sb;
-
-            foreach (var item in values)
-                sb.Append(item.ToString());
-
+        if (values.Length <= 0)
             return sb;
-        }
+
+        foreach (var item in values)
+            sb.Append(item.ToString());
+
+        return sb;
     }
 }
