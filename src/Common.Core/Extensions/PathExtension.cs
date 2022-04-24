@@ -1,4 +1,5 @@
 ﻿namespace Common.Core.Extensions;
+//TODO Test
 public static class PathExtension
 {
     public static ReadOnlySpan<char> GetFileName(string path)
