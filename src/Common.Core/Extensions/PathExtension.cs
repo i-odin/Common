@@ -4,6 +4,9 @@ public static class PathExtension
 {
     public static ReadOnlySpan<char> GetFileName(string path)
     {
+        if(path.IsEmpty())
+            return ReadOnlySpan<char>.Empty;
+
         for (int i = path.Length; --i >= 0;)
         {
             var @char = path[i];
