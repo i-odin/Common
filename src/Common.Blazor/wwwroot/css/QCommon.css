@@ -3,3 +3,80 @@
     padding: 0;
     height: 100%;
 }
+
+header {
+    background-color: cadetblue;
+}
+
+/*
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: cadetblue;
+}
+*/
+main {
+    background-color: orange;
+}
+
+aside {
+    background-color: red;
+}
+
+footer {
+    background-color: cadetblue;
+}
+
+.wrapper {
+    max-width: 1140px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header_child {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    /*flex-wrap: wrap; При маленьких экранах элементы поместить в несколько рядов, увеличить размер заголовка*/
+}
+
+.brand {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.logo {
+    width: 40px;   
+    z-index: 100;
+}
+
+.grid-container {
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(12, 1fr);
+}
+
+.grid-rows-2 {
+    grid-template-rows: 50px auto;
+}
+
+.grid-rows-3 {
+    grid-template-rows: 50px auto 50px;
+}
+
+.grid-column-12 {
+    grid-column: span 12;
+}
+
+.grid-column-10 {
+    grid-column: span 10;
+}
+
+.grid-column-2 {
+    grid-column: span 2;
+}

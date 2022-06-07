@@ -1,14 +1,16 @@
-﻿<div class="grid-container">
-    <header>
-        @HeaderTemplate
+﻿<div class="grid-container grid-rows-3">
+    <header class ="grid-column-12">
+        <div class="wrapper header_child">
+            @HeaderTemplate
+        </div>
     </header>
-    <aside>
+    <aside class ="grid-column-2">
         @AsideTemplate
     </aside>
-    <main>
+    <main class ="grid-column-10">
         @MainTemplate
     </main>
-    <footer>
+    <footer class ="grid-column-12">
         @FooterTemplate
     </footer>
 </div>
