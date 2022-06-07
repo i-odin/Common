@@ -1,8 +1,7 @@
-﻿
-
-/*iPhone 4*/
+﻿/*iPhone 4*/
 @media only screen and (-webkit-min-device-pixel-ratio : 1.5),only screen and (min-device-pixel-ratio : 1.5) {
 }
+
 /*Смартфоны (Портрет и ландшафтный)*/
 @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
 }
@@ -29,27 +28,6 @@
 
 /*Настольные компьютеры и ноутбуки*/
 @media only screen and (min-width : 1224px) and (max-width : 1824px) {
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(12, 1fr);
-        grid-template-rows: 50px auto;
-        height: 100%;
-    }
-
-    header {
-        display: flex;
-        grid-column: span 12;
-        background-color: cadetblue;
-    }
-
-    main {
-        grid-column: span 12;
-        background-color: orange;
-    }
-
-    header > div:nth-child(3) {
-        margin-left: auto;
-    }
 }
 
 /*Большие экраны*/
