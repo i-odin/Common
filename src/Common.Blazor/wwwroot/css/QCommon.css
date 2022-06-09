@@ -28,6 +28,14 @@ footer {
     background-color: cadetblue;
 }
 
+ul {
+    list-style-type: none;
+}
+
+li {
+    display: inline;
+}
+
 .wrapper {
     max-width: 1140px;
     padding-left: 1rem;
@@ -36,13 +44,8 @@ footer {
     margin-right: auto;
 }
 
-.header_child {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 0;
-    padding-bottom: 0;
-    /*flex-wrap: wrap; При маленьких экранах элементы поместить в несколько рядов, увеличить размер заголовка*/
+.navbar {
+    
 }
 
 .brand {
@@ -55,6 +58,24 @@ footer {
     z-index: 100;
 }
 
+.flex-container {
+    display: flex;
+}
+
+.flex-space-between {
+    justify-content: space-between;
+}
+
+.flex-center {
+    align-items: center;
+}
+
+.flex-item {
+    
+}
+
+/*align-items: center;*/
+/*flex-wrap: wrap; При маленьких экранах элементы поместить в несколько рядов, увеличить размер заголовка*/
 .grid-container {
     display: grid;
     height: 100%;
