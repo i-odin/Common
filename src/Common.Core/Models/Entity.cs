@@ -2,26 +2,18 @@
 
 namespace Common.Core.Models;
 
-public class Entity : IHasId<Guid>, ITimeStamp, IEquatable<Entity>
+public class Entity : IHasId<Guid>, ITimeStamp, IDeleted, IEquatable<Entity>
 {
     object IHasId.Id => Id;
     public Guid Id { get; init; }
     public DateTime Timestamp { get; set; }
+    public bool Deleted { get; set; }
 
-    public override bool Equals([MaybeNull] object? obj)
-    {
-        var entity = obj as Entity;
-        return Equals(entity);
-    }
-
-    public bool Equals([MaybeNull] Entity? other)
-    {
-        var hasId = other as IHasId<Guid>;
-        var timeStamp = other as ITimeStamp;
-        return ((IHasId<Guid>)this).Equals(hasId) && ((ITimeStamp)this).Equals(timeStamp);
-    }
-
-    public override int GetHashCode() => HashCode.Combine(Id, Timestamp);
+    public bool Equals([MaybeNull] Entity? other) => ((IHasId<Guid>)this).Equals(other) && 
+                                                     ((ITimeStamp)this).Equals(other) &&
+                                                     ((IDeleted)this).Equals(other);
+    public override bool Equals([MaybeNull] object? obj) => Equals(obj as Entity);
+    public override int GetHashCode() => HashCode.Combine(Id, Timestamp, Deleted);
 
     public static bool operator ==(Entity? a, Entity? b)
     {
@@ -32,6 +24,7 @@ public class Entity : IHasId<Guid>, ITimeStamp, IEquatable<Entity>
 
     public static bool operator !=(Entity? a, Entity? b) => !(a == b);
     
+    public static Entity Create() => new Entity { Id = NewId(), Timestamp = DateTime.UtcNow };
     public static Guid NewId() => Guid.NewGuid();
 }
 
@@ -40,11 +33,11 @@ public interface IHasId
     object Id { get; }
 }
 
-public interface IHasId<TKey> : IHasId
+public interface IHasId<TKey> : IHasId, IEquatable<IHasId<TKey>>
 {
     new TKey Id { get; }
 
-    bool Equals(IHasId<TKey>? other)
+    bool IEquatable<IHasId<TKey>>.Equals(IHasId<TKey>? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
@@ -52,14 +45,26 @@ public interface IHasId<TKey> : IHasId
     }
 }
 
-public interface ITimeStamp
+public interface ITimeStamp : IEquatable<ITimeStamp>
 {
     DateTime Timestamp { get; set; }
 
-    bool Equals(ITimeStamp? other)
+    bool IEquatable<ITimeStamp>.Equals(ITimeStamp? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
         return EqualityComparer<DateTime>.Default.Equals(Timestamp, other.Timestamp);
+    }
+}
+
+public interface IDeleted : IEquatable<IDeleted>
+{
+    public bool Deleted { get; set; }
+
+    bool IEquatable<IDeleted>.Equals(IDeleted? other)
+    {
+        if (other is null) return false;
+        if (ReferenceEquals(this, other)) return true;
+        return EqualityComparer<bool>.Default.Equals(Deleted, other.Deleted);
     }
 }

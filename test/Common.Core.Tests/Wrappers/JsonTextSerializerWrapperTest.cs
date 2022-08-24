@@ -8,7 +8,7 @@ public class JsonTextSerializerWrapperTest
     public static IEnumerable<object[]> SerializeData =>
         new List<object[]>
         {
-            new object[] { Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450"), "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"Timestamp\":\"0001-01-01T00:00:00\"}" },
+            new object[] { Guid.Parse("62bd3e43-58c7-415a-a380-3c2b43da6450"), "{\"Id\":\"62bd3e43-58c7-415a-a380-3c2b43da6450\",\"Timestamp\":\"0001-01-01T00:00:00\",\"Deleted\":false}" },
             new object[] { null , "" }
         };
 
