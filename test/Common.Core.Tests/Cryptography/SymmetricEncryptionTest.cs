@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Common.Core.Tests.Cryptography
 {
-    public class EncryptionTest
+    public class SymmetricEncryptionTest
     {
         [Theory]
         [InlineData("Hello", "01234567890123456789012345678901")]
