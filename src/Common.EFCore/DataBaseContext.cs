@@ -21,6 +21,6 @@ public class DataBaseContext : DbContext
     protected virtual void OnBeforeSaving()
     {
         foreach (EntityEntry? entry in ChangeTracker.Entries()) 
-            entry?.SetTimeStamp();
+            entry?.SetTimestamp();
     }
 }

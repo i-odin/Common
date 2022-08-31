@@ -6,9 +6,9 @@ namespace Common.EFCore.Extensions;
 
 public static class EntityEntryExtension
 {
-    public static void SetTimeStamp(this EntityEntry entry)
+    public static void SetTimestamp(this EntityEntry entry)
     {
-        if (entry.Entity is ITimeStamp timeStamp && entry.State is EntityState.Modified or EntityState.Added)
+        if (entry.Entity is ITimestamp timeStamp && entry.State is EntityState.Modified or EntityState.Added)
             timeStamp.Timestamp = DateTime.UtcNow;
     }
 }

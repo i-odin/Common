@@ -2,7 +2,7 @@
 
 namespace Common.Core.Models;
 
-public class Entity : IHasId<Guid>, ITimeStamp, IDeleted, IEquatable<Entity>
+public class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<Entity>
 {
     object IHasId.Id => Id;
     public Guid Id { get; init; }
@@ -10,7 +10,7 @@ public class Entity : IHasId<Guid>, ITimeStamp, IDeleted, IEquatable<Entity>
     public bool Deleted { get; set; }
 
     public bool Equals([MaybeNull] Entity? other) => ((IHasId<Guid>)this).Equals(other) && 
-                                                     ((ITimeStamp)this).Equals(other) &&
+                                                     ((ITimestamp)this).Equals(other) &&
                                                      ((IDeleted)this).Equals(other);
     public override bool Equals([MaybeNull] object? obj) => Equals(obj as Entity);
     public override int GetHashCode() => HashCode.Combine(Id, Timestamp, Deleted);
@@ -45,11 +45,11 @@ public interface IHasId<TKey> : IHasId, IEquatable<IHasId<TKey>>
     }
 }
 
-public interface ITimeStamp : IEquatable<ITimeStamp>
+public interface ITimestamp : IEquatable<ITimestamp>
 {
     DateTime Timestamp { get; set; }
 
-    bool IEquatable<ITimeStamp>.Equals(ITimeStamp? other)
+    bool IEquatable<ITimestamp>.Equals(ITimestamp? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
