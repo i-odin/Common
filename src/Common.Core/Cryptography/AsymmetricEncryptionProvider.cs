@@ -2,6 +2,7 @@
 
 namespace Common.Core.Cryptography
 {
+    //TODO: Что бы использовать и string и byte можно попробовать сделать обертку над параметрами. Базовый byte - наследник string
     public interface IAsymmetricEncryptionProvider
     {
         string Encrypt(string source, out string privateKey);
