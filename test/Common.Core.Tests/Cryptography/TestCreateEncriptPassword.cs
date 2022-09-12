@@ -15,11 +15,10 @@ namespace Common.Core.Tests.Cryptography
             var encriptText = new AesProvider(password).Encrypt(text);
             
             var rsa = new RsaOaepProvider();
-            password = rsa.Encrypt(password);
-            var privateKey = rsa.PrivateKey;
+            password = rsa.Encrypt(password, out byte[] privateKey);
 
-            rsa = new RsaOaepProvider(privateKey);
-            password = rsa.Decrypt(password);
+            rsa = new RsaOaepProvider();
+            password = rsa.Decrypt(password, privateKey);
 
             var result = new AesProvider(password).Decrypt(encriptText) ?? "";
 

@@ -11,12 +11,10 @@ namespace Common.Core.Tests.Cryptography
         public void RsaOaepDefault_EncryptAndDecrypt_ReturnTrue(string text)
         {
             var rsa = new RsaOaepDefault();
-            var encrypt = rsa.Encrypt(Encoding.UTF8.GetBytes(text));
-            var privateKey = rsa.PrivateKey;
+            var encrypt = rsa.Encrypt(Encoding.UTF8.GetBytes(text), out byte[] privateKey);
 
             rsa = new RsaOaepDefault();
-            rsa.PrivateKey = privateKey;
-            var result = Encoding.UTF8.GetString(rsa.Decrypt(encrypt));
+            var result = Encoding.UTF8.GetString(rsa.Decrypt(encrypt, privateKey));
 
             Assert.Equal(expected: text, actual: result);
         }
@@ -27,13 +25,10 @@ namespace Common.Core.Tests.Cryptography
         public void RsaOaepProvider_EncryptAndDecrypt_ReturnTrue(string text)
         {
             var provider = new RsaOaepProvider();
-
-            var encrypt = provider.Encrypt(text);
-            var privateKey = provider.PrivateKey;
+            var encrypt = provider.Encrypt(text, out string privateKey);
 
             provider = new RsaOaepProvider();
-            provider.PrivateKey = privateKey;
-            var result = provider.Decrypt(encrypt);
+            var result = provider.Decrypt(encrypt, privateKey);
 
             Assert.Equal(expected: text, actual: result);
         }

@@ -4,27 +4,26 @@ namespace Common.Core.Cryptography
 {
     public interface IAsymmetricEncryptionProvider
     {
-        byte[] PrivateKey { get; set; }
-        string Encrypt(string source);
-        string Decrypt(string source);
+        string Encrypt(string source, out string privateKey);
+        string Decrypt(string source, string privateKey);
     }
 
     public class RsaOaepProvider : IAsymmetricEncryptionProvider
     {
         private readonly RsaOaepDefault _encryption = new RsaOaepDefault();
-        public RsaOaepProvider() { }
-        public RsaOaepProvider(byte[] privateKey) => PrivateKey = privateKey;
 
-        public byte[] PrivateKey { get => _encryption.PrivateKey; set => _encryption.PrivateKey = value; }
+        public string Decrypt(string source, string privateKey) =>
+            Encoding.UTF8.GetString(_encryption.Decrypt(Convert.FromBase64String(source), Convert.FromBase64String(privateKey)));
 
-        public string Decrypt(string source) =>
-            Encoding.UTF8.GetString(_encryption.Decrypt(Convert.FromBase64String(source)));
+        public string Encrypt(string source, out string privateKey)
+        {
+            var result = Convert.ToBase64String(_encryption.Encrypt(Encoding.UTF8.GetBytes(source), out byte[] key));
+            privateKey = Convert.ToBase64String(key);
+            return result;
+        }
 
-        public string Encrypt(string source) =>
-            Convert.ToBase64String(_encryption.Encrypt(Encoding.UTF8.GetBytes(source)));
+        public byte[] Decrypt(byte[] source, byte[] privateKey) =>_encryption.Decrypt(source, privateKey);
 
-        public byte[] Decrypt(byte[] source) =>_encryption.Decrypt(source);
-
-        public byte[] Encrypt(byte[] source) => _encryption.Encrypt(source);
+        public byte[] Encrypt(byte[] source, out byte[] privateKey) => _encryption.Encrypt(source, out privateKey);
     }
 }
