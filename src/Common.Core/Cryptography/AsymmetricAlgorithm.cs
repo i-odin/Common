@@ -5,48 +5,41 @@ namespace Common.Core.Cryptography
 {
     public class RsaOaepDefault
     {
-        public byte[] Encrypt(byte[] source, out byte[] privateKey)
+        public virtual byte[] Encrypt(byte[] source, out byte[] privateKey)
         {
             using (var rsa = new RSACryptoServiceProvider())
             {
-                privateKey = rsa.ExportRSAPrivateKey();
+                privateKey = ExportPrivateKey(rsa);
                 return rsa.Encrypt(source, true);
             }
         }
 
-        public byte[] Decrypt(byte[] source, byte[] privateKey)
+        public virtual byte[] Decrypt(byte[] source, byte[] privateKey)
         {
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
+            using (var rsa = new RSACryptoServiceProvider())
             {
-                rsa.ImportRSAPrivateKey(privateKey, out int _);
+                ImportPrivateKey(rsa, privateKey);
                 return rsa.Decrypt(source, true);
             }
         }
+
+        protected virtual byte[] ExportPrivateKey(RSACryptoServiceProvider rsa) => 
+            rsa.ExportRSAPrivateKey();
+
+        protected virtual void ImportPrivateKey(RSACryptoServiceProvider rsa, byte[] privateKey) =>
+            rsa.ImportRSAPrivateKey(privateKey, out int _);
     }
 
-    //TODO: Test
-    public class RsaOaepAndPkcs8
+    public class RsaOaepAndPkcs8 : RsaOaepDefault
     {
-        private string Master = "1111111111111111";
-        public byte[] Encrypt(byte[] source, out byte[] privateKey)
-        {
-            using (var rsa = new RSACryptoServiceProvider())
-            {
-                var pkcs = Pkcs8PrivateKeyInfo.Create(rsa);
-                var qwe = rsa.ExportRSAPrivateKey();
-                var qwe1 = rsa.ExportPkcs8PrivateKey();
-                privateKey = pkcs.Encrypt(Master, new PbeParameters(PbeEncryptionAlgorithm.Aes256Cbc, HashAlgorithmName.SHA256, 10000));
-                return rsa.Encrypt(source, true);
-            }
-        }
+        readonly string _master;
+        protected RsaOaepAndPkcs8() {}
+        public RsaOaepAndPkcs8(string master) => _master = master;
 
-        public byte[] Decrypt(byte[] source, byte[] privateKey)
-        {
-            using (RSACryptoServiceProvider rsa = new RSACryptoServiceProvider())
-            {
-                rsa.ImportRSAPrivateKey(privateKey, out int _);
-                return rsa.Decrypt(source, true);
-            }
-        }
+        protected override byte[] ExportPrivateKey(RSACryptoServiceProvider rsa) => 
+            Pkcs8PrivateKeyInfo.Create(rsa).Encrypt(_master, new PbeParameters(PbeEncryptionAlgorithm.Aes256Cbc, HashAlgorithmName.SHA256, 10000));
+
+        protected override void ImportPrivateKey(RSACryptoServiceProvider rsa, byte[] privateKey) => 
+            rsa.ImportEncryptedPkcs8PrivateKey(_master, privateKey, out int _);
     }
 }

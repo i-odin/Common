@@ -11,7 +11,7 @@ namespace Common.Core.Cryptography
 
     public class RsaOaepProvider : IAsymmetricEncryptionProvider
     {
-        private readonly RsaOaepDefault _encryption = new RsaOaepDefault();
+        protected virtual RsaOaepDefault _encryption { get; } = new RsaOaepDefault();
 
         public string Decrypt(string source, string privateKey) =>
             Encoding.UTF8.GetString(_encryption.Decrypt(Convert.FromBase64String(source), Convert.FromBase64String(privateKey)));
@@ -26,5 +26,13 @@ namespace Common.Core.Cryptography
         public byte[] Decrypt(byte[] source, byte[] privateKey) =>_encryption.Decrypt(source, privateKey);
 
         public byte[] Encrypt(byte[] source, out byte[] privateKey) => _encryption.Encrypt(source, out privateKey);
+    }
+
+    public class RsaOaepAndPkcs8Provider : RsaOaepProvider
+    {
+        readonly string _master;
+        protected override RsaOaepDefault _encryption => new RsaOaepAndPkcs8(_master);
+        protected RsaOaepAndPkcs8Provider() { }
+        public RsaOaepAndPkcs8Provider(string master) => _master = master;
     }
 }

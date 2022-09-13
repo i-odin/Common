@@ -13,11 +13,14 @@ namespace Common.Core.Tests.Cryptography
             RandomNumberGenerator.Create().GetBytes(password);
 
             var encriptText = new AesProvider(password).Encrypt(text);
-            
-            var rsa = new RsaOaepProvider();
+
+            var rfc = new Rfc2898DeriveBytes("11", 256, 10000, HashAlgorithmName.SHA256);
+            var master = Convert.ToBase64String(rfc.GetBytes(16));
+
+            var rsa = new RsaOaepAndPkcs8Provider(master);
             password = rsa.Encrypt(password, out byte[] privateKey);
 
-            rsa = new RsaOaepProvider();
+            rsa = new RsaOaepAndPkcs8Provider(master);
             password = rsa.Decrypt(password, privateKey);
 
             var result = new AesProvider(password).Decrypt(encriptText) ?? "";
