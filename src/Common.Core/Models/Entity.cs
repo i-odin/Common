@@ -2,7 +2,7 @@
 
 namespace Common.Core.Models;
 
-public class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<Entity>
+public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<Entity>
 {
     object IHasId.Id => Id;
     public Guid Id { get; init; }
@@ -23,8 +23,6 @@ public class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<Entity>
     }
 
     public static bool operator !=(Entity? a, Entity? b) => !(a == b);
-    
-    public static Entity Create() => new Entity { Id = NewId(), Timestamp = DateTime.UtcNow };
     public static Guid NewId() => Guid.NewGuid();
 }
 

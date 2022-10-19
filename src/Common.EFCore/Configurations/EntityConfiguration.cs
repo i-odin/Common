@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Common.EFCore.Configurations;
 
-public class EntityConfiguration : IEntityTypeConfiguration<Entity>
+public abstract class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
+    where TEntity : Entity
 {
-    public void Configure(EntityTypeBuilder<Entity> builder)
+    public virtual void Configure(EntityTypeBuilder<TEntity> buider)
     {
-        builder.HasKey(o => o.Id);
-        builder.HasIndex(o => o.Id).IsUnique();
-        builder.Property(o => o.Timestamp).IsRequired();
+        buider.HasKey(o => o.Id);
+        //buider.HasIndex(o => o.Id).IsUnique();
+        buider.Property(o => o.Timestamp).IsRequired();
+        buider.Property(o => o.Deleted).IsRequired();
     }
 }

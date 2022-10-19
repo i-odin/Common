@@ -4,8 +4,13 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Common.EFCore;
 
-public class DataBaseContext : DbContext
+public class DataBaseContext<TContext> : DbContext
+    where TContext : DbContext
 {
+    public DataBaseContext(DbContextOptions<TContext> options) : base(options)
+    {
+
+    }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         OnBeforeSaving();
