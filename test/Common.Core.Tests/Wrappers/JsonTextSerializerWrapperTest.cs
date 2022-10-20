@@ -18,7 +18,7 @@ public class JsonTextSerializerWrapperTest
     {
         Entity entity = null;
         if (input.HasValue)
-            entity = new Entity { Id = input.Value };
+            entity = new MyEntity { Id = input.Value };
         var serializer = new JsonTextSerializerWrapper();
 
         var result = serializer.Serialize(entity);
@@ -40,8 +40,10 @@ public class JsonTextSerializerWrapperTest
     {
         var serializer = new JsonTextSerializerWrapper();
 
-        var result = serializer.Deserialize<Entity>(input);
+        var result = serializer.Deserialize<MyEntity>(input);
 
         Assert.Equal(expected, actual: result?.Id);
     }
+
+    public class MyEntity : Entity { }
 }

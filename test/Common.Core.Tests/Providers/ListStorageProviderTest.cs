@@ -18,7 +18,7 @@ public class ListStorageProviderTest
     [Fact]
     public void Add_AddObject_ReturnTwoCount()
     {
-        var entityTest = new Entity {Id = Entity.NewId()};
+        var entityTest = new MyEntity { Id = Entity.NewId()};
         var cacheProvider = new MockListStorageProvider();
 
         cacheProvider.Add(entityTest);
@@ -30,7 +30,7 @@ public class ListStorageProviderTest
     [Fact]
     public void Remove_RemoveObject_ReturnZeroCount()
     {
-        var entityTest = new Entity { Id = StabStorageProvider.Id };
+        var entityTest = new MyEntity { Id = StabStorageProvider.Id };
         var cacheProvider = new MockListStorageProvider();
 
         cacheProvider.Remove(entityTest);
@@ -39,7 +39,7 @@ public class ListStorageProviderTest
         Assert.Equal(expected: 0, actual: collectionCount);
     }
 
-    private class MockListStorageProvider : ListStorageProvider<Entity>
+    private class MockListStorageProvider : ListStorageProvider<MyEntity>
     {
         public MockListStorageProvider() : base(new StabStorageProvider())
         {
@@ -47,17 +47,19 @@ public class ListStorageProviderTest
     }
 
     //TODO: Использовать библиотеку Mock
-    private class StabStorageProvider : IStorageProvider<Entity>
+    private class StabStorageProvider : IStorageProvider<MyEntity>
     {
-        public static Guid Id = Entity.NewId();
+        public static Guid Id = MyEntity.NewId();
 
-        public void Add(Entity item) { }
+        public void Add(MyEntity item) { }
 
-        public void Remove(Entity item) { }
+        public void Remove(MyEntity item) { }
 
-        public IReadOnlyCollection<Entity> Read()
+        public IReadOnlyCollection<MyEntity> Read()
         {
-            return new List<Entity> { new() { Id = Id } };
+            return new List<MyEntity> { new() { Id = Id } };
         }
     }
+
+    public class MyEntity : Entity { }
 }

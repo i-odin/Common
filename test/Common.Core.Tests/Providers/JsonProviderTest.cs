@@ -9,7 +9,7 @@ public class JsonProviderTest
     [Fact]
     public void Add_AddObject_ReturnOneCount()
     {
-        var entityTest = new Entity { Id = Entity.NewId() };
+        var entityTest = TestEntity.Create<TestEntity>();
         var jsonProvider = new MockJsonProvider();
         
         jsonProvider.Add(entityTest);
@@ -21,7 +21,7 @@ public class JsonProviderTest
     [Fact]
     public void Remove_AddAndRemoveObject_ReturnZeroCount()
     {
-        var entityTest = new Entity { Id = Entity.NewId() };
+        var entityTest = TestEntity.Create<TestEntity>();
         var jsonProvider = new MockJsonProvider();
 
         jsonProvider.Add(entityTest);
@@ -41,7 +41,7 @@ public class JsonProviderTest
         Assert.Equal(expected: 0, actual: jsonCount);
     }
     
-    private class MockJsonProvider : JsonProvider<Entity>
+    private class MockJsonProvider : JsonProvider<TestEntity>
     {
         public MockJsonProvider() : this(string.Empty, new StubFileWrapper()) { }
         private MockJsonProvider(string path, IFileWrapper fileWrapper) : base(path, fileWrapper) { }
@@ -54,4 +54,5 @@ public class JsonProviderTest
         public string ReadAllText(string path) => _source;
         public void WriteAllText(string path, string content) => _source = content;
     }
+    public class TestEntity : Entity { }
 }

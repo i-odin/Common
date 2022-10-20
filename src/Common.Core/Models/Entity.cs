@@ -24,6 +24,16 @@ public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<En
 
     public static bool operator !=(Entity? a, Entity? b) => !(a == b);
     public static Guid NewId() => Guid.NewGuid();
+    public static TEntity Create<TEntity>(Action<TEntity>? init = null)
+        where TEntity : Entity, new()
+    {
+        var obj = new TEntity {
+            Id = NewId()
+        };
+
+        init?.Invoke(obj);
+        return obj;
+    }
 }
 
 public interface IHasId
