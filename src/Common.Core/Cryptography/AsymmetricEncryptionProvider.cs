@@ -32,7 +32,6 @@ namespace Common.Core.Cryptography
     {
         readonly string _master;
         protected override RsaOaepDefault _encryption => new RsaOaepAndPkcs8(_master);
-        protected RsaOaepAndPkcs8Provider() { }
         public RsaOaepAndPkcs8Provider(string master) => _master = master;
     }
 }

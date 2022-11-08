@@ -5,7 +5,7 @@ namespace Common.Blazor.Navigation;
 public partial class QNavBar
 {
     [Parameter]
-    public RenderFragment NavBarLogoTemplate { get; set; }
+    public RenderFragment? NavBarLogoTemplate { get; set; }
     [Parameter]
-    public RenderFragment NavBarTemplate { get; set; }
+    public RenderFragment? NavBarTemplate { get; set; }
 }

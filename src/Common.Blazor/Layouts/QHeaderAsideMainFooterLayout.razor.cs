@@ -5,14 +5,14 @@ public partial class QHeaderAsideMainFooterLayout
 {
     
     [Parameter]
-    public RenderFragment HeaderTemplate { get; set; }
+    public RenderFragment? HeaderTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment AsideTemplate { get; set; }
+    public RenderFragment? AsideTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment MainTemplate { get; set; }
+    public RenderFragment? MainTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment FooterTemplate { get; set; }
+    public RenderFragment? FooterTemplate { get; set; }
 }

@@ -15,7 +15,7 @@ namespace Common.Core.Cryptography
 
     public class AesDefaultFactory : IAesAlgorithmFactory
     {
-        private Aes _aes;
+        private Aes _aes = null;
         private readonly byte[] _key;
         public AesDefaultFactory(byte[] key) { _key = key; }
 

@@ -6,7 +6,7 @@ public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<En
 {
     object IHasId.Id => Id;
     public Guid Id { get; init; }
-    public DateTime Timestamp { get; set; }
+    public DateTime Timestamp { get; init; }
     public bool Deleted { get; set; }
 
     public bool Equals([MaybeNull] Entity? other) => ((IHasId<Guid>)this).Equals(other) && 
@@ -24,15 +24,16 @@ public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<En
 
     public static bool operator !=(Entity? a, Entity? b) => !(a == b);
     public static Guid NewId() => Guid.NewGuid();
-    public static TEntity Create<TEntity>(Action<TEntity>? init = null)
+    public static TEntity Create<TEntity>(Action<TEntity>? setting = null)
         where TEntity : Entity, new()
     {
-        var obj = new TEntity {
-            Id = NewId()
+        var entity = new TEntity {
+            Id = NewId(),
+            Timestamp = DateTime.UtcNow
         };
 
-        init?.Invoke(obj);
-        return obj;
+        setting?.Invoke(entity);
+        return entity;
     }
 }
 
@@ -55,7 +56,7 @@ public interface IHasId<TKey> : IHasId, IEquatable<IHasId<TKey>>
 
 public interface ITimestamp : IEquatable<ITimestamp>
 {
-    DateTime Timestamp { get; set; }
+    DateTime Timestamp { get; }
 
     bool IEquatable<ITimestamp>.Equals(ITimestamp? other)
     {

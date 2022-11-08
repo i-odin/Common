@@ -26,7 +26,7 @@ public enum TestEnum
 public class TestClass
 {
     [TestAttr(1)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }
 
 public class TestType

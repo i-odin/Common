@@ -4,7 +4,7 @@ namespace Common.Blazor.Layouts;
 public partial class QMain
 {
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
     public int GridColumn { get; set; } = 12;

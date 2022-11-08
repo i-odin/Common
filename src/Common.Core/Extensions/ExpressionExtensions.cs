@@ -48,8 +48,7 @@ public static class ExpressionExtensions
 
         protected override Expression VisitParameter(ParameterExpression p)
         {
-            ParameterExpression replacement;
-            if (_map.TryGetValue(p, out replacement))
+            if (_map.TryGetValue(p, out var replacement))
                 p = replacement;
 
             return base.VisitParameter(p);

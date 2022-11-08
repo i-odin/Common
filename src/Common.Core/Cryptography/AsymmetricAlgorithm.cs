@@ -33,7 +33,6 @@ namespace Common.Core.Cryptography
     public class RsaOaepAndPkcs8 : RsaOaepDefault
     {
         readonly string _master;
-        protected RsaOaepAndPkcs8() {}
         public RsaOaepAndPkcs8(string master) => _master = master;
 
         protected override byte[] ExportPrivateKey(RSACryptoServiceProvider rsa) => 
