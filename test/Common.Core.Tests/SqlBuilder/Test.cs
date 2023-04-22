@@ -14,7 +14,8 @@ namespace Common.Core.Tests.SqlBuilder
         [InlineData("Hello")]
         public void Equals_CompareTwoObjects(string str)
         {
-            var builder = new MsSqlBuilder().Update<TestClass>(x => x.Test()).Where<TestClass>(x => x.Test());
+            var builder = new MsSqlBuilder().Update<TestClass>(x => x.Set(y => y.Id, "test").Comma().Set(y => y.Id, "test"));
+                                            //.Where<TestClass>(x => x.Test());
             var qwe = builder.ToString();
             Assert.Equal(1, 1);
         }
@@ -22,6 +23,6 @@ namespace Common.Core.Tests.SqlBuilder
 
     public class TestClass
     {
-
+        public string Id { get; set; }
     }
 }

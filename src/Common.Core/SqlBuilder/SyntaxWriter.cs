@@ -1,34 +1,89 @@
-﻿using Common.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Core.SqlBuilder
 {
-    public class SyntaxWriter : StringWriter
+    public class SyntaxWriter 
     {
-        public SyntaxWriter(StringBuilder sb) : base(sb) { }
+        private StringWriter _writer;
+        public SyntaxWriter(StringBuilder sb) 
+        {
+            _writer = new StringWriter(sb);
+        }
+
+        protected void WriteLine(string str)
+        {
+            if(_writer.GetStringBuilder().Length > 0)
+                _writer.Write(_writer.NewLine); 
+            _writer.Write(str);
+        }
+        protected void Write(string str)
+            => _writer.Write(str);
+        protected void WriteWhitespace()
+            => _writer.Write(" ");
+        protected void WriteLineWhitespaceBefore(string str)
+        {
+            WriteLine(str);
+            WriteWhitespace();
+        }
+        protected void WriteWhitespaceBefore(string str)
+        {
+            Write(str);
+            WriteWhitespace();
+        }
     }
 
-    public class UpdateWriter : SyntaxWriter
+    public class UpdateWriter<T> : SyntaxWriter
+        where T : class
     {
         public UpdateWriter(StringBuilder sb) : base(sb) { }
-        public void Test()
+
+        public UpdateWriter<T> Set<TField>([NotNull] Expression<Func<T, TField>> field, [NotNull] TField value)
         {
-            Write("Test");
+            return Field(field).Equal().Value((dynamic)value);
         }
-        
-        private UpdateWriter Update()
+
+        public UpdateWriter<T> Field<TField>(Expression<Func<T, TField>> field)
         {
-            Write("update");
+            var member = (field.Body as MemberExpression)?.Member;
+            if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
+
+            WriteWhitespaceBefore(member.Name);
             return this;
         }
 
-        public static implicit operator UpdateWriter(StringBuilder sb) 
-            => new UpdateWriter(sb).Update();
+        public UpdateWriter<T> Equal()
+        {
+            WriteWhitespaceBefore("=");
+            return this;
+        }
+
+        public UpdateWriter<T> Comma()
+        {
+            WriteWhitespaceBefore(",");
+            return this;
+        }
+        
+
+        public UpdateWriter<T> Value(string str)
+        {
+            Write("'");
+            Write(str);
+            Write("'");
+            return this;
+        }
+
+        private UpdateWriter<T> Update()
+        {
+            WriteLineWhitespaceBefore("update");
+            WriteWhitespaceBefore(typeof(T).Name);
+            WriteLineWhitespaceBefore("set");
+            return this;
+        }
+
+        public static implicit operator UpdateWriter<T>(StringBuilder sb) 
+            => new UpdateWriter<T>(sb).Update();
     }
 
     public class WhereWriter : SyntaxWriter

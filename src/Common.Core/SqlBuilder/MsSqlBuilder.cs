@@ -9,7 +9,7 @@ namespace Common.Core.SqlBuilder
 {
     public partial class QueryBuilder
     {
-        public QueryBuilder Update<T>(Action<UpdateWriter> inner) where T : class 
+        public QueryBuilder Update<T>(Action<UpdateWriter<T>> inner) where T : class 
             => UpdateImpl<T>(inner);
 
         public QueryBuilder Where<T>(Action<WhereWriter> inner) where T : class 
@@ -20,7 +20,7 @@ namespace Common.Core.SqlBuilder
     {
         private Action<StringBuilder> _execute;
 
-        private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateWriter> inner) where T : class
+        private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateWriter<T>> inner) where T : class
         {
             _execute += sb => inner(sb);
             return this;
