@@ -14,13 +14,14 @@ namespace Common.Core.Tests.SqlBuilder
         [InlineData("Hello")]
         public void Equals_CompareTwoObjects(string str)
         {
-            Action<IUpdate> inner = x => x.Test();
-            var qwe = new SyntaxWriter();
-            //var qwe = new UpdateWriter();
-            var asd = (IUpdate)(ISyntax)qwe; 
-            inner?.Invoke((IUpdate)qwe);
-            var ewq = qwe.ToString();
+            var builder = new MsSqlBuilder().Update<TestClass>(x => x.Test()).Where<TestClass>(x => x.Test());
+            var qwe = builder.ToString();
             Assert.Equal(1, 1);
         }
+    }
+
+    public class TestClass
+    {
+
     }
 }
