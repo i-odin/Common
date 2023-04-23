@@ -5,24 +5,28 @@ using System.Text;
 
 namespace Common.Core.SqlBuilder
 {
-    public class SyntaxWriter 
+    public class StringWriterWrap
     {
         private StringWriter _writer;
-        public SyntaxWriter(StringBuilder sb) 
-        {
-            _writer = new StringWriter(sb);
-        }
-
+        public StringWriterWrap(StringBuilder sb) 
+            => _writer = new StringWriter(sb);
         protected void WriteLine(string value)
         {
-            if(_writer.GetStringBuilder().Length > 0)
-                _writer.Write(_writer.NewLine); 
+            if (_writer.GetStringBuilder().Length > 0)
+                _writer.Write(_writer.NewLine);
             _writer.Write(value);
         }
         protected void Write(string value)
             => _writer.Write(value);
         protected void WriteWhitespace()
             => _writer.Write(" ");
+    }
+
+    public class SyntaxWriter<T> : StringWriterWrap
+         where T : class   
+    {
+        private bool _isComma;
+        public SyntaxWriter(StringBuilder sb) : base(sb) { }
         protected void WriteLineWhitespaceBefore(string value)
         {
             WriteLine(value);
@@ -45,15 +49,8 @@ namespace Common.Core.SqlBuilder
         {
             Write("null");
         }
-    }
 
-    public class UpdateWriter<T> : SyntaxWriter
-        where T : class
-    {
-        private bool _isComma;
-        public UpdateWriter(StringBuilder sb) : base(sb) { }
-
-        public UpdateWriter<T> Set<TField>([NotNull] Expression<Func<T, TField>> field, [NotNull] TField value)
+        public SyntaxWriter<T> Set<TField>([NotNull] Expression<Func<T, TField>> field, [NotNull] TField value)
         {
             if (_isComma) Comma();
             else _isComma = true;
@@ -67,7 +64,7 @@ namespace Common.Core.SqlBuilder
             return w;
         }
 
-        public UpdateWriter<T> Field<TField>(Expression<Func<T, TField>> field)
+        public SyntaxWriter<T> Field<TField>(Expression<Func<T, TField>> field)
         {
             var member = (field.Body as MemberExpression)?.Member;
             if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
@@ -76,64 +73,70 @@ namespace Common.Core.SqlBuilder
             return this;
         }
 
-        public UpdateWriter<T> Equal()
+        public SyntaxWriter<T> Equal()
         {
             WriteWhitespaceBefore("=");
             return this;
         }
 
-        public UpdateWriter<T> Comma()
+        public SyntaxWriter<T> Comma()
         {
             WriteWhitespaceBefore(",");
             return this;
         }
-        
 
-        public UpdateWriter<T> Value(string value)
+
+        public SyntaxWriter<T> Value(string value)
         {
             if (value != null) WriteString(value);
             else WriteNull();
             return this;
         }
 
-        public UpdateWriter<T> Value(Guid? value)
-        {   
+        public SyntaxWriter<T> Value(Guid? value)
+        {
             if (value.HasValue) Value(value.Value);
             else WriteNull();
             return this;
         }
 
-        public UpdateWriter<T> Value(Guid value)
+        public SyntaxWriter<T> Value(Guid value)
         {
             WriteString(value.ToString());
             return this;
         }
 
-        public UpdateWriter<T> Value(DateTime? value)
+        public SyntaxWriter<T> Value(DateTime? value)
         {
             if (value.HasValue) Value(value.Value);
             else WriteNull();
             return this;
         }
 
-        public UpdateWriter<T> Value(DateTime value)
+        public SyntaxWriter<T> Value(DateTime value)
         {
             WriteString(value.ToStringIso8601());
             return this;
         }
 
-        public UpdateWriter<T> Value(int? value)
+        public SyntaxWriter<T> Value(int? value)
         {
             if (value.HasValue) Value(value.Value);
             else WriteNull();
             return this;
         }
 
-        public UpdateWriter<T> Value(int value)
+        public SyntaxWriter<T> Value(int value)
         {
             Write(value.ToString());
             return this;
         }
+    }
+
+    public class UpdateWriter<T> : SyntaxWriter<T>
+        where T : class
+    {
+        public UpdateWriter(StringBuilder sb) : base(sb) { }
 
         private UpdateWriter<T> Update()
         {
@@ -147,22 +150,18 @@ namespace Common.Core.SqlBuilder
             => new UpdateWriter<T>(sb).Update();
     }
 
-    public class WhereWriter : SyntaxWriter
+    public class WhereWriter<T> : SyntaxWriter<T>
+        where T : class
     {
         public WhereWriter(StringBuilder sb) : base(sb) { }
 
-        public void Test()
+        private WhereWriter<T> Where()
         {
-            Write("Test");
-        }
-
-        private WhereWriter Where()
-        {
-            Write("where");
+            WriteLineWhitespaceBefore("where");
             return this;
         }
 
-        public static implicit operator WhereWriter(StringBuilder sb)
-            => new WhereWriter(sb).Where();
+        public static implicit operator WhereWriter<T>(StringBuilder sb)
+            => new WhereWriter<T>(sb).Where();
     }
 }

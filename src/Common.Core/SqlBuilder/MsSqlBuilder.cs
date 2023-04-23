@@ -12,7 +12,7 @@ namespace Common.Core.SqlBuilder
         public QueryBuilder Update<T>(Action<UpdateWriter<T>> inner) where T : class 
             => UpdateImpl<T>(inner);
 
-        public QueryBuilder Where<T>(Action<WhereWriter> inner) where T : class 
+        public QueryBuilder Where<T>(Action<WhereWriter<T>> inner) where T : class 
             => WhereImpl<T>(inner);
     }
 
@@ -26,7 +26,7 @@ namespace Common.Core.SqlBuilder
             return this;
         }
 
-        private QueryBuilder WhereImpl<T>(Action<WhereWriter> inner) where T : class
+        private QueryBuilder WhereImpl<T>(Action<WhereWriter<T>> inner) where T : class
         {
             _execute += sb => inner.Invoke(sb);
             return this;
