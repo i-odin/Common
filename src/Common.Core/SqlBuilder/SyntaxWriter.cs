@@ -7,19 +7,19 @@ namespace Common.Core.SqlBuilder
 {
     public class StringWriterWrap
     {
-        private StringWriter _writer;
+        private StringBuilder _sb;
         public StringWriterWrap(StringBuilder sb) 
-            => _writer = new StringWriter(sb);
+            => _sb = sb;
         protected void WriteLine(string value)
         {
-            if (_writer.GetStringBuilder().Length > 0)
-                _writer.Write(_writer.NewLine);
-            _writer.Write(value);
+            if (_sb.Length > 0)
+                _sb.Append("\r\n");
+            _sb.Append(value);
         }
         protected void Write(string value)
-            => _writer.Write(value);
+            => _sb.Append(value);
         protected void WriteWhitespace()
-            => _writer.Write(" ");
+            => _sb.Append(" ");
     }
 
     public class SyntaxWriter<T> : StringWriterWrap
