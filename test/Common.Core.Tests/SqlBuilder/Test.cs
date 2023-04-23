@@ -8,21 +8,26 @@ using System.Threading.Tasks;
 
 namespace Common.Core.Tests.SqlBuilder
 {
-    public class Test
+    public class MsSqlBuilderTest
     {
         [Theory]
-        [InlineData("Hello")]
-        public void Equals_CompareTwoObjects(string str)
+        [InlineData(@"update TestClass 
+set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '23.04.2023 0:00:00'")]
+        public void Update_BuildUpdateSql(string expected)
         {
-            var builder = new MsSqlBuilder().Update<TestClass>(x => x.Set(y => y.Id, "test").Comma().Set(y => y.Id, "test"));
-                                            //.Where<TestClass>(x => x.Test());
-            var qwe = builder.ToString();
-            Assert.Equal(1, 1);
+            var builder = new MsSqlBuilder().Update<TestClass>(x => x.Set(y => y.Id, Guid.Empty)
+                                                                     .Set(y => y.Name, null)
+                                                                     .Set(y => y.Age, 10)
+                                                                     .Set(y => y.Timespan, new DateTime(2023, 04, 23)));
+            Assert.Equal(expected, builder.ToString());
         }
     }
 
     public class TestClass
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public int? Age { get; set; }
+        public DateTime Timespan { get; set; }
     }
 }

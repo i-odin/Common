@@ -12,36 +12,58 @@ namespace Common.Core.SqlBuilder
             _writer = new StringWriter(sb);
         }
 
-        protected void WriteLine(string str)
+        protected void WriteLine(string value)
         {
             if(_writer.GetStringBuilder().Length > 0)
                 _writer.Write(_writer.NewLine); 
-            _writer.Write(str);
+            _writer.Write(value);
         }
-        protected void Write(string str)
-            => _writer.Write(str);
+        protected void Write(string value)
+            => _writer.Write(value);
         protected void WriteWhitespace()
             => _writer.Write(" ");
-        protected void WriteLineWhitespaceBefore(string str)
+        protected void WriteLineWhitespaceBefore(string value)
         {
-            WriteLine(str);
+            WriteLine(value);
             WriteWhitespace();
         }
-        protected void WriteWhitespaceBefore(string str)
+        protected void WriteWhitespaceBefore(string value)
         {
-            Write(str);
+            Write(value);
             WriteWhitespace();
+        }
+
+        protected void WriteString(string value)
+        {
+            Write("'");
+            Write(value);
+            Write("'");
+        }
+
+        protected void WriteNull()
+        {
+            Write("null");
         }
     }
 
     public class UpdateWriter<T> : SyntaxWriter
         where T : class
     {
+        private bool _isComma;
         public UpdateWriter(StringBuilder sb) : base(sb) { }
 
         public UpdateWriter<T> Set<TField>([NotNull] Expression<Func<T, TField>> field, [NotNull] TField value)
         {
-            return Field(field).Equal().Value((dynamic)value);
+            if (_isComma) Comma();
+            else _isComma = true;
+
+            var w = Field(field).Equal();
+            if (value == null)
+                w.WriteNull();
+            else
+                w.Value((dynamic)value);
+
+            return w;
         }
 
         public UpdateWriter<T> Field<TField>(Expression<Func<T, TField>> field)
@@ -66,11 +88,49 @@ namespace Common.Core.SqlBuilder
         }
         
 
-        public UpdateWriter<T> Value(string str)
+        public UpdateWriter<T> Value(string value)
         {
-            Write("'");
-            Write(str);
-            Write("'");
+            if (value != null) WriteString(value);
+            else WriteNull();
+            return this;
+        }
+
+        public UpdateWriter<T> Value(Guid? value)
+        {   
+            if (value.HasValue) Value(value.Value);
+            else WriteNull();
+            return this;
+        }
+
+        public UpdateWriter<T> Value(Guid value)
+        {
+            WriteString(value.ToString());
+            return this;
+        }
+
+        public UpdateWriter<T> Value(DateTime? value)
+        {
+            if (value.HasValue) Value(value.Value);
+            else WriteNull();
+            return this;
+        }
+
+        public UpdateWriter<T> Value(DateTime value)
+        {
+            WriteString(value.ToString());
+            return this;
+        }
+
+        public UpdateWriter<T> Value(int? value)
+        {
+            if (value.HasValue) Value(value.Value);
+            else WriteNull();
+            return this;
+        }
+
+        public UpdateWriter<T> Value(int value)
+        {
+            Write(value.ToString());
             return this;
         }
 
