@@ -19,8 +19,6 @@ namespace Common.Core.SqlBuilder
         }
         protected void Write(string value)
             => _sb.Append(value);
-        protected void WriteWhitespace()
-            => _sb.Append(" ");
     }
 
     public class SyntaxWriter<T> : StringWriterWrap
@@ -53,6 +51,31 @@ namespace Common.Core.SqlBuilder
                 w.Value((dynamic)value);
 
             return w;
+        }
+
+        //TODO: как получать название свойства без деревьев выражений
+        public SyntaxWriter<T> SetNew<TField>(Func<T, TField> field, TField value)
+        {
+            if (_isComma) Comma();
+            else _isComma = true;
+
+            var w = FieldNew(field).Equal();
+            if (value == null)
+                w.WriteNull();
+            else
+                w.Value((dynamic)value); //TODO: убрать dynamic
+
+            return w;
+        }
+
+        public SyntaxWriter<T> FieldNew<TField>(Func<T, TField> field)
+        {
+            //var member = (field.Body as MemberExpression)?.Member;
+            //if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
+
+            //Write(member.Name);
+            Write(typeof(TField).Name);
+            return this;
         }
 
         public SyntaxWriter<T> Field<TField>(Expression<Func<T, TField>> field)

@@ -18,25 +18,23 @@ namespace Common.Core.SqlBuilder
 
     public partial class QueryBuilder
     {
-        private Action<StringBuilder> _execute;
+        private StringBuilder _sb = new StringBuilder();
 
         private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateWriter<T>> inner) where T : class
         {
-            _execute += sb => inner(sb);
+            inner(_sb);
             return this;
         }
 
         private QueryBuilder WhereImpl<T>(Action<WhereWriter<T>> inner) where T : class
         {
-            _execute += sb => inner.Invoke(sb);
+            inner(_sb);
             return this;
         }
 
         public override string ToString()
         {
-            var sb = new StringBuilder();
-            _execute.Invoke(sb);
-            return sb.ToString();
+            return _sb.ToString();
         }
     }
 
