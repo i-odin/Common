@@ -28,17 +28,7 @@ namespace Common.Core.SqlBuilder
     {
         private bool _isComma;
         public SyntaxWriter(StringBuilder sb) : base(sb) { }
-        protected void WriteLineWhitespaceBefore(string value)
-        {
-            WriteLine(value);
-            WriteWhitespace();
-        }
-        protected void WriteWhitespaceBefore(string value)
-        {
-            Write(value);
-            WriteWhitespace();
-        }
-
+        
         protected void WriteString(string value)
         {
             Write("'");
@@ -70,19 +60,19 @@ namespace Common.Core.SqlBuilder
             var member = (field.Body as MemberExpression)?.Member;
             if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
 
-            WriteWhitespaceBefore(member.Name);
+            Write(member.Name);
             return this;
         }
 
         public SyntaxWriter<T> Equal()
         {
-            WriteWhitespaceBefore("=");
+            Write(" = ");
             return this;
         }
 
         public SyntaxWriter<T> Comma()
         {
-            WriteWhitespaceBefore(",");
+            Write(", ");
             return this;
         }
 
@@ -141,9 +131,9 @@ namespace Common.Core.SqlBuilder
 
         private UpdateWriter<T> Update()
         {
-            WriteLineWhitespaceBefore("update");
-            WriteWhitespaceBefore(typeof(T).Name);
-            WriteLineWhitespaceBefore("set");
+            WriteLine("update ");
+            Write(typeof(T).Name);
+            WriteLine("set ");
             return this;
         }
 
@@ -158,7 +148,7 @@ namespace Common.Core.SqlBuilder
 
         private WhereWriter<T> Where()
         {
-            WriteLineWhitespaceBefore("where");
+            WriteLine("where ");
             return this;
         }
 

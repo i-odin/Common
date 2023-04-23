@@ -5,8 +5,6 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
 {
     [RankColumn]
     [MemoryDiagnoser]
-    [DisassemblyDiagnoser]
-    [ThreadingDiagnoser]
     public class SqlBuilderBenchmarkUpdate
     {
         [Benchmark]

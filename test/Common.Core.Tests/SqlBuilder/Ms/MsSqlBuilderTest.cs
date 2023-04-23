@@ -5,7 +5,7 @@ namespace Common.Core.Tests.SqlBuilder.Ms
     public class MsSqlBuilderTests
     {
         [Theory]
-        [InlineData(@"update TestClass 
+        [InlineData(@"update TestClass
 set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'")]
 
         public void Update_BuildUpdateSql(string expected)
@@ -29,7 +29,7 @@ set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan
         }
 
         [Theory]
-        [InlineData(@"update TestClass 
+        [InlineData(@"update TestClass
 set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'
 where Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'")]
         public void UpdateWhere_BuildUpdateWhereSql(string expected)
