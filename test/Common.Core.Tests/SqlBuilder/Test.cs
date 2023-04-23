@@ -12,7 +12,7 @@ namespace Common.Core.Tests.SqlBuilder
     {
         [Theory]
         [InlineData(@"update TestClass 
-set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '23.04.2023 0:00:00'")]
+set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'")]
         public void Update_BuildUpdateSql(string expected)
         {
             var builder = new MsSqlBuilder().Update<TestClass>(x => x.Set(y => y.Id, Guid.Empty)
