@@ -1,6 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
-using Common.Core.Benchmarks.Extensions;
-using Common.Core.Benchmarks.SqlBuilder.MsSqlBuilder;
+using Common.Core.Benchmarks.SqlBuilder.Ms;
 
 //BenchmarkRunner.Run<StringExtensionBenchmarkIsEmpty>();
 //BenchmarkRunner.Run<PathExtensionBenchmarkGetFileName>();

@@ -10,6 +10,7 @@ namespace Common.Core.SqlBuilder
         private StringBuilder _sb;
         public StringWriterWrap(StringBuilder sb) 
             => _sb = sb;
+
         protected void WriteLine(string value)
         {
             if (_sb.Length > 0)

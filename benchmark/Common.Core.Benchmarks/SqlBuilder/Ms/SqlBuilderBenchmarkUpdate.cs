@@ -1,24 +1,20 @@
-﻿using Common.Core.Extensions;
-using Common.Core.SqlBuilder;
-using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Common.Core.SqlBuilder;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Common.Core.Benchmarks.SqlBuilder.MsSqlBuilder
+namespace Common.Core.Benchmarks.SqlBuilder.Ms
 {
     [RankColumn]
     [MemoryDiagnoser]
+    [DisassemblyDiagnoser]
+    [ThreadingDiagnoser]
     public class SqlBuilderBenchmarkUpdate
     {
         [Benchmark]
         public string QueryBuilder() {
             return new QueryBuilder().Update<BenchmarkClass>(x => x.Set(y => y.Id, Guid.Empty)
-                                                                    .Set(y => y.Name, null)
-                                                                    .Set(y => y.Age, 10)
-                                                                    .Set(y => y.Timespan, new DateTime(2023, 04, 23)))
+                                                                   .Set(y => y.Name, null)
+                                                                   .Set(y => y.Age, 10)
+                                                                   .Set(y => y.Timespan, new DateTime(2023, 04, 23)))
                                      .ToString();
         }
 
