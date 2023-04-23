@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Common.Core.Extensions;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Text;
 
@@ -117,7 +118,7 @@ namespace Common.Core.SqlBuilder
 
         public UpdateWriter<T> Value(DateTime value)
         {
-            WriteString(value.ToString());
+            WriteString(value.ToStringIso8601());
             return this;
         }
 
