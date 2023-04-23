@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Common.Core.Tests.SqlBuilder
 {
-    public class MsSqlBuilderTest
+    public class MsSqlBuilderTests
     {
         [Theory]
         [InlineData(@"update TestClass 

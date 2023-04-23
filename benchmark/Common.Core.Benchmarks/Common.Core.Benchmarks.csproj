@@ -16,12 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Common.Core">
-      <HintPath>bin\Release\net6.0\Common.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="BenchmarkDotNet.Attributes" />
   </ItemGroup>
 

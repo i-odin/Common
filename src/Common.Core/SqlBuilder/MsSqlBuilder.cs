@@ -34,7 +34,7 @@ namespace Common.Core.SqlBuilder
 
         public override string ToString()
         {
-            var sb = new StringBuilder(500);
+            var sb = new StringBuilder();
             _execute.Invoke(sb);
             return sb.ToString();
         }

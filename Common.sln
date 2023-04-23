@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Blazor", "src\Common
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Core.Benchmarks", "benchmark\Common.Core.Benchmarks\Common.Core.Benchmarks.csproj", "{9AB98D9C-33E9-41B0-BCF3-3B04DDD9F95D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Core.Profiler", "Common.Core.Profiler\Common.Core.Profiler.csproj", "{EFA70487-A96A-44FE-A067-CDCA240EC3B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{9AB98D9C-33E9-41B0-BCF3-3B04DDD9F95D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AB98D9C-33E9-41B0-BCF3-3B04DDD9F95D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB98D9C-33E9-41B0-BCF3-3B04DDD9F95D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFA70487-A96A-44FE-A067-CDCA240EC3B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFA70487-A96A-44FE-A067-CDCA240EC3B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFA70487-A96A-44FE-A067-CDCA240EC3B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFA70487-A96A-44FE-A067-CDCA240EC3B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{74D7887E-423F-4FE3-BFD2-707E212D62C2} = {05CB6375-FCAA-4644-9F55-F11EE046918B}
 		{395B46C0-3AB9-45FF-BEE6-E59000717D65} = {05CB6375-FCAA-4644-9F55-F11EE046918B}
 		{9AB98D9C-33E9-41B0-BCF3-3B04DDD9F95D} = {1DE460AB-3B67-4F35-90FC-57C5DD09C495}
+		{EFA70487-A96A-44FE-A067-CDCA240EC3B5} = {1DE460AB-3B67-4F35-90FC-57C5DD09C495}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C34FE30-6024-40A3-A343-52EA484C9534}
