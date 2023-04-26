@@ -1,40 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Core.SqlBuilder
 {
     public partial class QueryBuilder
     {
-        public QueryBuilder Update<T>(Action<UpdateWriter<T>> inner) where T : class 
-            => UpdateImpl<T>(inner);
+        public QueryBuilder Update<T>(Action<IUpdateTranslator<T>> inner) 
+            where T : class 
+            => UpdateImpl(inner);
 
-        public QueryBuilder Where<T>(Action<WhereWriter<T>> inner) where T : class 
-            => WhereImpl<T>(inner);
+        public QueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) 
+            where T : class 
+            => WhereImpl(inner);
+
+        public override string ToString()
+            => _sb.ToString();
     }
 
     public partial class QueryBuilder
     {
         private StringBuilder _sb = new StringBuilder();
 
-        private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateWriter<T>> inner) where T : class
+        private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateTranslator<T>> inner) 
+            where T : class
         {
             inner(_sb);
             return this;
         }
 
-        private QueryBuilder WhereImpl<T>(Action<WhereWriter<T>> inner) where T : class
+        private QueryBuilder WhereImpl<T>([NotNull] Action<WhereTranslator<T>> inner) 
+            where T : class
         {
-            inner(_sb);
+            Func<WhereTranslator<T>, WhereTranslator<T>> wrap = x => x.Where();
+            inner(wrap(_sb));
             return this;
-        }
-
-        public override string ToString()
-        {
-            return _sb.ToString();
         }
     }
 

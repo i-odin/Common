@@ -1,6 +1,5 @@
 ﻿using Common.Core.SqlBuilder;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Common.Core.Benchmarks.SqlBuilder.Ms
 {
@@ -8,16 +7,6 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
     [MemoryDiagnoser]
     public class SqlBuilderBenchmarkUpdate
     {
-        [Benchmark]
-        public string QueryBuilderNew()
-        {
-            return new QueryBuilder().Update<BenchmarkClass>(x => x.SetNew(y => y.Id, Guid.Empty)
-                                                                   .SetNew(y => y.Name, null)
-                                                                   .SetNew(y => y.Age, 10)
-                                                                   .SetNew(y => y.Timespan, new DateTime(2023, 04, 23)))
-                                     .ToString();
-        }
-
         [Benchmark]
         public string QueryBuilder() {
             return new QueryBuilder().Update<BenchmarkClass>(x => x.Set(y => y.Id, Guid.Empty)
