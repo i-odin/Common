@@ -17,8 +17,7 @@ namespace Common.Core.SqlBuilder
         public UpdateTranslator(StringBuilder sb) : base(sb) { }
 
         IUpdateTranslator<T> IUpdateTranslator<T>.Set<TField>(Expression<Func<T, TField>> field, TField value)
-        {
-            
+        {   
             if (_isComma) Comma();
             else _isComma = true;
 
@@ -34,7 +33,7 @@ namespace Common.Core.SqlBuilder
         private UpdateTranslator<T> Update()
         {
             AppendLine("update ");
-            Append(typeof(T).Name);
+            Append(typeEntity.Name);
             AppendLine("set ");
             return this;
         }

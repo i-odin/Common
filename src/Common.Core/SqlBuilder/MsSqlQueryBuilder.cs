@@ -13,6 +13,10 @@ namespace Common.Core.SqlBuilder
             where T : class 
             => WhereImpl(inner);
 
+        public QueryBuilder Delete<T>()
+            where T : class
+            => DeleteImpl<T>();
+
         public override string ToString()
             => _sb.ToString();
     }
@@ -31,13 +35,19 @@ namespace Common.Core.SqlBuilder
         private QueryBuilder WhereImpl<T>([NotNull] Action<WhereTranslator<T>> inner) 
             where T : class
         {
-            Func<WhereTranslator<T>, WhereTranslator<T>> wrap = x => x.Where();
-            inner(wrap(_sb));
+            inner(((WhereTranslator<T>)_sb).Where());
+            return this;
+        }
+
+        private QueryBuilder DeleteImpl<T>()
+            where T : class
+        {
+            var _ = (DeleteTranslator<T>)_sb;
             return this;
         }
     }
 
-    public class MsSqlBuilder : QueryBuilder
+    public class MsSqlQueryBuilder : QueryBuilder
     {
         
     }

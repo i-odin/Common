@@ -42,6 +42,15 @@ namespace Common.Core.SqlBuilder
     public class Translator<T> : StringBuilderWrapper
          where T : class
     {
+        private Type _typeEntity;
+        protected Type typeEntity
+        {
+            get
+            {
+                if (_typeEntity == null) _typeEntity = typeof(T);
+                return _typeEntity;
+            }
+        }
         public Translator(StringBuilder sb) : base(sb) { }
 
         protected Action<V> Bracket<V>(Action<V> inner)
