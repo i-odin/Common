@@ -5,6 +5,10 @@ namespace Common.Core.SqlBuilder
 {
     public partial class QueryBuilder
     {
+        public QueryBuilder Insert<T>(Action<IInsertTranslator<T>> inner)
+            where T : class
+            => InsertImpl(inner);
+
         public QueryBuilder Update<T>(Action<IUpdateTranslator<T>> inner) 
             where T : class 
             => UpdateImpl(inner);
@@ -24,6 +28,16 @@ namespace Common.Core.SqlBuilder
     public partial class QueryBuilder
     {
         private StringBuilder _sb = new StringBuilder();
+
+        private QueryBuilder InsertImpl<T>([NotNull] Action<InsertTranslator<T>> inner)
+            where T : class
+        {
+            var obj = (InsertTranslator<T>)_sb;
+            obj.BracketLeft();
+            inner(obj);
+            obj.BracketRitht();
+            return this;
+        }
 
         private QueryBuilder UpdateImpl<T>([NotNull] Action<UpdateTranslator<T>> inner) 
             where T : class

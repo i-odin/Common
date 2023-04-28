@@ -53,15 +53,6 @@ namespace Common.Core.SqlBuilder
         }
         public Translator(StringBuilder sb) : base(sb) { }
 
-        protected Action<V> Bracket<V>(Action<V> inner)
-            where V : Translator<T>
-        {
-            Action<V> result = x => x.Append("(");
-            result += inner;
-            result += x => x.Append(")");
-            return result;
-        }
-
         public Translator<T> BracketLeft()
         {
             Append("(");

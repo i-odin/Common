@@ -1,5 +1,4 @@
 ﻿using Common.Core.SqlBuilder;
-using System.Runtime.CompilerServices;
 
 namespace Common.Core.Tests.SqlBuilder.Ms
 {
