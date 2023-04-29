@@ -1,25 +1,20 @@
-﻿using Common.Core.SqlBuilder;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Common.Core.QueryBuilders.Ms;
 
-namespace Common.Core.Tests.SqlBuilder.Ms
+namespace Common.Core.Tests.SqlBuilder.Ms;
+
+public class MsSqlBuilderInsertTest
 {
-    public class MsSqlBuilderInsertTest
+    /*[Theory]
+    [InlineData("delete TestClass")]
+    public void Delete_BuildDeleteSql(string expected)
     {
-        /*[Theory]
-        [InlineData("delete TestClass")]
-        public void Delete_BuildDeleteSql(string expected)
-        {
-            var builder = new MsSqlQueryBuilder()
-                .Insert<TestClass>(x => x.Field(y => y.Id)
-                                         .Field(y => y.Timespan)
-                                         .Field(y => y.Name)
-                                         .Field(y => y.Age));
+        var builder = new MsQueryBuilder()
+            .Insert<TestClass>(x => x.Field(y => y.Id)
+                                     .Field(y => y.Timespan)
+                                     .Field(y => y.Name)
+                                     .Field(y => y.Age))
+            .Value<TestClass>(x => x.Field(y => y.Id));
 
-            Assert.Equal(expected, builder.ToString());
-        }*/
-    }
+        Assert.Equal(expected, builder.ToString());
+    }*/
 }

@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Common.Core.SqlBuilder
+namespace Common.Core.QueryBuilder
 {
     public interface IWhereTranslator<T>
         where T : class

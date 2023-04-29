@@ -1,4 +1,4 @@
-﻿using Common.Core.SqlBuilder;
+﻿using Common.Core.QueryBuilder;
 
 namespace Common.Core.Tests.SqlBuilder.Ms
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Common.Core.SqlBuilder
+namespace Common.Core.QueryBuilder
 {
     public interface IDeleteTranslator<T>
         where T : class {}

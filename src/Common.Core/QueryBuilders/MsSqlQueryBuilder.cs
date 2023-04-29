@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Common.Core.SqlBuilder
+namespace Common.Core.QueryBuilder
 {
     public partial class QueryBuilder
     {
