@@ -22,10 +22,13 @@ public class InsertQueryBuilder : QueryBuilder, IInsertQueryBuilder
         return this;
     }
 
-    IInsertQueryBuilder IInsertQueryBuilder.Insert<T>(Action<IInsertTranslator<T>> inner) 
-        => Insert(inner);
-
     public static InsertQueryBuilder Create<T>(StringBuilder sb, Action<IInsertTranslator<T>> inner) 
         where T : class
         => new InsertQueryBuilder(sb).Insert(inner);
+
+    IInsertQueryBuilder IInsertQueryBuilder.Insert<T>(Action<IInsertTranslator<T>> inner)
+    {
+        Insert(inner);
+        return this;
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Common.Core.QueryBuilder;
+﻿using Common.Core.QueryBuilders;
 
 namespace Common.Core.Profiler.SqlBuilder.Ms
 {
@@ -8,7 +8,7 @@ namespace Common.Core.Profiler.SqlBuilder.Ms
         {
             //for (int i = 0; i < 10000; i++)
             {
-                var builder = new MsSqlQueryBuilder().Update<ProfilerClass>(x => x.Set(y => y.Id, Guid.Empty)
+                var builder = new MsQueryBuilder().Update<ProfilerClass>(x => x.Set(y => y.Id, Guid.Empty)
                                                                              .Set(y => y.Name, null)
                                                                              .Set(y => y.Age, 10)
                                                                              .Set(y => y.Timespan, new DateTime(2023, 04, 23)));

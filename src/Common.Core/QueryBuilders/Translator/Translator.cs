@@ -7,7 +7,8 @@ namespace Common.Core.QueryBuilders.Translator;
 
 public class StringBuilderWrapper
 {
-    protected StringBuilder _sb;
+    //TODO: сделать private
+    protected readonly StringBuilder _sb;
     public StringBuilderWrapper(StringBuilder sb)
         => _sb = sb;
 
@@ -87,6 +88,7 @@ public class StringBuilderWrapper
         _sb.Insert(index, Comma());
         return this;
     }
+    public override string ToString() => _sb.ToString();
 }
 
 public class Translator<T> : StringBuilderWrapper

@@ -1,4 +1,4 @@
-﻿using Common.Core.QueryBuilder;
+﻿using Common.Core.QueryBuilders;
 using System.Text;
 
 namespace Common.Core.Benchmarks.SqlBuilder.Ms
@@ -9,7 +9,7 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
     {
         [Benchmark]
         public string QueryBuilder() {
-            return new MsSqlQueryBuilder().Update<BenchmarkClass>(x => x.Set(y => y.Id, Guid.Empty)
+            return new MsQueryBuilder().Update<BenchmarkClass>(x => x.Set(y => y.Id, Guid.Empty)
                                                                    .Set(y => y.Name, null)
                                                                    .Set(y => y.Age, 10)
                                                                    .Set(y => y.Timespan, new DateTime(2023, 04, 23)))
