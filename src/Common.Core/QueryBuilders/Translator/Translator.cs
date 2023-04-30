@@ -18,23 +18,73 @@ public class StringBuilderWrapper
         _sb.Append(value);
         return this;
     }
-    protected StringBuilderWrapper Append(string value)
-    {
-        _sb.Append(value);
-        return this;
-    }
-
+    
     protected StringBuilderWrapper AppendString(string value)
     {
-        Append("'");
-        Append(value);
-        Append("'");
+        _sb.Append("'");
+        _sb.Append(value);
+        _sb.Append("'");
         return this;
     }
 
     protected StringBuilderWrapper AppendNull()
     {
-        Append("null");
+        _sb.Append("null");
+        return this;
+    }
+
+    public StringBuilderWrapper BracketLeft()
+    {
+        _sb.Append("(");
+        return this;
+    }
+
+    public string BracketRitht()
+    {
+        var result = ")";
+        _sb.Append(result);
+        return result;
+    }
+
+    public StringBuilderWrapper InsertBracketRitht(int index)
+    {
+        _sb.Insert(index, BracketRitht());
+        return this;
+    }
+
+    public StringBuilderWrapper Or()
+    {
+        _sb.Append(" or ");
+        return this;
+    }
+
+    public StringBuilderWrapper And()
+    {
+        _sb.Append(" and ");
+        return this;
+    }
+
+    public StringBuilderWrapper NotEqual()
+    {
+        _sb.Append(" <> ");
+        return this;
+    }
+
+    public StringBuilderWrapper Equal()
+    {
+        _sb.Append(" = ");
+        return this;
+    }
+
+    public string Comma()
+    {
+        var result = ", ";
+        _sb.Append(result);
+        return result;
+    }
+    public StringBuilderWrapper InsertComma(int index)
+    {
+        _sb.Insert(index, Comma());
         return this;
     }
 }
@@ -53,30 +103,6 @@ public class Translator<T> : StringBuilderWrapper
     }
     public Translator(StringBuilder sb) : base(sb) { }
 
-    public Translator<T> BracketLeft()
-    {
-        Append("(");
-        return this;
-    }
-
-    public Translator<T> BracketRitht()
-    {
-        Append(")");
-        return this;
-    }
-
-    public Translator<T> Or()
-    {
-        Append(" or ");
-        return this;
-    }
-
-    public Translator<T> And()
-    {
-        Append(" and ");
-        return this;
-    }
-
     public Translator<T> NotEqual<TField>([NotNull] Expression<Func<T, TField>> field, TField value)
     {
         Field(field).NotEqual();
@@ -85,12 +111,6 @@ public class Translator<T> : StringBuilderWrapper
         else //dynemic оказался быстрее, чем каст к типу (value is string)
             Value((dynamic)value);
 
-        return this;
-    }
-
-    public Translator<T> NotEqual()
-    {
-        Append(" <> ");
         return this;
     }
 
@@ -105,24 +125,12 @@ public class Translator<T> : StringBuilderWrapper
         return this;
     }
 
-    public Translator<T> Equal()
-    {
-        Append(" = ");
-        return this;
-    }
-
     public Translator<T> Field<TField>(Expression<Func<T, TField>> field)
     {
         var member = (field.Body as MemberExpression)?.Member;
         if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
 
-        Append(member.Name);
-        return this;
-    }
-
-    public Translator<T> Comma()
-    {
-        Append(", ");
+        _sb.Append(member.Name);
         return this;
     }
 
@@ -162,7 +170,7 @@ public class Translator<T> : StringBuilderWrapper
 
     public Translator<T> Value(int value)
     {
-        Append(value.ToString());
+        _sb.Append(value.ToString());
         return this;
     }
 }
