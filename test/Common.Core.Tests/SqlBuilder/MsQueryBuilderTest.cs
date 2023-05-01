@@ -15,6 +15,14 @@ public class TestClass
     public DateTime Timespan { get; set; }
 }
 
+public class TestClass2
+{
+    public Guid Id2 { get; set; }
+    public string Name2 { get; set; }
+    public int? Age2 { get; set; }
+    public DateTime Timespan2 { get; set; }
+}
+
 public class MsQueryBuilderTest
 {
     [Theory]
@@ -48,4 +56,19 @@ where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 an
                                     .Equal(y => y.Timespan, new DateTime(2023, 04, 23)));
         Assert.Equal(expected, builder.ToString());
     }
+    /*
+    [Theory]
+    [InlineData(@"delete TestClass
+where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 and Timespan = '2023-04-23T00:00:00.0000000'")]
+    public void UpdateJoinWhere_BuildUpdateJoinWhereSql(string expected)
+    {
+        var builder = new MsQueryBuilder()
+            .Update<TestClass>(x => x.Set(y => y.Id, Guid.Empty)
+                                    .Set(y => y.Name, null)
+                                    .Set(y => y.Age, 10)
+                                    .Set(y => y.Timespan, new DateTime(2023, 04, 23)))
+            .Join<TestClass, TestClass2>();
+        Assert.Equal(expected, builder.ToString());
+    }
+    */
 }

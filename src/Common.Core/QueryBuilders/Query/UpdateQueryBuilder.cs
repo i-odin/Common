@@ -6,6 +6,7 @@ namespace Common.Core.QueryBuilders.Query;
 public interface IUpdateQueryBuilder
 {
     IUpdateQueryBuilder Update<T>(Action<IUpdateTranslator<T>> inner) where T : class;
+    IUpdateQueryBuilder Join<T>(Action<IJoinTranslator<T>> inner) where T : class;
     IUpdateQueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) where T : class;
 }
 
@@ -25,6 +26,12 @@ public class UpdateQueryBuilder : QueryBuilder, IUpdateQueryBuilder
         return this;
     }
 
+    public UpdateQueryBuilder Join<T>(Action<IJoinTranslator<T>> inner) where T : class
+    {
+        inner(((JoinTranslator<T>)_sb).Join());
+        return this;
+    }
+
     public static UpdateQueryBuilder Create<T>(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
         where T : class
         => new UpdateQueryBuilder(sb).Update(inner);
@@ -39,5 +46,10 @@ public class UpdateQueryBuilder : QueryBuilder, IUpdateQueryBuilder
     {
         Where(inner);
         return this;
+    }
+
+    IUpdateQueryBuilder IUpdateQueryBuilder.Join<T>(Action<IJoinTranslator<T>> inner)
+    {
+        throw new NotImplementedException();
     }
 }
