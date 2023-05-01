@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Common.Core.QueryBuilders.Query;
 
-namespace Common.Core.Tests.SqlBuilder.Query;
+namespace Common.Core.Tests.QueryBuilders.Query;
 
 public class InsertQueryBuilderTest
 {

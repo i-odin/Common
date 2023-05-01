@@ -16,7 +16,7 @@ public class UpdateTranslator<T> : Translator<T>, IUpdateTranslator<T>
     private bool _isComma;
     public UpdateTranslator(StringBuilder sb) : base(sb) { }
 
-    IUpdateTranslator<T> IUpdateTranslator<T>.Set<TField>(Expression<Func<T, TField>> field, TField value)
+    public UpdateTranslator<T> Set<TField>(Expression<Func<T, TField>> field, TField value)
     {
         if (_isComma) Comma();
         else _isComma = true;
@@ -28,6 +28,10 @@ public class UpdateTranslator<T> : Translator<T>, IUpdateTranslator<T>
             Value((dynamic)value);
 
         return this;
+    }
+    IUpdateTranslator<T> IUpdateTranslator<T>.Set<TField>(Expression<Func<T, TField>> field, TField value)
+    {
+        Set(field, value); return this;
     }
 
     private UpdateTranslator<T> Update()

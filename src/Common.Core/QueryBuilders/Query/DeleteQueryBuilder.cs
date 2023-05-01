@@ -13,22 +13,9 @@ public class DeleteQueryBuilder : QueryBuilder, IDeleteQueryBuilder
 {
     public DeleteQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public DeleteQueryBuilder Delete<T>()
-        where T : class
-    {
-        var _ = (DeleteTranslator<T>)_sb;
-        return this;
-    }
-
-    public DeleteQueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) where T : class
-    {
-        inner(((WhereTranslator<T>)_sb).Where());
-        return this;
-    }
-
     public static DeleteQueryBuilder Create<T>(StringBuilder sb)
         where T : class
-        => new DeleteQueryBuilder(sb).Delete<T>();
+        => (DeleteQueryBuilder)new DeleteQueryBuilder(sb).Delete<T>();
 
     IDeleteQueryBuilder IDeleteQueryBuilder.Delete<T>()
     {

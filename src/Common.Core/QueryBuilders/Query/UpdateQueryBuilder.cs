@@ -14,27 +14,9 @@ public class UpdateQueryBuilder : QueryBuilder, IUpdateQueryBuilder
 {
     public UpdateQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public UpdateQueryBuilder Update<T>(Action<IUpdateTranslator<T>> inner) where T : class
-    {
-        inner((UpdateTranslator<T>)_sb);
-        return this;
-    }
-
-    public UpdateQueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) where T : class
-    {
-        inner(((WhereTranslator<T>)_sb).Where());
-        return this;
-    }
-
-    public UpdateQueryBuilder Join<T>(Action<IJoinTranslator<T>> inner) where T : class
-    {
-        inner(((JoinTranslator<T>)_sb).Join());
-        return this;
-    }
-
     public static UpdateQueryBuilder Create<T>(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
         where T : class
-        => new UpdateQueryBuilder(sb).Update(inner);
+        => (UpdateQueryBuilder)new UpdateQueryBuilder(sb).Update(inner);
 
     IUpdateQueryBuilder IUpdateQueryBuilder.Update<T>(Action<IUpdateTranslator<T>> inner)
     {

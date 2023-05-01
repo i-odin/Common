@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Common.Core.QueryBuilders.Translator;
 
-namespace Common.Core.Tests.SqlBuilder.Translator;
+namespace Common.Core.Tests.QueryBuilders.Translator;
 
 public class WhereTranslatorTest
 {
