@@ -37,7 +37,7 @@ public class QueryBuilder<T>
         return this;
     }
 
-    public QueryBuilder<T> Join(Action<JoinTranslator<T>> inner) 
+    public QueryBuilder<T> Join<T1>(Action<JoinTranslator<T>> inner) 
     {
         inner((JoinTranslator<T>)((JoinTranslator<T>)_sb).Join());
         return this;
