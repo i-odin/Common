@@ -16,9 +16,10 @@ public class QueryBuilder<T>
         return this;
     }
 
-    public QueryBuilder<T> Join<T1>(Action<JoinTranslator<T>> inner) 
+    public virtual QueryBuilder<T> Join<TJoin>(Action<JoinTranslator<T, TJoin>> inner) 
+        where TJoin : class
     {
-        JoinTranslator<T>.Join(_sb, inner);
+        JoinTranslator<T, TJoin>.Join(_sb, inner);
         return this;
     }
 }

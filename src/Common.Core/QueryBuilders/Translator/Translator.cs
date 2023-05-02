@@ -89,7 +89,14 @@ public class Translator
         Append(result);
         return result;
     }
-    
+
+    public Translator Point()
+    {
+        Append(".");
+        return this;
+    }
+
+
     public override string ToString() => _sb.ToString();
 }
 
@@ -124,6 +131,7 @@ public class Translator<T> : Translator
 
     public Translator<T> Field<TField>(Expression<Func<T, TField>> field)
     {
+        //TODO: убрать дубликат
         var member = (field.Body as MemberExpression)?.Member;
         if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
 

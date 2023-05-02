@@ -20,8 +20,7 @@ public class UpdateTranslator<T> : Translator<T>, IUpdateTranslator<T>
         if (_isComma) Comma();
         else _isComma = true;
 
-        Field(field).Equal();
-        Value(value);
+        Equal(field, value);
         return this;
     }
 
