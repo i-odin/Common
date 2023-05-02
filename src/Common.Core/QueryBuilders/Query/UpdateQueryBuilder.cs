@@ -20,9 +20,15 @@ public class UpdateQueryBuilder<T> : QueryBuilder<T>, IUpdateQueryBuilder<T>
 {
     public UpdateQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public static UpdateQueryBuilder<T> Create(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
-        => (UpdateQueryBuilder<T>)new UpdateQueryBuilder<T>(sb).Update(inner);
+    public UpdateQueryBuilder<T> Update(Action<UpdateTranslator<T>> inner)
+    {
+        UpdateTranslator<T>.Update(_sb, inner);
+        return this;
+    }
 
+    public static UpdateQueryBuilder<T> Update(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
+        => new UpdateQueryBuilder<T>(sb).Update(inner);
+    
     IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join<TJoin1>(Action<IJoinTranslator<T>> inner)
     {
         throw new NotImplementedException();

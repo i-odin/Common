@@ -14,9 +14,14 @@ public class InsertQueryBuilder<T> : QueryBuilder<T>, IInsertQueryBuilder<T>
 {
     public InsertQueryBuilder(StringBuilder sb) : base(sb) { }
 
-    public static InsertQueryBuilder<T> Create(StringBuilder sb, Action<IInsertTranslator<T>> inner)
-        => (InsertQueryBuilder<T>)new InsertQueryBuilder<T>(sb).Insert(inner);
+    public InsertQueryBuilder<T> Insert(Action<InsertTranslator<T>> inner)
+    {
+        InsertTranslator<T>.Insert(_sb, inner);
+        return this;
+    }
 
+    public static InsertQueryBuilder<T> Insert(StringBuilder sb, Action<IInsertTranslator<T>> inner) 
+        => new InsertQueryBuilder<T>(sb).Insert(inner);
     IInsertQueryBuilder<T> IInsertQueryBuilder<T>.Insert(Action<IInsertTranslator<T>> inner)
     {
         Insert(inner);

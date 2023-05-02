@@ -15,8 +15,14 @@ public class DeleteQueryBuilder<T> : QueryBuilder<T>, IDeleteQueryBuilder<T>
 {
     public DeleteQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public static DeleteQueryBuilder<T> Create(StringBuilder sb)
-        => (DeleteQueryBuilder<T>)new DeleteQueryBuilder<T>(sb).Delete();
+    public DeleteQueryBuilder<T> Delete()
+    {
+        DeleteTranslator<T>.Delete(_sb);
+        return this;
+    }
+
+    public static DeleteQueryBuilder<T> Delete(StringBuilder sb)
+        => new DeleteQueryBuilder<T>(sb).Delete();
 
     IDeleteQueryBuilder<T> IDeleteQueryBuilder<T>.Delete()
     {
