@@ -96,8 +96,7 @@ public class Translator
 public class Translator<T> : Translator
      where T : class
 {
-    private int _indexInsert;
-    private bool _isComma;
+    protected bool _isComma;
     private Type _typeEntity;
     protected Type typeEntity
     {
@@ -112,22 +111,14 @@ public class Translator<T> : Translator
     public Translator<T> NotEqual<TField>([NotNull] Expression<Func<T, TField>> field, TField value)
     {
         Field(field).NotEqual();
-        if (value is null)
-            Null();
-        else //dynemic оказался быстрее, чем каст к типу (value is string)
-            Value((dynamic)value);
-
+        Value(value);
         return this;
     }
 
     public Translator<T> Equal<TField>([NotNull] Expression<Func<T, TField>> field, TField value)
     {
         Field(field).Equal();
-        if (value is null)
-            Null();
-        else //dynemic оказался быстрее, чем каст к типу (value is string)
-            Value((dynamic)value);
-
+        Value(value);
         return this;
     }
 
@@ -137,6 +128,15 @@ public class Translator<T> : Translator
         if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
 
         Append(member.Name);
+        return this;
+    }
+
+    public Translator<T> Value(dynamic value)
+    {
+        if (value is null)
+            Null();
+        else //dynemic оказался быстрее, чем каст к типу (value is string)
+            Value(value);
         return this;
     }
 
@@ -177,95 +177,6 @@ public class Translator<T> : Translator
     public Translator<T> Value(int value)
     {
         Append(value.ToString());
-        return this;
-    }
-
-    public Translator<T> Delete()
-    {
-        AppendNewLine("delete ").Append(typeEntity.Name);
-        return this;
-    }
-
-    public Translator<T> Insert()
-    {
-        AppendNewLine("insert into ").Append(typeEntity.Name).Append(" ").BracketLeft();
-        _indexInsert = Length;
-
-        AppendNewLine("values ").BracketLeft();
-        return this;
-    }
-
-    public Translator<T> InsertEnd()
-    {
-        Insert(_indexInsert, BracketRitht());
-        return this;
-    }
-
-    public Translator<T> Values<TField>(Expression<Func<T, TField>> field, TField value)
-    {
-        if (_isComma)
-        {
-            Insert(_indexInsert, Comma());
-            _indexInsert += 2;
-        }
-        else _isComma = true;
-
-        var member = (field.Body as MemberExpression)?.Member;
-        if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
-
-        Insert(_indexInsert, member.Name);
-        _indexInsert += member.Name.Length;
-
-        if (value is null)
-            Null();
-        else //dynemic оказался быстрее, чем каст к типу (value is string)
-            Value((dynamic)value);
-
-        return this;
-    }
-
-    public Translator<T> Join()
-    {
-        /*
-         FROM Geeks1  
-INNER JOIN Geeks2 ON Geeks1.col1 = Geeks2.col1  
-
-         */
-        /*AppendNewLine("from ");
-        _sb.Append(typeEntity.Name);
-        _sb.Append(" ");
-        BracketLeft();
-        _indexInsert = _sb.Length;
-
-        AppendNewLine("values ");
-        BracketLeft();*/
-        return this;
-    }
-
-    public Translator<T> Set<TField>(Expression<Func<T, TField>> field, TField value)
-    {
-        if (_isComma) Comma();
-        else _isComma = true;
-
-        Field(field).Equal();
-        if (value is null)
-            Null();
-        else //dynemic оказался быстрее, чем каст к типу (value is string)
-            Value((dynamic)value);
-
-        return this;
-    }
-
-    public Translator<T> Update()
-    {
-        AppendNewLine("update ").Append(typeEntity.Name).AppendNewLine("set ");
-        return this;
-    }
-    
-
-    public Translator<T> Where()
-    {
-        AppendNewLine("where ");
         return this;
     }
 }

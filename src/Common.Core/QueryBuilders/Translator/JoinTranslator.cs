@@ -2,16 +2,16 @@
 
 namespace Common.Core.QueryBuilders.Translator;
 
-public interface IJoinTranslator<T>
-    where T : class
+public interface IJoinTranslator<TJoin>
+    where TJoin : class
 {
 }
 
-public class JoinTranslator<T> : Translator<T>, IJoinTranslator<T>
-    where T : class
+public class JoinTranslator<TJoin> : Translator<TJoin>, IJoinTranslator<TJoin>
+    where TJoin : class
 {
     public JoinTranslator(StringBuilder sb) : base(sb) { }
 
-    public static implicit operator JoinTranslator<T>(StringBuilder sb)
-        => new JoinTranslator<T>(sb);
+    public static implicit operator JoinTranslator<TJoin>(StringBuilder sb)
+        => new JoinTranslator<TJoin>(sb);
 }

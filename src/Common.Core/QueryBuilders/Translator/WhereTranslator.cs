@@ -19,9 +19,6 @@ public class WhereTranslator<T> : Translator<T>, IWhereTranslator<T>
 {
     public WhereTranslator(StringBuilder sb) : base(sb) { }
 
-    public static implicit operator WhereTranslator<T>(StringBuilder sb)
-        => new WhereTranslator<T>(sb);
-
     public WhereTranslator<T> Bracket(Action<WhereTranslator<T>> inner)
     {
         BracketLeft();
@@ -29,6 +26,22 @@ public class WhereTranslator<T> : Translator<T>, IWhereTranslator<T>
         BracketRitht();
         return this;
     }
+
+    public WhereTranslator<T> Where()
+    {
+        AppendNewLine("where ");
+        return this;
+    }
+
+    public static WhereTranslator<T> Where(StringBuilder sb, Action<WhereTranslator<T>> inner)
+    {
+        var obj = new WhereTranslator<T>(sb).Where();
+        inner(obj);
+        return obj;
+    }
+
+    public static implicit operator WhereTranslator<T>(StringBuilder sb)
+        => new WhereTranslator<T>(sb);
 
     IWhereTranslator<T> IWhereTranslator<T>.NotEqual<TField>([NotNull] Expression<Func<T, TField>> field, TField value)
     {
@@ -55,5 +68,5 @@ public class WhereTranslator<T> : Translator<T>, IWhereTranslator<T>
     }
 
     IWhereTranslator<T> IWhereTranslator<T>.Bracket(Action<IWhereTranslator<T>> inner)
-        => (IWhereTranslator<T>)Bracket(inner);
+        => Bracket(inner);
 }

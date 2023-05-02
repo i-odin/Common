@@ -1,4 +1,5 @@
 ﻿using Common.Core.QueryBuilders;
+using System.Runtime.CompilerServices;
 
 namespace Common.Core.Tests.QueryBuilders;
 
@@ -62,7 +63,7 @@ where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 an
                                     .Set(y => y.Name, null)
                                     .Set(y => y.Age, 10)
                                     .Set(y => y.Timespan, new DateTime(2023, 04, 23)))
-            .Join<TestClass2>(null);
+            .Join<TestClass2>(x => x.Equal(y => y.Id, y => y.Id2));
         Assert.Equal(expected, builder.ToString());
     }*/
 }

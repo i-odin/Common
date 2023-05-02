@@ -12,34 +12,31 @@ public class QueryBuilder<T>
 
     public QueryBuilder<T> Insert(Action<InsertTranslator<T>> inner)
     {
-        var obj = (InsertTranslator<T>)_sb;
-        obj.Insert();
-        inner(obj);
-        obj.InsertEnd();
+        InsertTranslator<T>.Insert(_sb, inner);
         return this;
     }
 
     public QueryBuilder<T> Update(Action<UpdateTranslator<T>> inner)
     {
-        inner((UpdateTranslator<T>)_sb);
+        UpdateTranslator<T>.Update(_sb, inner);
         return this;
     }
 
     public QueryBuilder<T> Delete()
     {
-        var _ = (DeleteTranslator<T>)_sb;
+        DeleteTranslator<T>.Delete(_sb);
         return this;
     }
 
     public QueryBuilder<T> Where(Action<WhereTranslator<T>> inner) 
     {
-        inner((WhereTranslator<T>)((WhereTranslator<T>)_sb).Where());
+        WhereTranslator<T>.Where(_sb, inner);
         return this;
     }
 
     public QueryBuilder<T> Join<T1>(Action<JoinTranslator<T>> inner) 
     {
-        inner((JoinTranslator<T>)((JoinTranslator<T>)_sb).Join());
+        //inner((JoinTranslator<T>)((JoinTranslator<T>)_sb).Join());
         return this;
     }
 }
