@@ -5,95 +5,99 @@ using System.Text;
 
 namespace Common.Core.QueryBuilders.Translator;
 
-public class StringBuilderWrapper
+public class Translator
 {
-    //TODO: сделать private
     protected readonly StringBuilder _sb;
-    public StringBuilderWrapper(StringBuilder sb)
-        => _sb = sb;
+    public Translator(StringBuilder sb) => _sb = sb;
 
-    protected StringBuilderWrapper AppendNewLine(string value)
+    public int Length => _sb.Length;
+
+    public Translator Append(string value)
+    {
+        _sb.Append(value);
+        return this;
+    }
+
+    public Translator AppendNewLine(string value)
     {
         if (_sb.Length > 0)
-            _sb.Append("\r\n");
-        _sb.Append(value);
-        return this;
-    }
-    
-    protected StringBuilderWrapper AppendString(string value)
-    {
-        _sb.Append("'");
-        _sb.Append(value);
-        _sb.Append("'");
+            Append("\r\n");
+        Append(value);
         return this;
     }
 
-    protected StringBuilderWrapper AppendNull()
+    public Translator Insert(int index, string value)
     {
-        _sb.Append("null");
+        _sb.Insert(index, value);
         return this;
     }
 
-    public StringBuilderWrapper BracketLeft()
+    public Translator AppendString(string value)
     {
-        _sb.Append("(");
+        Append("'");
+        Append(value);
+        Append("'");
+        return this;
+    }
+
+    public Translator Null()
+    {
+        Append("null");
+        return this;
+    }
+
+    public Translator BracketLeft()
+    {
+        Append("(");
         return this;
     }
 
     public string BracketRitht()
     {
         var result = ")";
-        _sb.Append(result);
+        Append(result);
         return result;
     }
 
-    public StringBuilderWrapper InsertBracketRitht(int index)
+    public Translator Or()
     {
-        _sb.Insert(index, BracketRitht());
+        Append(" or ");
         return this;
     }
 
-    public StringBuilderWrapper Or()
+    public Translator And()
     {
-        _sb.Append(" or ");
+        Append(" and ");
         return this;
     }
 
-    public StringBuilderWrapper And()
+    public Translator NotEqual()
     {
-        _sb.Append(" and ");
+        Append(" <> ");
         return this;
     }
 
-    public StringBuilderWrapper NotEqual()
+    public Translator Equal()
     {
-        _sb.Append(" <> ");
-        return this;
-    }
-
-    public StringBuilderWrapper Equal()
-    {
-        _sb.Append(" = ");
+        Append(" = ");
         return this;
     }
 
     public string Comma()
     {
         var result = ", ";
-        _sb.Append(result);
+        Append(result);
         return result;
     }
-    public StringBuilderWrapper InsertComma(int index)
-    {
-        _sb.Insert(index, Comma());
-        return this;
-    }
+    
     public override string ToString() => _sb.ToString();
 }
 
-public class Translator<T> : StringBuilderWrapper
+public class Translator<T> : Translator
      where T : class
 {
+    private int _indexInsert;
+    private bool _isComma;
     private Type _typeEntity;
     protected Type typeEntity
     {
@@ -109,7 +113,7 @@ public class Translator<T> : StringBuilderWrapper
     {
         Field(field).NotEqual();
         if (value is null)
-            AppendNull();
+            Null();
         else //dynemic оказался быстрее, чем каст к типу (value is string)
             Value((dynamic)value);
 
@@ -120,7 +124,7 @@ public class Translator<T> : StringBuilderWrapper
     {
         Field(field).Equal();
         if (value is null)
-            AppendNull();
+            Null();
         else //dynemic оказался быстрее, чем каст к типу (value is string)
             Value((dynamic)value);
 
@@ -132,28 +136,28 @@ public class Translator<T> : StringBuilderWrapper
         var member = (field.Body as MemberExpression)?.Member;
         if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
 
-        _sb.Append(member.Name);
+        Append(member.Name);
         return this;
     }
 
     public Translator<T> Value(string value)
     {
         if (value != null) AppendString(value);
-        else AppendNull();
+        else Null();
         return this;
     }
 
     public Translator<T> Value(Guid value)
     {
         if (value != null) AppendString(value.ToString());
-        else AppendNull();
+        else Null();
         return this;
     }
 
     public Translator<T> Value(DateTime? value)
     {
         if (value.HasValue) Value(value.Value);
-        else AppendNull();
+        else Null();
         return this;
     }
 
@@ -166,13 +170,102 @@ public class Translator<T> : StringBuilderWrapper
     public Translator<T> Value(int? value)
     {
         if (value.HasValue) Value(value.Value);
-        else AppendNull();
+        else Null();
         return this;
     }
 
     public Translator<T> Value(int value)
     {
-        _sb.Append(value.ToString());
+        Append(value.ToString());
+        return this;
+    }
+
+    public Translator<T> Delete()
+    {
+        AppendNewLine("delete ").Append(typeEntity.Name);
+        return this;
+    }
+
+    public Translator<T> Insert()
+    {
+        AppendNewLine("insert into ").Append(typeEntity.Name).Append(" ").BracketLeft();
+        _indexInsert = Length;
+
+        AppendNewLine("values ").BracketLeft();
+        return this;
+    }
+
+    public Translator<T> InsertEnd()
+    {
+        Insert(_indexInsert, BracketRitht());
+        return this;
+    }
+
+    public Translator<T> Values<TField>(Expression<Func<T, TField>> field, TField value)
+    {
+        if (_isComma)
+        {
+            Insert(_indexInsert, Comma());
+            _indexInsert += 2;
+        }
+        else _isComma = true;
+
+        var member = (field.Body as MemberExpression)?.Member;
+        if (member is null) throw new InvalidOperationException("Please provide a valid field expression");
+
+        Insert(_indexInsert, member.Name);
+        _indexInsert += member.Name.Length;
+
+        if (value is null)
+            Null();
+        else //dynemic оказался быстрее, чем каст к типу (value is string)
+            Value((dynamic)value);
+
+        return this;
+    }
+
+    public Translator<T> Join()
+    {
+        /*
+         FROM Geeks1  
+INNER JOIN Geeks2 ON Geeks1.col1 = Geeks2.col1  
+
+         */
+        /*AppendNewLine("from ");
+        _sb.Append(typeEntity.Name);
+        _sb.Append(" ");
+        BracketLeft();
+        _indexInsert = _sb.Length;
+
+        AppendNewLine("values ");
+        BracketLeft();*/
+        return this;
+    }
+
+    public Translator<T> Set<TField>(Expression<Func<T, TField>> field, TField value)
+    {
+        if (_isComma) Comma();
+        else _isComma = true;
+
+        Field(field).Equal();
+        if (value is null)
+            Null();
+        else //dynemic оказался быстрее, чем каст к типу (value is string)
+            Value((dynamic)value);
+
+        return this;
+    }
+
+    public Translator<T> Update()
+    {
+        AppendNewLine("update ").Append(typeEntity.Name).AppendNewLine("set ");
+        return this;
+    }
+    
+
+    public Translator<T> Where()
+    {
+        AppendNewLine("where ");
         return this;
     }
 }

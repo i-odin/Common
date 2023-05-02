@@ -36,14 +36,14 @@ public class QueryBuilder
     public QueryBuilder Where<T>(Action<WhereTranslator<T>> inner) 
         where T : class
     {
-        inner(((WhereTranslator<T>)_sb).Where());
+        inner((WhereTranslator<T>)((WhereTranslator<T>)_sb).Where());
         return this;
     }
 
     public QueryBuilder Join<T>(Action<JoinTranslator<T>> inner) 
         where T : class
     {
-        inner(((JoinTranslator<T>)_sb).Join());
+        inner((JoinTranslator<T>)((JoinTranslator<T>)_sb).Join());
         return this;
     }
 }

@@ -12,13 +12,6 @@ public class DeleteTranslator<T> : Translator<T>, IDeleteTranslator<T>
 {
     public DeleteTranslator(StringBuilder sb) : base(sb) { }
 
-    public DeleteTranslator<T> Delete()
-    {
-        AppendNewLine("delete ");
-        _sb.Append(typeEntity.Name);
-        return this;
-    }
-
     public static implicit operator DeleteTranslator<T>(StringBuilder sb)
-        => new DeleteTranslator<T>(sb).Delete();
+        => (DeleteTranslator<T>)new DeleteTranslator<T>(sb).Delete();
 }
