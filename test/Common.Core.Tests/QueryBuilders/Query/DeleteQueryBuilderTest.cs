@@ -9,7 +9,7 @@ public class DeleteQueryBuilderTest
     [InlineData("delete TestClass")]
     public void Delete_BuildDeleteSql(string expected)
     {
-        var builder = new DeleteQueryBuilder(new StringBuilder()).Delete<TestClass>();
+        var builder = new DeleteQueryBuilder<TestClass>(new StringBuilder()).Delete();
 
         Assert.Equal(expected, builder.ToString());
     }

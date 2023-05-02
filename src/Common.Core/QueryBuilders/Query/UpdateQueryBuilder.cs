@@ -3,34 +3,35 @@ using System.Text;
 
 namespace Common.Core.QueryBuilders.Query;
 
-public interface IUpdateQueryBuilder
+public interface IUpdateQueryBuilder<T>
+    where T : class
 {
-    IUpdateQueryBuilder Update<T>(Action<IUpdateTranslator<T>> inner) where T : class;
-    IUpdateQueryBuilder Join<T>(Action<IJoinTranslator<T>> inner) where T : class;
-    IUpdateQueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) where T : class;
+    IUpdateQueryBuilder<T> Update(Action<IUpdateTranslator<T>> inner);
+    IUpdateQueryBuilder<T> Join(Action<IJoinTranslator<T>> inner);
+    IUpdateQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
 }
 
-public class UpdateQueryBuilder : QueryBuilder, IUpdateQueryBuilder
+public class UpdateQueryBuilder<T> : QueryBuilder<T>, IUpdateQueryBuilder<T>
+    where T : class
 {
     public UpdateQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public static UpdateQueryBuilder Create<T>(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
-        where T : class
-        => (UpdateQueryBuilder)new UpdateQueryBuilder(sb).Update(inner);
+    public static UpdateQueryBuilder<T> Create(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
+        => (UpdateQueryBuilder<T>)new UpdateQueryBuilder<T>(sb).Update(inner);
 
-    IUpdateQueryBuilder IUpdateQueryBuilder.Update<T>(Action<IUpdateTranslator<T>> inner)
+    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Update(Action<IUpdateTranslator<T>> inner)
     {
         Update(inner);
         return this;
     }
 
-    IUpdateQueryBuilder IUpdateQueryBuilder.Where<T>(Action<IWhereTranslator<T>> inner) where T : class
+    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
     {
         Where(inner);
         return this;
     }
 
-    IUpdateQueryBuilder IUpdateQueryBuilder.Join<T>(Action<IJoinTranslator<T>> inner)
+    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join(Action<IJoinTranslator<T>> inner)
     {
         throw new NotImplementedException();
     }

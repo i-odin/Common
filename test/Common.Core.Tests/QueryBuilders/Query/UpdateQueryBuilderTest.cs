@@ -20,8 +20,8 @@ set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan
 
     public void Update_BuildUpdateSql(string expected)
     {
-        var builder = new UpdateQueryBuilder(new StringBuilder())
-            .Update<TestClass>(x => x.Set(y => y.Id, Guid.Empty)
+        var builder = new UpdateQueryBuilder<TestClass>(new StringBuilder())
+            .Update(x => x.Set(y => y.Id, Guid.Empty)
                                     .Set(y => y.Name, null)
                                     .Set(y => y.Age, 10)
                                     .Set(y => y.Timespan, new DateTime(2023, 04, 23)));

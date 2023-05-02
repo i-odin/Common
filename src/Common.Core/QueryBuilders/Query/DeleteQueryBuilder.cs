@@ -3,27 +3,28 @@ using System.Text;
 
 namespace Common.Core.QueryBuilders.Query;
 
-public interface IDeleteQueryBuilder
+public interface IDeleteQueryBuilder<T>
+    where T : class
 {
-    IDeleteQueryBuilder Delete<T>() where T : class;
-    IDeleteQueryBuilder Where<T>(Action<IWhereTranslator<T>> inner) where T : class;
+    IDeleteQueryBuilder<T> Delete();
+    IDeleteQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
 }
 
-public class DeleteQueryBuilder : QueryBuilder, IDeleteQueryBuilder
+public class DeleteQueryBuilder<T> : QueryBuilder<T>, IDeleteQueryBuilder<T>
+    where T : class
 {
     public DeleteQueryBuilder(StringBuilder sb) : base(sb) {}
 
-    public static DeleteQueryBuilder Create<T>(StringBuilder sb)
-        where T : class
-        => (DeleteQueryBuilder)new DeleteQueryBuilder(sb).Delete<T>();
+    public static DeleteQueryBuilder<T> Create(StringBuilder sb)
+        => (DeleteQueryBuilder<T>)new DeleteQueryBuilder<T>(sb).Delete();
 
-    IDeleteQueryBuilder IDeleteQueryBuilder.Delete<T>()
+    IDeleteQueryBuilder<T> IDeleteQueryBuilder<T>.Delete()
     {
-        Delete<T>();
+        Delete();
         return this;
     }
 
-    IDeleteQueryBuilder IDeleteQueryBuilder.Where<T>(Action<IWhereTranslator<T>> inner)
+    IDeleteQueryBuilder<T> IDeleteQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
     {
         Where(inner);
         return this;
