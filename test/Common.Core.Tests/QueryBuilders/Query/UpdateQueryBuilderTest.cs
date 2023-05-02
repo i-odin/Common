@@ -9,7 +9,7 @@ public class UpdateQueryBuilderTest
     [InlineData(@"update TestClass
 set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'")]
 
-    public void Update_BuildUpdateSql(string expected)
+    public void Update_BuildSql(string expected)
     {
         var builder = new UpdateQueryBuilder<TestClass>(new StringBuilder())
             .Update(x => x.Set(y => y.Id, Guid.Empty)
@@ -23,7 +23,7 @@ set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan
     [InlineData(@"update TestClass
 set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'
 where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 and Timespan = '2023-04-23T00:00:00.0000000'")]
-    public void UpdateWhere_BuildUpdateWhereSql(string expected)
+    public void UpdateWhere_BuildSql(string expected)
     {
         var builder = ((IUpdateQueryBuilder<TestClass>)new UpdateQueryBuilder<TestClass>(new StringBuilder()))
             .Update(x => x.Set(y => y.Id, Guid.Empty)
@@ -43,7 +43,7 @@ set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan
 from TestClass
 join TestClass2 on TestClass.Id = TestClass2.Id2, TestClass.Age = TestClass2.Age2
 where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 and Timespan = '2023-04-23T00:00:00.0000000'")]
-    public void UpdateJoinWhere_BuildUpdateJoinWhereSql(string expected)
+    public void UpdateJoinWhere_BuildSql(string expected)
     {
         var builder = ((IUpdateQueryBuilder<TestClass>)new UpdateQueryBuilder<TestClass>(new StringBuilder()))
             .Update(x => x.Set(y => y.Id, Guid.Empty)

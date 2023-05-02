@@ -7,7 +7,7 @@ public class WhereTranslatorTest
 {
     [Theory]
     [InlineData("where Id = '00000000-0000-0000-0000-000000000000' and Name = null and Age = 10 or Timespan = '2023-04-23T00:00:00.0000000'")]
-    public void Where_BuildWereSql(string expected)
+    public void Where_BuildSql(string expected)
     {
         var builder = (IWhereTranslator<TestClass>)new WhereTranslator<TestClass>(new StringBuilder()).Where();
         builder.Equal(y => y.Id, Guid.Empty).And()
@@ -20,7 +20,7 @@ public class WhereTranslatorTest
 
     [Theory]
     [InlineData("where (Id = '00000000-0000-0000-0000-000000000000' and Name <> null) or (Age = 10 and Timespan <> '2023-04-23T00:00:00.0000000')")]
-    public void Where_BuildBracketSql(string expected)
+    public void WhereBracket_BuildSql(string expected)
     {
         var builder = (IWhereTranslator<TestClass>)new WhereTranslator<TestClass>(new StringBuilder()).Where();
         builder.Bracket(y => y.Equal(y => y.Id, Guid.Empty)
