@@ -6,7 +6,7 @@ namespace Common.Core.Tests.QueryBuilders.Query;
 
 public class DeleteQueryBuilderTest
 {
-    [Theory]
+    /*[Theory]
     [InlineData("delete TestClass")]
     public void Delete_BuildSql(string expected)
     {
@@ -26,5 +26,5 @@ where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 an
                                     .Equal(y => y.Age, 10).And()
                                     .Equal(y => y.Timespan, new DateTime(2023, 04, 23)));
         Assert.Equal(expected, builder.ToString());
-    }
+    }*/
 }

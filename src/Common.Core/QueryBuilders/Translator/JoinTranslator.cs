@@ -5,15 +5,11 @@ using System.Text;
 namespace Common.Core.QueryBuilders.Translator;
 
 public interface IJoinTranslator<TJoin1, TJoin2>
-    where TJoin1 : class
-    where TJoin2 : class
 {
     IJoinTranslator<TJoin1, TJoin2> Equal<TField>([NotNull] Expression<Func<TJoin1, TField>> field1, [NotNull] Expression<Func<TJoin2, TField>> field2);
 }
 
 public class JoinTranslator<TJoin1, TJoin2> : Translator<TJoin1>, IJoinTranslator<TJoin1, TJoin2>
-    where TJoin1 : class
-    where TJoin2 : class
 {
     private Type _typeJoin2;
     protected Type typeJoin2

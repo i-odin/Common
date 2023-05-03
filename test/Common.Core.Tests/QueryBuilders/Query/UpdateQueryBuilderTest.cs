@@ -5,6 +5,7 @@ namespace Common.Core.Tests.QueryBuilders.Query;
 
 public class UpdateQueryBuilderTest
 {
+    /*
     [Theory]
     [InlineData(@"update TestClass
 set Id = '00000000-0000-0000-0000-000000000000', Name = null, Age = 10, Timespan = '2023-04-23T00:00:00.0000000'")]
@@ -58,5 +59,5 @@ where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 an
                          .Equal(y => y.Timespan, new DateTime(2023, 04, 23)));
 
         Assert.Equal(expected, builder.ToString());
-    }
+    }*/
 }

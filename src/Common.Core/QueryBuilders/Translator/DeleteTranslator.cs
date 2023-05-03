@@ -3,12 +3,29 @@
 
 namespace Common.Core.QueryBuilders.Translator;
 
+public abstract class TranslatorNew
+{
+    public void Run()
+    {
+
+    }
+}
+
+public abstract class DeleteTranslator<T> : TranslatorNew
+{
+
+}
+
+public class MsDeleteTranslator<T> : DeleteTranslator<T>
+{
+
+}
+
+/*
 public interface IDeleteTranslator<T>
-    where T : class
 { }
 
 public class DeleteTranslator<T> : Translator<T>, IDeleteTranslator<T>
-    where T : class
 {
     public DeleteTranslator(StringBuilder sb) : base(sb) { }
 
@@ -24,3 +41,4 @@ public class DeleteTranslator<T> : Translator<T>, IDeleteTranslator<T>
     public static implicit operator DeleteTranslator<T>(StringBuilder sb)
         => new DeleteTranslator<T>(sb);
 }
+*/

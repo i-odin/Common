@@ -9,7 +9,7 @@ public interface IInsertQueryBuilder<T>
     IInsertQueryBuilder<T> Insert(Action<IInsertTranslator<T>> inner);
 }
 
-public class InsertQueryBuilder<T> : QueryBuilder<T>, IInsertQueryBuilder<T>
+public class InsertQueryBuilder<T> : BaseQueryBuilder<T>, IInsertQueryBuilder<T>
     where T : class
 {
     public InsertQueryBuilder(StringBuilder sb) : base(sb) { }

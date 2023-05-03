@@ -101,7 +101,6 @@ public class Translator
 }
 
 public class Translator<T> : Translator
-     where T : class
 {
     protected bool _isComma;
     private Type _typeEntity;

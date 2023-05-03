@@ -4,20 +4,37 @@ using System.Text;
 
 namespace Common.Core.QueryBuilders;
 
-public class MsQueryBuilder
+public abstract class QueryBuilder
 {
     private readonly StringBuilder _sb = new();
-    public override string ToString() => _sb.ToString();
+    private readonly ICollection<RootQueryBuilder> _builders = new List<RootQueryBuilder>();
 
-    public IInsertQueryBuilder<T> Insert<T>(Action<IInsertTranslator<T>> inner)
+    public DeleteQueryBuilder<T> Delete<T>()
+    {
+        var result = MsDeleteQueryBuilder<T>.Make(_sb);
+        _builders.Add(result);
+        return result;
+    }
+
+    public void Build()
+    {
+        foreach (var item in _builders) 
+            item.Build();
+    }
+
+    public override string ToString() => _sb.ToString();
+}
+
+public class MsQueryBuilder : QueryBuilder
+{
+    
+
+    /*public IInsertQueryBuilder<T> Insert<T>(Action<IInsertTranslator<T>> inner)
         where T : class
         => InsertQueryBuilder<T>.Insert(_sb, inner);
 
     public IUpdateQueryBuilder<T> Update<T>(Action<IUpdateTranslator<T>> inner)
         where T : class
         => UpdateQueryBuilder<T>.Update(_sb, inner);
-
-    public IDeleteQueryBuilder<T> Delete<T>()
-        where T : class
-        => DeleteQueryBuilder<T>.Delete(_sb);
+    */
 }

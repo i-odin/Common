@@ -3,15 +3,36 @@ using System.Text;
 
 namespace Common.Core.QueryBuilders.Query;
 
-public interface IDeleteQueryBuilder<T>
-    where T : class
+public abstract class RootQueryBuilder
 {
-    IDeleteQueryBuilder<T> Delete();
-    IDeleteQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
+    private readonly ICollection<TranslatorNew> _translators = new List<TranslatorNew>();
+    private readonly StringBuilder _sb;
+    public RootQueryBuilder(StringBuilder sb) => _sb = sb;
+
+    public void Build()
+    { 
+    }
 }
 
-public class DeleteQueryBuilder<T> : QueryBuilder<T>, IDeleteQueryBuilder<T>
-    where T : class
+public abstract class DeleteQueryBuilder<T> : RootQueryBuilder
+{
+    public DeleteQueryBuilder(StringBuilder sb) : base(sb) { }
+
+    public DeleteQueryBuilder<T> Delete()
+    {
+        return this;
+    }
+}
+
+public class MsDeleteQueryBuilder<T> : DeleteQueryBuilder<T> 
+{
+    public MsDeleteQueryBuilder(StringBuilder sb) : base(sb) { }
+
+    public static MsDeleteQueryBuilder<T> Make(StringBuilder sb) 
+        => new MsDeleteQueryBuilder<T>(sb);
+}
+
+/*public class DeleteQueryBuilder<T> : BaseQueryBuilder<T>, IDeleteQueryBuilder<T>
 {
     public DeleteQueryBuilder(StringBuilder sb) : base(sb) {}
 
@@ -35,4 +56,4 @@ public class DeleteQueryBuilder<T> : QueryBuilder<T>, IDeleteQueryBuilder<T>
         Where(inner);
         return this;
     }
-}
+}*/

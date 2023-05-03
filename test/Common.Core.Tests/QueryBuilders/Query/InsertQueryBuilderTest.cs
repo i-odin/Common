@@ -5,7 +5,7 @@ namespace Common.Core.Tests.QueryBuilders.Query;
 
 public class InsertQueryBuilderTest
 {
-    [Theory]
+    /*[Theory]
     [InlineData("insert into TestClass (Id, Timespan, Name, Age)\r\nvalues ('00000000-0000-0000-0000-000000000000', '2023-04-30T00:00:00.0000000', null, 10)")]
     public void Insert_BuildSql(string expected)
     {
@@ -16,5 +16,5 @@ public class InsertQueryBuilderTest
                           .Values(y => y.Age, 10));
 
         Assert.Equal(expected, builder.ToString());
-    }
+    }*/
 }

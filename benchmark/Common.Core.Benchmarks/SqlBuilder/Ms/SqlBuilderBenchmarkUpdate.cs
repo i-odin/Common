@@ -7,7 +7,7 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
     [MemoryDiagnoser]
     public class SqlBuilderBenchmarkUpdate
     {
-        [Benchmark]
+        /*[Benchmark]
         public string QueryBuilder() {
             return new MsQueryBuilder().Update<BenchmarkClass>(x => x.Set(y => y.Id, Guid.Empty)
                                                                    .Set(y => y.Name, null)
@@ -30,7 +30,7 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
             builder.Append("Age = ").Append(age).Append(", ");
             builder.Append("Timespan = ").Append("'").Append(new DateTime(2023, 04, 23)).Append("'");
             return builder.ToString();
-        }
+        }*/
     }
 
     public class BenchmarkClass

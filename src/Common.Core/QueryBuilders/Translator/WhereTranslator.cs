@@ -5,7 +5,6 @@ using System.Text;
 namespace Common.Core.QueryBuilders.Translator;
 
 public interface IWhereTranslator<T>
-    where T : class
 {
     IWhereTranslator<T> Equal<TField>([NotNull] Expression<Func<T, TField>> field, TField value);
     IWhereTranslator<T> NotEqual<TField>([NotNull] Expression<Func<T, TField>> field, TField value);
@@ -15,7 +14,6 @@ public interface IWhereTranslator<T>
 }
 
 public class WhereTranslator<T> : Translator<T>, IWhereTranslator<T>
-    where T : class
 {
     public WhereTranslator(StringBuilder sb) : base(sb) { }
 

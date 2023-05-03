@@ -15,7 +15,7 @@ public interface IUpdateQueryBuilder<T>
         where TJoin2 : class;
 }
 
-public class UpdateQueryBuilder<T> : QueryBuilder<T>, IUpdateQueryBuilder<T>
+public class UpdateQueryBuilder<T> : BaseQueryBuilder<T>, IUpdateQueryBuilder<T>
     where T : class
 {
     public UpdateQueryBuilder(StringBuilder sb) : base(sb) {}

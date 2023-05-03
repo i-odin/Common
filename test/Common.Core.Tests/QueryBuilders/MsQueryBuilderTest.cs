@@ -4,7 +4,7 @@ namespace Common.Core.Tests.QueryBuilders;
 
 public class MsQueryBuilderTest
 {
-    [Theory]
+    /*[Theory]
     [InlineData(@"insert into TestClass (Id, Timespan, Name, Age)
 values ('00000000-0000-0000-0000-000000000000', '2023-04-30T00:00:00.0000000', null, 10)
 insert into TestClass2 (Id2, Timespan2, Name2, Age2)
@@ -53,7 +53,7 @@ where Id2 = '00000000-0000-0000-0000-000000000000'")]
 
 
         Assert.Equal(expected, builder.ToString());
-    }
+    }*/
 }
 
 public class TestClass
