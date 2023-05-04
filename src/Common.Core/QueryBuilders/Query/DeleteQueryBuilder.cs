@@ -6,30 +6,28 @@ namespace Common.Core.QueryBuilders.Query;
 public abstract class RootQueryBuilder
 {
     private readonly ICollection<TranslatorNew> _translators = new List<TranslatorNew>();
-    private readonly StringBuilder _sb;
-    public RootQueryBuilder(StringBuilder sb) => _sb = sb;
-
-    public void Build()
+    public void Build(StringBuilder sb)
     { 
+        foreach (var translator in _translators) { translator.Run(sb); }
     }
+
+    protected void Add(TranslatorNew translator) 
+        => _translators.Add(translator);
 }
 
 public abstract class DeleteQueryBuilder<T> : RootQueryBuilder
 {
-    public DeleteQueryBuilder(StringBuilder sb) : base(sb) { }
-
-    public DeleteQueryBuilder<T> Delete()
+    public DeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
     {
+        Add(MsDeleteTranslator<T>.Make(inner));
         return this;
     }
 }
 
 public class MsDeleteQueryBuilder<T> : DeleteQueryBuilder<T> 
 {
-    public MsDeleteQueryBuilder(StringBuilder sb) : base(sb) { }
-
-    public static MsDeleteQueryBuilder<T> Make(StringBuilder sb) 
-        => new MsDeleteQueryBuilder<T>(sb);
+    public static DeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner) 
+        => new MsDeleteQueryBuilder<T>().Delete(inner);
 }
 
 /*public class DeleteQueryBuilder<T> : BaseQueryBuilder<T>, IDeleteQueryBuilder<T>

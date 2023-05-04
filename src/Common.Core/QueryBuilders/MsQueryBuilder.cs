@@ -9,9 +9,9 @@ public abstract class QueryBuilder
     private readonly StringBuilder _sb = new();
     private readonly ICollection<RootQueryBuilder> _builders = new List<RootQueryBuilder>();
 
-    public DeleteQueryBuilder<T> Delete<T>()
+    public DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner)
     {
-        var result = MsDeleteQueryBuilder<T>.Make(_sb);
+        var result = MsDeleteQueryBuilder<T>.Make(inner);
         _builders.Add(result);
         return result;
     }
@@ -19,7 +19,7 @@ public abstract class QueryBuilder
     public void Build()
     {
         foreach (var item in _builders) 
-            item.Build();
+            item.Build(_sb);
     }
 
     public override string ToString() => _sb.ToString();
