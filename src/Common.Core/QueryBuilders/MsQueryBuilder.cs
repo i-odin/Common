@@ -8,13 +8,10 @@ public abstract class QueryBuilder
 {
     private readonly StringBuilder _sb = new();
     private readonly ICollection<RootQueryBuilder> _builders = new List<RootQueryBuilder>();
+    protected void Add(RootQueryBuilder builder)
+        => _builders.Add(builder);
 
-    public DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner)
-    {
-        var result = MsDeleteQueryBuilder<T>.Make(inner);
-        _builders.Add(result);
-        return result;
-    }
+    public abstract DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner);
 
     public void Build()
     {
@@ -27,7 +24,13 @@ public abstract class QueryBuilder
 
 public class MsQueryBuilder : QueryBuilder
 {
-    
+    public override DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner)
+    {
+        var result = MsDeleteQueryBuilder<T>.Make(inner);
+        Add(result);
+        return result;
+    }
+
 
     /*public IInsertQueryBuilder<T> Insert<T>(Action<IInsertTranslator<T>> inner)
         where T : class

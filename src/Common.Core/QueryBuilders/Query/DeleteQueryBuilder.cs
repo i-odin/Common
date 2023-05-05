@@ -17,17 +17,29 @@ public abstract class RootQueryBuilder
 
 public abstract class DeleteQueryBuilder<T> : RootQueryBuilder
 {
-    public DeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
-    {
-        Add(MsDeleteTranslator<T>.Make(inner));
-        return this;
-    }
+    public abstract DeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner);
 }
 
 public class MsDeleteQueryBuilder<T> : DeleteQueryBuilder<T> 
 {
-    public static DeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner) 
+    public override MsDeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
+    {
+        Add(MsDeleteTranslator<T>.Make(inner));
+        return this;
+    }
+    public static MsDeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner) 
         => new MsDeleteQueryBuilder<T>().Delete(inner);
+}
+
+public class PgDeleteQueryBuilder<T> : DeleteQueryBuilder<T>
+{
+    public  override PgDeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
+    {
+        Add(PgDeleteTranslator<T>.Make(inner));
+        return this;
+    }
+    public static PgDeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner)
+        => new PgDeleteQueryBuilder<T>().Delete(inner);
 }
 
 /*public class DeleteQueryBuilder<T> : BaseQueryBuilder<T>, IDeleteQueryBuilder<T>

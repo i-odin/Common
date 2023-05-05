@@ -15,18 +15,17 @@ public abstract class TranslatorNew
         => _translators.Add(translator);
 }
 
-public class TranslatorTable<T> : TranslatorNew
+public abstract class TranslatorTable<T> : TranslatorNew
 {
     private string _command;
     private string _table;
-    private string _schema = "dbo";
+    private string _schema;
     private string _alias;
-    public TranslatorTable(string command) { _command = command; }
+    public TranslatorTable(string command, string schema) { _command = command; _schema = schema; }
 
     public override void Run(StringBuilder sb)
     {
         var tableName = string.IsNullOrWhiteSpace(_table) ? typeof(T).Name : _table;
-
         if (string.IsNullOrEmpty(_alias) == false)
             sb.AppendFormat("\r\n{0} {1}.{2} as {3}", _command, _schema, tableName, _alias);
         else
@@ -50,10 +49,27 @@ public class TranslatorTable<T> : TranslatorNew
         _alias = alias;
         return this;
     }
+}
+
+public class MsTranslatorTable<T> : TranslatorTable<T>
+{
+    public MsTranslatorTable(string command, string schema) : base(command, schema) { }
 
     public static TranslatorTable<T> Make(string command, Action<TranslatorTable<T>> inner)
     {
-        var obj = new TranslatorTable<T>(command);
+        var obj = new MsTranslatorTable<T>(command, "dbo");
+        inner?.Invoke(obj);
+        return obj;
+    }
+}
+
+public class PgTranslatorTable<T> : TranslatorTable<T>
+{
+    public PgTranslatorTable(string command, string schema) : base(command, schema) { }
+
+    public static TranslatorTable<T> Make(string command, Action<TranslatorTable<T>> inner)
+    {
+        var obj = new PgTranslatorTable<T>(command, "public");
         inner?.Invoke(obj);
         return obj;
     }
@@ -61,17 +77,30 @@ public class TranslatorTable<T> : TranslatorNew
 
 public abstract class DeleteTranslator<T> : TranslatorNew
 {
-    public DeleteTranslator<T> Delete(Action<TranslatorTable<T>> inner)
-    {
-        Add(TranslatorTable<T>.Make("delete from", inner));
-        return this;
-    }
+    public abstract DeleteTranslator<T> Delete(Action<TranslatorTable<T>> inner);
 }
 
 public class MsDeleteTranslator<T> : DeleteTranslator<T>
 {
+    public override MsDeleteTranslator<T> Delete(Action<TranslatorTable<T>> inner)
+    {
+        Add(MsTranslatorTable<T>.Make("delete from", inner));
+        return this;
+    }
     public static DeleteTranslator<T> Make(Action<TranslatorTable<T>> inner)
         => new MsDeleteTranslator<T>().Delete(inner);
+}
+
+public class PgDeleteTranslator<T> : DeleteTranslator<T>
+{
+    public override PgDeleteTranslator<T> Delete(Action<TranslatorTable<T>> inner)
+    {
+        Add(PgTranslatorTable<T>.Make("delete from", inner));
+        return this;
+    }
+
+    public static DeleteTranslator<T> Make(Action<TranslatorTable<T>> inner)
+        => new PgDeleteTranslator<T>().Delete(inner);
 }
 
 /*
