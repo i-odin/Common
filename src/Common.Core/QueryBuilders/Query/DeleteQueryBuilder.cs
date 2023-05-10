@@ -1,69 +1,36 @@
 ﻿using Common.Core.QueryBuilders.Translator;
-using System.Text;
 
 namespace Common.Core.QueryBuilders.Query;
 
-public abstract class RootQueryBuilder
-{
-    private readonly ICollection<TranslatorNew> _translators = new List<TranslatorNew>();
-    public void Build(StringBuilder sb)
-    { 
-        foreach (var translator in _translators) { translator.Run(sb); }
-    }
-
-    protected void Add(TranslatorNew translator) 
-        => _translators.Add(translator);
-}
-
 public abstract class DeleteQueryBuilder<T> : RootQueryBuilder
 {
-    public abstract DeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner);
+    public abstract DeleteQueryBuilder<T> Delete(Action<TranslatorShortTable<T>> inner);
+    public DeleteQueryBuilder<T> Delete(string table) => Delete(x => x.WithTable(table));
+    public DeleteQueryBuilder<T> Delete() => Delete(inner: null);
 }
 
 public class MsDeleteQueryBuilder<T> : DeleteQueryBuilder<T> 
 {
-    public override MsDeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
+    private readonly string _command = "delete";
+    public override MsDeleteQueryBuilder<T> Delete(Action<TranslatorShortTable<T>> inner)
     {
-        Add(MsDeleteTranslator<T>.Make(inner));
+        Add(MsTranslatorTable<T>.Make(_command, inner));
         return this;
     }
-    public static MsDeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner) 
+
+    public static MsDeleteQueryBuilder<T> Make(Action<TranslatorShortTable<T>> inner)
         => new MsDeleteQueryBuilder<T>().Delete(inner);
 }
 
 public class PgDeleteQueryBuilder<T> : DeleteQueryBuilder<T>
 {
-    public  override PgDeleteQueryBuilder<T> Delete(Action<TranslatorTable<T>> inner)
+    private readonly string _command = "delete from";
+    public override PgDeleteQueryBuilder<T> Delete(Action<TranslatorShortTable<T>> inner)
     {
-        Add(PgDeleteTranslator<T>.Make(inner));
+        Add(PgTranslatorTable<T>.Make(_command, inner));
         return this;
     }
-    public static PgDeleteQueryBuilder<T> Make(Action<TranslatorTable<T>> inner)
+
+    public static PgDeleteQueryBuilder<T> Make(Action<TranslatorShortTable<T>> inner)
         => new PgDeleteQueryBuilder<T>().Delete(inner);
 }
-
-/*public class DeleteQueryBuilder<T> : BaseQueryBuilder<T>, IDeleteQueryBuilder<T>
-{
-    public DeleteQueryBuilder(StringBuilder sb) : base(sb) {}
-
-    public DeleteQueryBuilder<T> Delete()
-    {
-        DeleteTranslator<T>.Delete(_sb);
-        return this;
-    }
-
-    public static DeleteQueryBuilder<T> Delete(StringBuilder sb)
-        => new DeleteQueryBuilder<T>(sb).Delete();
-
-    IDeleteQueryBuilder<T> IDeleteQueryBuilder<T>.Delete()
-    {
-        Delete();
-        return this;
-    }
-
-    IDeleteQueryBuilder<T> IDeleteQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
-    {
-        Where(inner);
-        return this;
-    }
-}*/

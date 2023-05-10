@@ -6,40 +6,40 @@ namespace Common.Core.Tests.QueryBuilders.Query;
 public class MsDeleteQueryBuilderTest
 {
     [Theory]
-    [InlineData("\r\ndelete from dbo.TestClass")]
+    [InlineData("\r\ndelete dbo.TestClass")]
     public void Delete_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete(null).Build(sb);
+        new MsDeleteQueryBuilder<TestClass>().Delete().Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
     [Theory]
-    [InlineData("\r\ndelete from test.Test")]
+    [InlineData("\r\ndelete test.Test")]
     public void DeleteTableNameAndSchema_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete(x => x.WithSchema("test").WithTable("Test")).Build(sb);
+        new MsDeleteQueryBuilder<TestClass>().Delete(x => x.WithTable("Test").WithSchema("test")).Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
     [Theory]
-    [InlineData("\r\ndelete from dbo.TestClass\r\ndelete from dbo.TestClass")]
+    [InlineData("\r\ndelete dbo.TestClass\r\ndelete dbo.TestClass")]
     public void DoubleDelete_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete(null).Delete(null).Build(sb);
+        new MsDeleteQueryBuilder<TestClass>().Delete().Delete().Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
     [Theory]
-    [InlineData("\r\ndelete from test.Test\r\ndelete from test.Test")]
+    [InlineData("\r\ndelete dbo.Test\r\ndelete dbo.Test")]
     public void DoubleDeleteTableNameAndSchema_BuildSql(string expected)
     {
         var sb = new StringBuilder();
         new MsDeleteQueryBuilder<TestClass>()
-            .Delete(x => x.WithSchema("test").WithTable("Test"))
-            .Delete(x => x.WithSchema("test").WithTable("Test"))
+            .Delete("Test")
+            .Delete(x => x.WithTable("Test"))
             .Build(sb);
         Assert.Equal(expected, sb.ToString());
     }

@@ -11,7 +11,7 @@ public abstract class QueryBuilder
     protected void Add(RootQueryBuilder builder)
         => _builders.Add(builder);
 
-    public abstract DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner);
+    public abstract DeleteQueryBuilder<T> Delete<T>(Action<TranslatorShortTable<T>> inner);
 
     public void Build()
     {
@@ -24,7 +24,7 @@ public abstract class QueryBuilder
 
 public class MsQueryBuilder : QueryBuilder
 {
-    public override DeleteQueryBuilder<T> Delete<T>(Action<TranslatorTable<T>> inner)
+    public override DeleteQueryBuilder<T> Delete<T>(Action<TranslatorShortTable<T>> inner)
     {
         var result = MsDeleteQueryBuilder<T>.Make(inner);
         Add(result);

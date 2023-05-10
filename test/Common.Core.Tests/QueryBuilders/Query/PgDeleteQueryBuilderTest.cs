@@ -10,7 +10,7 @@ public class PgDeleteQueryBuilderTest
     public void Delete_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new PgDeleteQueryBuilder<TestClass>().Delete(null).Build(sb);
+        new PgDeleteQueryBuilder<TestClass>().Delete().Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
@@ -19,7 +19,7 @@ public class PgDeleteQueryBuilderTest
     public void DeleteTableNameAndSchema_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new PgDeleteQueryBuilder<TestClass>().Delete(x => x.WithSchema("test").WithTable("Test")).Build(sb);
+        new PgDeleteQueryBuilder<TestClass>().Delete(x => x.WithTable("Test").WithSchema("test")).Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
@@ -28,18 +28,18 @@ public class PgDeleteQueryBuilderTest
     public void DoubleDelete_BuildSql(string expected)
     {
         var sb = new StringBuilder();
-        new PgDeleteQueryBuilder<TestClass>().Delete(null).Delete(null).Build(sb);
+        new PgDeleteQueryBuilder<TestClass>().Delete().Delete().Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
 
     [Theory]
-    [InlineData("\r\ndelete from test.Test\r\ndelete from test.Test")]
+    [InlineData("\r\ndelete from public.Test\r\ndelete from public.Test")]
     public void DoubleDeleteTableNameAndSchema_BuildSql(string expected)
     {
         var sb = new StringBuilder();
         new PgDeleteQueryBuilder<TestClass>()
-            .Delete(x => x.WithSchema("test").WithTable("Test"))
-            .Delete(x => x.WithSchema("test").WithTable("Test"))
+            .Delete("Test")
+            .Delete(x => x.WithTable("Test"))
             .Build(sb);
         Assert.Equal(expected, sb.ToString());
     }
