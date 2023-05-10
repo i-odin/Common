@@ -1,30 +1,27 @@
 ﻿using Common.Core.QueryBuilders.Query;
 using Common.Core.QueryBuilders.Translator;
-using System.Text;
 
 namespace Common.Core.QueryBuilders;
 
 public abstract class QueryBuilder
 {
-    private readonly StringBuilder _sb = new();
+    private readonly QueryBuilderOptions _options = new QueryBuilderOptions();
     private readonly ICollection<RootQueryBuilder> _builders = new List<RootQueryBuilder>();
     protected void Add(RootQueryBuilder builder)
         => _builders.Add(builder);
-
-    public abstract DeleteQueryBuilder<T> Delete<T>(Action<TranslatorShortTable<T>> inner);
-
     public void Build()
     {
         foreach (var item in _builders) 
-            item.Build(_sb);
+            item.Build(_options);
     }
 
-    public override string ToString() => _sb.ToString();
+    public abstract DeleteQueryBuilder<T> Delete<T>(Action<ShortTableTranslator<T>> inner);
+    public override string ToString() => _options.StringBuilder.ToString();
 }
 
 public class MsQueryBuilder : QueryBuilder
 {
-    public override DeleteQueryBuilder<T> Delete<T>(Action<TranslatorShortTable<T>> inner)
+    public override DeleteQueryBuilder<T> Delete<T>(Action<ShortTableTranslator<T>> inner)
     {
         var result = MsDeleteQueryBuilder<T>.Make(inner);
         Add(result);

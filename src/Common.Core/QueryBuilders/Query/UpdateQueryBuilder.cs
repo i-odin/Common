@@ -7,7 +7,7 @@ public interface IUpdateQueryBuilder<T>
     where T : class
 {
     IUpdateQueryBuilder<T> Update(Action<IUpdateTranslator<T>> inner);
-    IUpdateQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
+   // IUpdateQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
     IUpdateQueryBuilder<T> Join<TJoin>(Action<IJoinTranslator<T, TJoin>> inner) 
         where TJoin : class;
     IUpdateQueryBuilder<T> Join<TJoin1, TJoin2>(Action<IJoinTranslator<TJoin1, TJoin2>> inner) 
@@ -41,11 +41,11 @@ public class UpdateQueryBuilder<T> : BaseQueryBuilder<T>, IUpdateQueryBuilder<T>
         return this;
     }
 
-    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
+    /*IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
     {
         Where(inner);
         return this;
-    }
+    }*/
 
     IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join<TJoin>(Action<IJoinTranslator<T, TJoin>> inner)
     {

@@ -5,7 +5,7 @@ namespace Common.Core.QueryBuilders;
 
 public class PgQueryBuilder : QueryBuilder
 {
-    public override DeleteQueryBuilder<T> Delete<T>(Action<TranslatorShortTable<T>> inner)
+    public override DeleteQueryBuilder<T> Delete<T>(Action<ShortTableTranslator<T>> inner)
     {
         var result = PgDeleteQueryBuilder<T>.Make(inner);
         Add(result);

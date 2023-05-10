@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Common.Core.QueryBuilders.Query;
+﻿using Common.Core.QueryBuilders.Query;
 
 namespace Common.Core.Tests.QueryBuilders.Query;
 
@@ -9,39 +8,39 @@ public class MsDeleteQueryBuilderTest
     [InlineData("\r\ndelete dbo.TestClass")]
     public void Delete_BuildSql(string expected)
     {
-        var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete().Build(sb);
-        Assert.Equal(expected, sb.ToString());
+        var opt = new QueryBuilderOptions();
+        new MsDeleteQueryBuilder<TestClass>().Delete().Build(opt);
+        Assert.Equal(expected, opt.ToString());
     }
 
     [Theory]
     [InlineData("\r\ndelete test.Test")]
     public void DeleteTableNameAndSchema_BuildSql(string expected)
     {
-        var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete(x => x.WithTable("Test").WithSchema("test")).Build(sb);
-        Assert.Equal(expected, sb.ToString());
+        var opt = new QueryBuilderOptions();
+        new MsDeleteQueryBuilder<TestClass>().Delete(x => x.WithTable("Test").WithSchema("test")).Build(opt);
+        Assert.Equal(expected, opt.ToString());
     }
 
     [Theory]
     [InlineData("\r\ndelete dbo.TestClass\r\ndelete dbo.TestClass")]
     public void DoubleDelete_BuildSql(string expected)
     {
-        var sb = new StringBuilder();
-        new MsDeleteQueryBuilder<TestClass>().Delete().Delete().Build(sb);
-        Assert.Equal(expected, sb.ToString());
+        var opt = new QueryBuilderOptions();
+        new MsDeleteQueryBuilder<TestClass>().Delete().Delete().Build(opt);
+        Assert.Equal(expected, opt.ToString());
     }
 
     [Theory]
     [InlineData("\r\ndelete dbo.Test\r\ndelete dbo.Test")]
     public void DoubleDeleteTableNameAndSchema_BuildSql(string expected)
     {
-        var sb = new StringBuilder();
+        var opt = new QueryBuilderOptions();
         new MsDeleteQueryBuilder<TestClass>()
             .Delete("Test")
             .Delete(x => x.WithTable("Test"))
-            .Build(sb);
-        Assert.Equal(expected, sb.ToString());
+            .Build(opt);
+        Assert.Equal(expected, opt.ToString());
     }
 
     /*

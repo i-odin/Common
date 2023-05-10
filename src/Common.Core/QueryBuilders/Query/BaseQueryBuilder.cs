@@ -11,7 +11,7 @@ public class BaseQueryBuilder<T>
 
     public BaseQueryBuilder<T> Where(Action<WhereTranslator<T>> inner) 
     {
-        WhereTranslator<T>.Where(_sb, inner);
+        //WhereTranslator<T>.Where(_sb, inner);
         return this;
     }
 
