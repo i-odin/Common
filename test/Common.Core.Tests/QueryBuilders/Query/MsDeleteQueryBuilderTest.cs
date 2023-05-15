@@ -43,18 +43,18 @@ public class MsDeleteQueryBuilderTest
         Assert.Equal(expected, opt.ToString());
     }
 
-    /*
     [Theory]
-    [InlineData(@"delete TestClass
-where Id = '00000000-0000-0000-0000-000000000000' and Name = null or Age = 10 and Timespan = '2023-04-23T00:00:00.0000000'")]
+    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3")]
     public void DeleteWhere_BuildSql(string expected)
     {
-        var builder = ((IDeleteQueryBuilder<TestClass>)new DeleteQueryBuilder<TestClass>(new StringBuilder()))
-            .Delete()
-            .Where(x => x.Equal(y => y.Id, Guid.Empty).And()
-                                    .Equal(y => y.Name, null).Or()
-                                    .Equal(y => y.Age, 10).And()
-                                    .Equal(y => y.Timespan, new DateTime(2023, 04, 23)));
-        Assert.Equal(expected, builder.ToString());
-    }*/
+        var opt = new QueryBuilderOptions();
+        new MsDeleteQueryBuilder<TestClass>()
+           .Delete()
+           .Where(x => x.EqualTo(y => y.Id, Guid.Empty).And()
+                        .EqualTo(y => y.Name, null).And()
+                        .EqualTo(y => y.Age, 10).And()
+                        .EqualTo(y => y.Timespan, new DateTime(2023, 04, 23)))
+           .Build(opt);
+        Assert.Equal(expected, opt.ToString());
+    }
 }

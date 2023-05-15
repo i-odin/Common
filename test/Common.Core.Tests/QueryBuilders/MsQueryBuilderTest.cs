@@ -1,9 +1,29 @@
 ﻿using Common.Core.QueryBuilders;
+using Common.Core.QueryBuilders.Query;
 
 namespace Common.Core.Tests.QueryBuilders;
 
 public class MsQueryBuilderTest
 {
+    [Theory]
+    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3\r\ndelete dbo.TestClass2\r\nwhere Id2 = @Id24 and Name2 = @Name25 and Age2 = @Age26 and Timespan2 = @Timespan27")]
+    public void InsertUpdateDelete_BuildSql(string expected)
+    {
+        var builder = new MsQueryBuilder();
+        builder.Delete<TestClass>()
+               .Where(x => x.EqualTo(y => y.Id, Guid.Empty).And()
+                            .EqualTo(y => y.Name, null).And()
+                            .EqualTo(y => y.Age, 10).And()
+                            .EqualTo(y => y.Timespan, new DateTime(2023, 04, 23)));
+        builder.Delete<TestClass2>()
+               .Where(x => x.EqualTo(y => y.Id2, Guid.Empty).And()
+                            .EqualTo(y => y.Name2, null).And()
+                            .EqualTo(y => y.Age2, 10).And()
+                            .EqualTo(y => y.Timespan2, new DateTime(2023, 04, 23)));
+        builder.Build(out QueryBuilderOptions opt);
+
+        Assert.Equal(expected, opt.ToString());
+    }
     /*[Theory]
     [InlineData(@"insert into TestClass (Id, Timespan, Name, Age)
 values ('00000000-0000-0000-0000-000000000000', '2023-04-30T00:00:00.0000000', null, 10)
