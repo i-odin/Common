@@ -1,5 +1,5 @@
-﻿using Common.Core.QueryBuilders.Query;
-using Common.Core.QueryBuilders.Translator;
+﻿using Common.Core.QueryBuilders.Queris;
+using Common.Core.QueryBuilders.Translators;
 
 namespace Common.Core.QueryBuilders;
 

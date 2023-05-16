@@ -1,9 +1,9 @@
-﻿using Common.Core.QueryBuilders.Translator;
+﻿using Common.Core.QueryBuilders.Translators;
 using System.Text;
 
-namespace Common.Core.QueryBuilders.Query;
+namespace Common.Core.QueryBuilders.Queris;
 
-public interface IInsertQueryBuilder<T>
+/*public interface IInsertQueryBuilder<T>
     where T : class
 {
     IInsertQueryBuilder<T> Insert(Action<IInsertTranslator<T>> inner);
@@ -27,4 +27,4 @@ public class InsertQueryBuilder<T> : BaseQueryBuilder<T>, IInsertQueryBuilder<T>
         Insert(inner);
         return this;
     }
-}
+}*/

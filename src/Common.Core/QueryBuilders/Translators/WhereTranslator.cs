@@ -1,12 +1,12 @@
-﻿using Common.Core.QueryBuilders.Query;
+﻿using Common.Core.QueryBuilders.Queris;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
-namespace Common.Core.QueryBuilders.Translator;
+namespace Common.Core.QueryBuilders.Translators;
 
-public abstract class WhereTranslator<T> : AliasTranslator
+public abstract class WhereTranslator<T> : CommandTranslator
 {
-    private readonly ICollection<TranslatorNew> _translators = new List<TranslatorNew>();
+    private readonly ICollection<Translator> _translators = new List<Translator>();
 
     public WhereTranslator(string command) : base(command) { }
     public override void Run(QueryBuilderOptions options)
@@ -40,7 +40,7 @@ public class MsWhereTranslator<T> : WhereTranslator<T>
     }
 }
 
-public class EqualToTranslator<T> : TranslatorNew
+public class EqualToTranslator<T> : Translator
 {
     private string _columnName;
     private object _value;
@@ -59,7 +59,7 @@ public class EqualToTranslator<T> : TranslatorNew
     }
 }
 
-public class AndTranslator : TranslatorNew
+public class AndTranslator : Translator
 {
     public override void Run(QueryBuilderOptions options)
     {

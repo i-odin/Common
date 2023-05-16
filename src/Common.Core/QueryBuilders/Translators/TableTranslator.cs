@@ -1,38 +1,10 @@
-﻿using Common.Core.QueryBuilders.Query;
+﻿using Common.Core.QueryBuilders.Queris;
 
-namespace Common.Core.QueryBuilders.Translator;
+namespace Common.Core.QueryBuilders.Translators;
 
-public abstract class TranslatorNew
+public abstract class TableTranslator<T> : CommandTranslator
 {
-    public abstract void Run(QueryBuilderOptions options);
-    protected string GetColumnParameterName(string fieldName, int index) 
-        => string.Format("{0}{1}", fieldName, index);
-}
-
-public abstract class CommandTranslator : TranslatorNew
-{
-    protected readonly string _command;
-    public CommandTranslator(string command) { _command = command; }
-    public override void Run(QueryBuilderOptions options)
-    {
-        options.StringBuilder.AppendFormat("\r\n{0} ", _command);
-    }
-}
-
-public abstract class AliasTranslator : CommandTranslator
-{
-    protected string _alias;
-    public AliasTranslator(string command) : base(command) { }
-
-    public virtual AliasTranslator WithAlias(string alias)
-    {
-        _alias = alias;
-        return this;
-    }
-}
-
-public abstract class TableTranslator<T> : AliasTranslator
-{
+    private string _alias;
     private string _table;
     private string _schema;
     public TableTranslator(string command, string schema) : base(command) { _schema = schema; }
@@ -55,6 +27,11 @@ public abstract class TableTranslator<T> : AliasTranslator
     public TableTranslator<T> WithSchema(string schema)
     {
         _schema = schema;
+        return this;
+    }
+    public TableTranslator<T> WithAlias(string alias)
+    {
+        _alias = alias;
         return this;
     }
 }

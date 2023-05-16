@@ -1,9 +1,9 @@
-﻿using Common.Core.QueryBuilders.Translator;
+﻿using Common.Core.QueryBuilders.Translators;
 using System.Text;
 
-namespace Common.Core.QueryBuilders.Query;
+namespace Common.Core.QueryBuilders.Queris;
 
-public interface IUpdateQueryBuilder<T>
+/*public interface IUpdateQueryBuilder<T>
     where T : class
 {
     IUpdateQueryBuilder<T> Update(Action<IUpdateTranslator<T>> inner);
@@ -41,12 +41,6 @@ public class UpdateQueryBuilder<T> : BaseQueryBuilder<T>, IUpdateQueryBuilder<T>
         return this;
     }
 
-    /*IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Where(Action<IWhereTranslator<T>> inner)
-    {
-        Where(inner);
-        return this;
-    }*/
-
     IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join<TJoin>(Action<IJoinTranslator<T, TJoin>> inner)
     {
         Join(inner);
@@ -58,4 +52,4 @@ public class UpdateQueryBuilder<T> : BaseQueryBuilder<T>, IUpdateQueryBuilder<T>
         //TODO реализация
         throw new NotImplementedException();
     }
-}
+}*/

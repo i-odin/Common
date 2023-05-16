@@ -1,6 +1,7 @@
-﻿using Common.Core.QueryBuilders.Query;
+﻿using Common.Core.QueryBuilders;
+using Common.Core.QueryBuilders.Queris;
 
-namespace Common.Core.Tests.QueryBuilders.Query;
+namespace Common.Core.Tests.QueryBuilders.Queris;
 
 public class MsDeleteQueryBuilderTest
 {
@@ -14,32 +15,11 @@ public class MsDeleteQueryBuilderTest
     }
 
     [Theory]
-    [InlineData("\r\ndelete test.Test")]
-    public void DeleteTableNameAndSchema_BuildSql(string expected)
-    {
-        var opt = new QueryBuilderOptions();
-        new MsDeleteQueryBuilder<TestClass>().Delete(x => x.WithTable("Test").WithSchema("test")).Build(opt);
-        Assert.Equal(expected, opt.ToString());
-    }
-
-    [Theory]
     [InlineData("\r\ndelete dbo.TestClass\r\ndelete dbo.TestClass")]
     public void DoubleDelete_BuildSql(string expected)
     {
         var opt = new QueryBuilderOptions();
         new MsDeleteQueryBuilder<TestClass>().Delete().Delete().Build(opt);
-        Assert.Equal(expected, opt.ToString());
-    }
-
-    [Theory]
-    [InlineData("\r\ndelete dbo.Test\r\ndelete dbo.Test")]
-    public void DoubleDeleteTableNameAndSchema_BuildSql(string expected)
-    {
-        var opt = new QueryBuilderOptions();
-        new MsDeleteQueryBuilder<TestClass>()
-            .Delete("Test")
-            .Delete(x => x.WithTable("Test"))
-            .Build(opt);
         Assert.Equal(expected, opt.ToString());
     }
 

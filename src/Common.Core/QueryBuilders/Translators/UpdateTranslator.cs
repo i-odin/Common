@@ -2,9 +2,9 @@
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Common.Core.QueryBuilders.Translator;
+namespace Common.Core.QueryBuilders.Translators;
 
-public interface IUpdateTranslator<T>
+/*public interface IUpdateTranslator<T>
         where T : class
 {
     IUpdateTranslator<T> Set<TField>([NotNull] Expression<Func<T, TField>> field, TField value);
@@ -42,4 +42,4 @@ public class UpdateTranslator<T> : Translator<T>, IUpdateTranslator<T>
     {
         Set(field, value); return this;
     }
-}
+}*/

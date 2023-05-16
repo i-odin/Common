@@ -1,11 +1,10 @@
-﻿using Common.Core.QueryBuilders.Translator;
+﻿using Common.Core.QueryBuilders.Translators;
 
-namespace Common.Core.QueryBuilders.Query;
+namespace Common.Core.QueryBuilders.Queris;
 
-public abstract class DeleteQueryBuilder<T> : RootQueryBuilder
+public abstract class DeleteQueryBuilder<T> : BaseQueryBuilder
 {
     public abstract DeleteQueryBuilder<T> Delete(Action<TableTranslator<T>> inner);
-    public DeleteQueryBuilder<T> Delete(string table) => Delete(x => x.WithTable(table));
     public DeleteQueryBuilder<T> Delete() => Delete(inner: null);
     public DeleteQueryBuilder<T> Where(Action<WhereTranslator<T>> inner)
     {

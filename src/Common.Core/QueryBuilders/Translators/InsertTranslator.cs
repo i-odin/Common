@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
 
-namespace Common.Core.QueryBuilders.Translator;
+namespace Common.Core.QueryBuilders.Translators;
 
 public interface IInsertTranslator<T>
     where T : class
@@ -9,7 +9,7 @@ public interface IInsertTranslator<T>
     IInsertTranslator<T> Values<TField>(Expression<Func<T, TField>> field, TField value);
 }
 
-public class InsertTranslator<T> : Translator<T>, IInsertTranslator<T>
+/*public class InsertTranslator<T> : Translator<T>, IInsertTranslator<T>
     where T : class
 {
     private int _indexInsert;
@@ -62,4 +62,4 @@ public class InsertTranslator<T> : Translator<T>, IInsertTranslator<T>
 
     IInsertTranslator<T> IInsertTranslator<T>.Values<TField>(Expression<Func<T, TField>> field, TField value)
         => Values(field, value);
-}
+}*/

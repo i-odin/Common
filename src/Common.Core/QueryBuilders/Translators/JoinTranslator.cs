@@ -2,9 +2,9 @@
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Common.Core.QueryBuilders.Translator;
+namespace Common.Core.QueryBuilders.Translators;
 
-public interface IJoinTranslator<TJoin1, TJoin2>
+/*public interface IJoinTranslator<TJoin1, TJoin2>
 {
     IJoinTranslator<TJoin1, TJoin2> Equal<TField>([NotNull] Expression<Func<TJoin1, TField>> field1, [NotNull] Expression<Func<TJoin2, TField>> field2);
 }
@@ -82,4 +82,4 @@ public class JoinTranslator<TJoin1, TJoin2> : Translator<TJoin1>, IJoinTranslato
         Equal(field1, field2);
         return this;
     }
-}
+}*/
