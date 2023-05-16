@@ -22,6 +22,12 @@ public abstract class WhereTranslator<T> : CommandTranslator
         return this;
     }
 
+    public WhereTranslator<T> EqualTo(string column, object value)
+    {
+        _translators.Add(new EqualToTranslator<T>(column, value));
+        return this;
+    }
+
     public WhereTranslator<T> And()
     {
         _translators.Add(new AndTranslator());

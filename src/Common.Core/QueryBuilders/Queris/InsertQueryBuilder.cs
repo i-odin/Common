@@ -14,6 +14,11 @@ public abstract class InsertQueryBuilder<T> : BaseQueryBuilder
         (Get(_index) as InsertTranslator<T>).AddValue(column, value);
         return this;
     }
+    public InsertQueryBuilder<T> Value(string column, object value)
+    {
+        (Get(_index) as InsertTranslator<T>).AddValue(column, value);
+        return this;
+    }
 }
 
 public class MsInsertQueryBuilder<T> : InsertQueryBuilder<T>

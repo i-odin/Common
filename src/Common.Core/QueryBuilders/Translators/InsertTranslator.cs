@@ -33,4 +33,10 @@ public class InsertTranslator<T> : Translator
         _columns.Add(CommonExpression.GetColumnName(column));
         _values.Add(value);
     }
+
+    public void AddValue(string column, object value)
+    {
+        _columns.Add(column);
+        _values.Add(value);
+    }
 }
