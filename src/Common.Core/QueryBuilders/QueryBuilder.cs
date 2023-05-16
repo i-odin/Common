@@ -19,6 +19,8 @@ public abstract class QueryBuilder
     protected void Add(BaseQueryBuilder builder)
         => _builders.Add(builder);
 
+    public abstract InsertQueryBuilder<T> Insert<T>(Action<TableTranslator<T>> inner);
+    public InsertQueryBuilder<T> Insert<T>() => Insert<T>(null);
     public abstract UpdateQueryBuilder<T> Update<T>(Action<TableTranslator<T>> inner);
     public UpdateQueryBuilder<T> Update<T>() => Update<T>(null);
     public abstract DeleteQueryBuilder<T> Delete<T>(Action<TableTranslator<T>> inner);

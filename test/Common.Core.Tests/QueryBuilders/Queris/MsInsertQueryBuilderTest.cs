@@ -1,20 +1,22 @@
-﻿using System.Text;
+﻿using Common.Core.QueryBuilders;
 using Common.Core.QueryBuilders.Queris;
 
 namespace Common.Core.Tests.QueryBuilders.Queris;
 
 public class MsInsertQueryBuilderTest
 {
-    /*[Theory]
-    [InlineData("insert into TestClass (Id, Timespan, Name, Age)\r\nvalues ('00000000-0000-0000-0000-000000000000', '2023-04-30T00:00:00.0000000', null, 10)")]
+    [Theory]
+    [InlineData("\r\ninsert into dbo.TestClass (Id,Timespan,Name,Age)\r\nvalues (@Id0,@Timespan1,@Name2,@Age3)")]
     public void Insert_BuildSql(string expected)
     {
-        var builder = new InsertQueryBuilder<TestClass>(new StringBuilder())
-            .Insert(x => x.Values(y => y.Id, Guid.Empty)
-                          .Values(y => y.Timespan, new DateTime(2023, 04, 30))
-                          .Values(y => y.Name, null)
-                          .Values(y => y.Age, 10));
-
-        Assert.Equal(expected, builder.ToString());
-    }*/
+        var opt = new QueryBuilderOptions();
+        new MsInsertQueryBuilder<TestClass>()
+            .Insert()
+            .Value(x => x.Id, Guid.Empty)
+            .Value(x => x.Timespan, new DateTime(2023, 04, 30))
+            .Value(x => x.Name, null)
+            .Value(x => x.Age, 10)
+            .Build(opt);
+        Assert.Equal(expected, opt.ToString());
+    }
 }

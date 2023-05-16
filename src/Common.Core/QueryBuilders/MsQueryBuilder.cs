@@ -5,6 +5,13 @@ namespace Common.Core.QueryBuilders;
 
 public class MsQueryBuilder : QueryBuilder
 {
+    public override InsertQueryBuilder<T> Insert<T>(Action<TableTranslator<T>> inner)
+    {
+        var result = MsInsertQueryBuilder<T>.Make(inner);
+        Add(result);
+        return result;
+    }
+
     public override UpdateQueryBuilder<T> Update<T>(Action<TableTranslator<T>> inner)
     {
         var result = MsUpdateQueryBuilder<T>.Make(inner);
@@ -18,14 +25,4 @@ public class MsQueryBuilder : QueryBuilder
         Add(result);
         return result;
     }
-
-
-    /*public IInsertQueryBuilder<T> Insert<T>(Action<IInsertTranslator<T>> inner)
-        where T : class
-        => InsertQueryBuilder<T>.Insert(_sb, inner);
-
-    public IUpdateQueryBuilder<T> Update<T>(Action<IUpdateTranslator<T>> inner)
-        where T : class
-        => UpdateQueryBuilder<T>.Update(_sb, inner);
-    */
 }

@@ -1,30 +1,45 @@
 ﻿using Common.Core.QueryBuilders.Translators;
-using System.Text;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 namespace Common.Core.QueryBuilders.Queris;
 
-/*public interface IInsertQueryBuilder<T>
-    where T : class
+public abstract class InsertQueryBuilder<T> : BaseQueryBuilder
 {
-    IInsertQueryBuilder<T> Insert(Action<IInsertTranslator<T>> inner);
+    protected int _index;
+    public abstract InsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner);
+    public InsertQueryBuilder<T> Insert() => Insert(inner: null);
+    public InsertQueryBuilder<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
+    {
+        (Get(_index) as InsertTranslator<T>).AddValue(column, value);
+        return this;
+    }
 }
 
-public class InsertQueryBuilder<T> : BaseQueryBuilder<T>, IInsertQueryBuilder<T>
-    where T : class
+public class MsInsertQueryBuilder<T> : InsertQueryBuilder<T>
 {
-    public InsertQueryBuilder(StringBuilder sb) : base(sb) { }
-
-    public InsertQueryBuilder<T> Insert(Action<InsertTranslator<T>> inner)
+    private readonly string _command = "insert into";
+    public override MsInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        InsertTranslator<T>.Insert(_sb, inner);
+        Add(MsTableTranslator<T>.Make(_command, inner));
+        _index = Add(new InsertTranslator<T>());
         return this;
     }
 
-    public static InsertQueryBuilder<T> Insert(StringBuilder sb, Action<IInsertTranslator<T>> inner) 
-        => new InsertQueryBuilder<T>(sb).Insert(inner);
-    IInsertQueryBuilder<T> IInsertQueryBuilder<T>.Insert(Action<IInsertTranslator<T>> inner)
+    public static MsInsertQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
+        => new MsInsertQueryBuilder<T>().Insert(inner);
+}
+
+public class PgInsertQueryBuilder<T> : InsertQueryBuilder<T>
+{
+    private readonly string _command = "insert into";
+    public override PgInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        Insert(inner);
+        Add(PgTableTranslator<T>.Make(_command, inner));
+        _index = Add(new InsertTranslator<T>());
         return this;
     }
-}*/
+
+    public static PgInsertQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
+        => new PgInsertQueryBuilder<T>().Insert(inner);
+}

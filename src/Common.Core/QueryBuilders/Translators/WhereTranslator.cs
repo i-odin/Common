@@ -1,5 +1,4 @@
-﻿using Common.Core.QueryBuilders.Queris;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Common.Core.QueryBuilders.Translators;
@@ -22,6 +21,7 @@ public abstract class WhereTranslator<T> : CommandTranslator
         _translators.Add(new EqualToTranslator<T>(CommonExpression.GetColumnName(column), value));
         return this;
     }
+
     public WhereTranslator<T> And()
     {
         _translators.Add(new AndTranslator());

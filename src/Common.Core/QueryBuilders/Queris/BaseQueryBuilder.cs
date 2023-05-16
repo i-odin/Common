@@ -1,17 +1,24 @@
 ﻿using Common.Core.QueryBuilders.Translators;
-using System.Text;
 
 namespace Common.Core.QueryBuilders.Queris;
 
 public abstract class BaseQueryBuilder
 {
-    private readonly ICollection<Translator> _translators = new List<Translator>();
+    private readonly List<Translator> _translators = new List<Translator>();
     public void Build(QueryBuilderOptions options)
     {
         foreach (var translator in _translators)
             translator.Run(options);
     }
 
-    protected void Add(Translator translator)
-        => _translators.Add(translator);
+    protected int Add(Translator translator)
+    {
+        _translators.Add(translator);
+        return _translators.Count - 1;
+    }
+
+    protected Translator Get(int index)
+    {
+        return _translators[index];
+    }
 }
