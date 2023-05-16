@@ -18,7 +18,9 @@ public abstract class QueryBuilder
     private readonly ICollection<BaseQueryBuilder> _builders = new List<BaseQueryBuilder>();
     protected void Add(BaseQueryBuilder builder)
         => _builders.Add(builder);
-    
+
+    public abstract UpdateQueryBuilder<T> Update<T>(Action<TableTranslator<T>> inner);
+    public UpdateQueryBuilder<T> Update<T>() => Update<T>(null);
     public abstract DeleteQueryBuilder<T> Delete<T>(Action<TableTranslator<T>> inner);
     public DeleteQueryBuilder<T> Delete<T>() => Delete<T>(null);
 

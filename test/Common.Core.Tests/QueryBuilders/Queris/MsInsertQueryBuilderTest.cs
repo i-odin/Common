@@ -3,7 +3,7 @@ using Common.Core.QueryBuilders.Queris;
 
 namespace Common.Core.Tests.QueryBuilders.Queris;
 
-public class InsertQueryBuilderTest
+public class MsInsertQueryBuilderTest
 {
     /*[Theory]
     [InlineData("insert into TestClass (Id, Timespan, Name, Age)\r\nvalues ('00000000-0000-0000-0000-000000000000', '2023-04-30T00:00:00.0000000', null, 10)")]

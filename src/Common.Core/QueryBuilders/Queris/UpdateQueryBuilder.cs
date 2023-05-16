@@ -1,55 +1,40 @@
 ﻿using Common.Core.QueryBuilders.Translators;
-using System.Text;
 
 namespace Common.Core.QueryBuilders.Queris;
 
-/*public interface IUpdateQueryBuilder<T>
-    where T : class
+public abstract class UpdateQueryBuilder<T> : BaseQueryBuilder
 {
-    IUpdateQueryBuilder<T> Update(Action<IUpdateTranslator<T>> inner);
-   // IUpdateQueryBuilder<T> Where(Action<IWhereTranslator<T>> inner);
-    IUpdateQueryBuilder<T> Join<TJoin>(Action<IJoinTranslator<T, TJoin>> inner) 
-        where TJoin : class;
-    IUpdateQueryBuilder<T> Join<TJoin1, TJoin2>(Action<IJoinTranslator<TJoin1, TJoin2>> inner) 
-        where TJoin1 : class 
-        where TJoin2 : class;
+    public abstract UpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner);
+    public UpdateQueryBuilder<T> Update() => Update(inner: null);
+    public UpdateQueryBuilder<T> Where(Action<WhereTranslator<T>> inner)
+    {
+        Add(MsWhereTranslator<T>.Make(inner));
+        return this;
+    }
 }
 
-public class UpdateQueryBuilder<T> : BaseQueryBuilder<T>, IUpdateQueryBuilder<T>
-    where T : class
+public class MsUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
 {
-    public UpdateQueryBuilder(StringBuilder sb) : base(sb) {}
-
-    public UpdateQueryBuilder<T> Update(Action<UpdateTranslator<T>> inner)
+    private readonly string _command = "update";
+    public override MsUpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner)
     {
-        UpdateTranslator<T>.Update(_sb, inner);
+        Add(MsTableTranslator<T>.Make(_command, inner));
         return this;
     }
 
-    public override UpdateQueryBuilder<T> Join<TJoin>(Action<JoinTranslator<T, TJoin>> inner)
+    public static MsUpdateQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
+        => new MsUpdateQueryBuilder<T>().Update(inner);
+}
+
+public class PgUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
+{
+    private readonly string _command = "update";
+    public override PgUpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner)
     {
-        JoinTranslator<T, TJoin>.UpdateJoin(_sb, inner);
+        Add(PgTableTranslator<T>.Make(_command, inner));
         return this;
     }
 
-    public static UpdateQueryBuilder<T> Update(StringBuilder sb, Action<IUpdateTranslator<T>> inner)
-        => new UpdateQueryBuilder<T>(sb).Update(inner);
-    
-    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Update(Action<IUpdateTranslator<T>> inner)
-    {
-        Update(inner);
-        return this;
-    }
-
-    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join<TJoin>(Action<IJoinTranslator<T, TJoin>> inner)
-    {
-        Join(inner);
-        return this;
-    }
-
-    IUpdateQueryBuilder<T> IUpdateQueryBuilder<T>.Join<TJoin1, TJoin2>(Action<IJoinTranslator<TJoin1, TJoin2>> inner)
-    {
-        //TODO реализация
-        throw new NotImplementedException();
-    }
-}*/
+    public static PgUpdateQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
+        => new PgUpdateQueryBuilder<T>().Update(inner);
+}
