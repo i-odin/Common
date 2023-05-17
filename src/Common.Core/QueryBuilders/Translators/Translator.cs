@@ -15,6 +15,6 @@ public abstract class CommandTranslator : Translator
     public CommandTranslator(string command) { _command = command; }
     public override void Run(QueryBuilderOptions options)
     {
-        options.StringBuilder.AppendFormat("\r\n{0} ", _command);
+        options.StringBuilder.Append("\r\n").Append(_command).Append(" ");
     }
 }

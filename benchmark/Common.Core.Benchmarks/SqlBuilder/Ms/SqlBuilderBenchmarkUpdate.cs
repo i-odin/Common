@@ -1,4 +1,5 @@
 ﻿using Common.Core.QueryBuilders;
+using Microsoft.Extensions.Options;
 using System.Text;
 
 namespace Common.Core.Benchmarks.SqlBuilder.Ms
@@ -7,6 +8,22 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
     [MemoryDiagnoser]
     public class SqlBuilderBenchmarkUpdate
     {
+        /*[Benchmark]
+        public string AppendFormat()
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("@{0}-@{1}-@{2}", "qwe", Guid.NewGuid, 1);
+            return sb.ToString();
+        }
+
+        [Benchmark]
+        public string Append()
+        {
+            var sb = new StringBuilder();
+            sb.Append("@").Append("qwe-@").Append(Guid.NewGuid).Append("-@").Append(1);
+            return sb.ToString();
+        }*/
+
         [Benchmark]
         public string QueryBuilder() 
         {

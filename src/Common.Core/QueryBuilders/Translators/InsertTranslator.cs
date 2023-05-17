@@ -23,7 +23,7 @@ public class InsertTranslator<T> : Translator
             if (i != 0 && i < _columns.Count) options.StringBuilder.Append(",");
             var columnParameterName = GetColumnParameterName(_columns[i], options.Parameters.Count());
             options.Parameters.Add(columnParameterName, _values[i]);
-            options.StringBuilder.AppendFormat("@{0}", columnParameterName);
+            options.StringBuilder.Append("@").Append(columnParameterName);
         }
         options.StringBuilder.Append(")");
     }

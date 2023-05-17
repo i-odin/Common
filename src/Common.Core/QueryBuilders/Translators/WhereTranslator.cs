@@ -61,7 +61,7 @@ public class EqualToTranslator<T> : Translator
     {
         var columnParameterName = GetColumnParameterName(_columnName, options.Parameters.Count());
         options.Parameters.Add(columnParameterName, _value);
-        options.StringBuilder.AppendFormat("{0} = @{1}", _columnName, columnParameterName);
+        options.StringBuilder.Append(_columnName).Append(" = @").Append(columnParameterName);
     }
 }
 

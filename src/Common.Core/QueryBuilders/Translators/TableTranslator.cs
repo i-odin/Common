@@ -12,10 +12,15 @@ public abstract class TableTranslator<T> : CommandTranslator
     public override void Run(QueryBuilderOptions options)
     {
         var table = string.IsNullOrWhiteSpace(_table) ? typeof(T).Name : _table;
+        options.StringBuilder.Append("\r\n");
         if (string.IsNullOrEmpty(_alias) == false)
-            options.StringBuilder.AppendFormat("\r\n{0} {1}.{2} as {3}", _command, _schema, table, _alias);
+        {
+            options.StringBuilder.Append(_command).Append(" ").Append(_schema).Append(".").Append(table).Append(" as ").Append(_alias);
+        }
         else
-            options.StringBuilder.AppendFormat("\r\n{0} {1}.{2}", _command, _schema, table);
+        {
+            options.StringBuilder.Append(_command).Append(" ").Append(_schema).Append(".").Append(table);
+        }
     }
 
     public TableTranslator<T> WithTable(string table)
