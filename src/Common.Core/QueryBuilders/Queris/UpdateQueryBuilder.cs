@@ -2,7 +2,7 @@
 
 namespace Common.Core.QueryBuilders.Queris;
 
-public abstract class UpdateQueryBuilder<T> : BaseQueryBuilder
+public abstract class UpdateQueryBuilder<T> : QueryBuilder
 {
     public abstract UpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner);
     public UpdateQueryBuilder<T> Update() => Update(inner: null);

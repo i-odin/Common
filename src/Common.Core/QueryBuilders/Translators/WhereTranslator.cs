@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Common.Core.QueryBuilders.Queris;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Common.Core.QueryBuilders.Translators;
@@ -8,7 +9,7 @@ public abstract class WhereTranslator<T> : CommandTranslator
     private readonly ICollection<Translator> _translators = new List<Translator>();
 
     public WhereTranslator(string command) : base(command) { }
-    public override void Run(QueryBuilderOptions options)
+    public override void Run(QueryBuilderSource options)
     {
         base.Run(options);
         
@@ -57,18 +58,18 @@ public class EqualToTranslator<T> : Translator
         _columnName = columnName;
     }
 
-    public override void Run(QueryBuilderOptions options)
+    public override void Run(QueryBuilderSource source)
     {
-        var columnParameterName = GetColumnParameterName(_columnName, options.Parameters.Count());
-        options.Parameters.Add(columnParameterName, _value);
-        options.StringBuilder.Append(_columnName).Append(" = @").Append(columnParameterName);
+        var columnParameterName = GetColumnParameterName(_columnName, source.Parameters.Count());
+        source.Parameters.Add(columnParameterName, _value);
+        source.Query.Append(_columnName).Append(" = @").Append(columnParameterName);
     }
 }
 
 public class AndTranslator : Translator
 {
-    public override void Run(QueryBuilderOptions options)
+    public override void Run(QueryBuilderSource source)
     {
-        options.StringBuilder.Append(" and ");
+        source.Query.Append(" and ");
     }
 }

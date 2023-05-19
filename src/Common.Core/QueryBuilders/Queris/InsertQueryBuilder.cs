@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Common.Core.QueryBuilders.Queris;
 
-public abstract class InsertQueryBuilder<T> : BaseQueryBuilder
+public abstract class InsertQueryBuilder<T> : QueryBuilder
 {
     protected int _index;
     public abstract InsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner);

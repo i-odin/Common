@@ -14,7 +14,7 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
             var date = new DateTime(2023, 04, 30);
             var age = 10;
             string name = null;
-            var builder = new MsQueryBuilder();
+            var builder = new MsCommonQueryBuilder();
             builder.Insert<BenchmarkClass>()
                    .Value(x => x.Id, guid)
                    .Value(x => x.Timespan, date)
@@ -40,7 +40,7 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
             var date = new DateTime(2023, 04, 30);
             var age = 10;
             string name = null;
-            var builder = new MsQueryBuilder();
+            var builder = new MsCommonQueryBuilder();
             builder.Insert<BenchmarkClass>()
                    .Value(nameof(BenchmarkClass.Id), guid)
                    .Value(nameof(BenchmarkClass.Timespan), date)

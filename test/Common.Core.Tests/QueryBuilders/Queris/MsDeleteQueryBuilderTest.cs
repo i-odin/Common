@@ -9,7 +9,7 @@ public class MsDeleteQueryBuilderTest
     [InlineData("\r\ndelete dbo.TestClass")]
     public void Delete_BuildSql(string expected)
     {
-        var opt = new QueryBuilderOptions();
+        var opt = new QueryBuilderSource();
         new MsDeleteQueryBuilder<TestClass>().Delete().Build(opt);
         Assert.Equal(expected, opt.ToString());
     }
@@ -18,7 +18,7 @@ public class MsDeleteQueryBuilderTest
     [InlineData("\r\ndelete dbo.TestClass\r\ndelete dbo.TestClass")]
     public void DoubleDelete_BuildSql(string expected)
     {
-        var opt = new QueryBuilderOptions();
+        var opt = new QueryBuilderSource();
         new MsDeleteQueryBuilder<TestClass>().Delete().Delete().Build(opt);
         Assert.Equal(expected, opt.ToString());
     }
@@ -27,7 +27,7 @@ public class MsDeleteQueryBuilderTest
     [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3")]
     public void DeleteWhere_BuildSql(string expected)
     {
-        var opt = new QueryBuilderOptions();
+        var opt = new QueryBuilderSource();
         new MsDeleteQueryBuilder<TestClass>()
            .Delete()
            .Where(x => x.EqualTo(y => y.Id, Guid.Empty).And()

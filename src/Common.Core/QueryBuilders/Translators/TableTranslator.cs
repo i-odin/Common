@@ -9,17 +9,17 @@ public abstract class TableTranslator<T> : CommandTranslator
     private string _schema;
     public TableTranslator(string command, string schema) : base(command) { _schema = schema; }
 
-    public override void Run(QueryBuilderOptions options)
+    public override void Run(QueryBuilderSource options)
     {
         var table = string.IsNullOrWhiteSpace(_table) ? typeof(T).Name : _table;
-        options.StringBuilder.Append("\r\n");
+        options.Query.Append("\r\n");
         if (string.IsNullOrEmpty(_alias) == false)
         {
-            options.StringBuilder.Append(_command).Append(" ").Append(_schema).Append(".").Append(table).Append(" as ").Append(_alias);
+            options.Query.Append(_command).Append(" ").Append(_schema).Append(".").Append(table).Append(" as ").Append(_alias);
         }
         else
         {
-            options.StringBuilder.Append(_command).Append(" ").Append(_schema).Append(".").Append(table);
+            options.Query.Append(_command).Append(" ").Append(_schema).Append(".").Append(table);
         }
     }
 

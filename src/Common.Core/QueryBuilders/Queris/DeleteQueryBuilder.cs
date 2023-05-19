@@ -2,7 +2,7 @@
 
 namespace Common.Core.QueryBuilders.Queris;
 
-public abstract class DeleteQueryBuilder<T> : BaseQueryBuilder
+public abstract class DeleteQueryBuilder<T> : QueryBuilder
 {
     public abstract DeleteQueryBuilder<T> Delete(Action<TableTranslator<T>> inner);
     public DeleteQueryBuilder<T> Delete() => Delete(inner: null);

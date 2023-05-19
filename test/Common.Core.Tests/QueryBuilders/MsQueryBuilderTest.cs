@@ -8,7 +8,7 @@ public class MsQueryBuilderTest
     [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3\r\ndelete dbo.TestClass2\r\nwhere Id2 = @Id24 and Name2 = @Name25 and Age2 = @Age26 and Timespan2 = @Timespan27")]
     public void DeleteUpdateDelete_BuildSql(string expected)
     {
-        var builder = new MsQueryBuilder();
+        var builder = new MsCommonQueryBuilder();
         builder.Delete<TestClass>()
                .Where(x => x.EqualTo(y => y.Id, Guid.Empty).And()
                             .EqualTo(y => y.Name, null).And()

@@ -9,17 +9,17 @@ public class PgDeleteQueryBuilderTest
     [InlineData("\r\ndelete from public.TestClass")]
     public void Delete_BuildSql(string expected)
     {
-        var opt = new QueryBuilderOptions();
-        new PgDeleteQueryBuilder<TestClass>().Delete().Build(opt);
-        Assert.Equal(expected, opt.ToString());
+        var source = new QueryBuilderSource();
+        new PgDeleteQueryBuilder<TestClass>().Delete().Build(source);
+        Assert.Equal(expected, source.ToString());
     }
 
     [Theory]
     [InlineData("\r\ndelete from public.TestClass\r\ndelete from public.TestClass")]
     public void DoubleDelete_BuildSql(string expected)
     {
-        var opt = new QueryBuilderOptions();
-        new PgDeleteQueryBuilder<TestClass>().Delete().Delete().Build(opt);
-        Assert.Equal(expected, opt.ToString());
+        var source = new QueryBuilderSource();
+        new PgDeleteQueryBuilder<TestClass>().Delete().Delete().Build(source);
+        Assert.Equal(expected, source.ToString());
     }
 }
