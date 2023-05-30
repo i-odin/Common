@@ -6,33 +6,37 @@ namespace Common.Core.QueryBuilders.Translators;
 
 public class InsertTranslator<T> : Translator
 {
-    private readonly TranslatorManager _managerColumns = new TranslatorManager();
-    private readonly TranslatorManager _managerValues = new TranslatorManager();
+    private readonly QueryBuilderSource _sourceColumns = new QueryBuilderSource();
+    private readonly QueryBuilderSource _sourceValues = new QueryBuilderSource();
 
     public override void Run(QueryBuilderSource options)
     {
         options.Query.Append(" (");
-        _managerColumns.Run(options);
+        options.Query.Append(_sourceColumns.Query);
+        foreach (var item in _sourceColumns.Parameters)
+            options.Parameters.Add(new Parameter(item.Key, item.Value));
         options.Query.Remove(options.Query.Length - 1, 1);
         options.Query.Append(")");
 
         options.Query.Append("\r\nvalues (");
-        _managerValues.Run(options);
+        options.Query.Append(_sourceValues.Query);
+        foreach (var item in _sourceValues.Parameters)
+            options.Parameters.Add(new Parameter(item.Key, item.Value));
         options.Query.Remove(options.Query.Length - 1, 1);
         options.Query.Append(")");
     }
 
     public InsertTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
     {
-        _managerColumns.Add(new ColumnTranslator<T>().Value(column));
-        _managerValues.Add(new ValueTranslator<T>().Value(column, value));
+        new ColumnTranslator<T>().Value(column).Run(_sourceColumns);
+        new ValueTranslator<T>().Value(column, value).Run(_sourceValues);
         return this;
     }
 
     public InsertTranslator<T> Value(string column, object value)
     {
-        _managerColumns.Add(new ColumnTranslator<T>().Value(column));
-        _managerValues.Add(new ValueTranslator<T>().Value(column, value));
+        new ColumnTranslator<T>().Value(column).Run(_sourceColumns);
+        new ValueTranslator<T>().Value(column, value).Run(_sourceValues);
         return this;
     }
 

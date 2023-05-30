@@ -6,31 +6,30 @@ namespace Common.Core.QueryBuilders.Translators;
 
 public abstract class WhereTranslator<T> : CommandTranslator
 {
-    private readonly TranslatorManager _manager = new TranslatorManager();
-    //private readonly ICollection<Translator> _translators = new List<Translator>();
+    private readonly QueryBuilderSource _source = new QueryBuilderSource();
 
     public WhereTranslator(string command) : base(command) { }
     public override void Run(QueryBuilderSource options)
     {
         base.Run(options);
-        _manager.Run(options);
+        options.Query.Append(_source.Query);
     }
 
     public WhereTranslator<T> EqualTo<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
     {
-        _manager.Add(new EqualToTranslator<T>(CommonExpression.GetColumnName(column), value));
+        new EqualToTranslator<T>(CommonExpression.GetColumnName(column), value).Run(_source);
         return this;
     }
 
     public WhereTranslator<T> EqualTo(string column, object value)
     {
-        _manager.Add(new EqualToTranslator<T>(column, value));
+        new EqualToTranslator<T>(column, value).Run(_source);
         return this;
     }
 
     public WhereTranslator<T> And()
     {
-        _manager.Add(new AndTranslator());
+        new AndTranslator().Run(_source);
         return this;
     }
 }
