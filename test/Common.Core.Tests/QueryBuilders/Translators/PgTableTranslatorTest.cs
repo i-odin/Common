@@ -10,7 +10,7 @@ public class PgTableTranslatorTest
     public void Table_Build(string expected)
     {
         var source = new QueryBuilderSource();
-        PgTableTranslator<TestClass>.Make("test", null).Run(source);
+        PgTableTranslator<TestClass>.Make("test", source, null).Run();
         Assert.Equal(expected, source.ToString());
     }
 }

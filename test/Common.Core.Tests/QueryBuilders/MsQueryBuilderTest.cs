@@ -5,7 +5,7 @@ namespace Common.Core.Tests.QueryBuilders;
 public class MsQueryBuilderTest
 {
     [Theory]
-    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3\r\ndelete dbo.TestClass2\r\nwhere Id2 = @Id24 and Name2 = @Name25 and Age2 = @Age26 and Timespan2 = @Timespan27")]
+    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @0 and Name = @1 and Age = @2 and Timespan = @3\r\ndelete dbo.TestClass2\r\nwhere Id2 = @4 and Name2 = @5 and Age2 = @6 and Timespan2 = @7")]
     public void DeleteUpdateDelete_BuildSql(string expected)
     {
         var builder = new MsCommonQueryBuilder();

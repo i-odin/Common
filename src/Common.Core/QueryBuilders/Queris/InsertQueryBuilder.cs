@@ -9,7 +9,7 @@ public abstract class InsertQueryBuilder<T> : QueryBuilder
     public InsertQueryBuilder<T> Insert() => Insert(inner: null);
     public InsertQueryBuilder<T> Values(Action<InsertTranslator<T>> inner)
     {
-        InsertTranslator<T>.Make(inner).Run(_source);
+        InsertTranslator<T>.Make(_source, inner).Run();
         return this;
     }
 }
@@ -22,7 +22,7 @@ public class MsInsertQueryBuilder<T> : InsertQueryBuilder<T>
 
     public override MsInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        MsTableTranslator<T>.Make(_command, inner).Run(_source);
+        MsTableTranslator<T>.Make(_command, _source, inner).Run();
         return this;
     }
 
@@ -38,7 +38,7 @@ public class PgInsertQueryBuilder<T> : InsertQueryBuilder<T>
 
     public override PgInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        PgTableTranslator<T>.Make(_command, inner).Run(_source);
+        PgTableTranslator<T>.Make(_command, _source, inner).Run();
         return this;
     }
 

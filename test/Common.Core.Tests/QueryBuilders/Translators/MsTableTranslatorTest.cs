@@ -10,7 +10,7 @@ public class MsTableTranslatorTest
     public void Table_Build(string expected)
     {
         var source = new QueryBuilderSource();
-        MsTableTranslator<TestClass>.Make("test", null).Run(source);
+        MsTableTranslator<TestClass>.Make("test", source,  null).Run();
         Assert.Equal(expected, source.ToString());
     }
 
@@ -19,7 +19,7 @@ public class MsTableTranslatorTest
     public void Table_BuildTableAndSchemaAndAlias(string expected)
     {
         var source = new QueryBuilderSource();
-        MsTableTranslator<TestClass>.Make("test", x => x.WithTable("Test").WithSchema("test").WithAlias("test")).Run(source);
+        MsTableTranslator<TestClass>.Make("test", source, x => x.WithTable("Test").WithSchema("test").WithAlias("test")).Run();
         Assert.Equal(expected, source.ToString());
     }
 }

@@ -6,93 +6,66 @@ namespace Common.Core.QueryBuilders.Translators;
 
 public class InsertTranslator<T> : Translator
 {
-    private readonly QueryBuilderSource _sourceColumns = new QueryBuilderSource();
-    private readonly QueryBuilderSource _sourceValues = new QueryBuilderSource();
+    private bool _isOpen;
+    private int _indexColumn;
+    private int _indexValue;
+    public InsertTranslator(QueryBuilderSource source) : base(source) { }
 
-    public override void Run(QueryBuilderSource options)
+    public override void Run()
     {
-        options.Query.Append(" (");
-        options.Query.Append(_sourceColumns.Query);
-        foreach (var item in _sourceColumns.Parameters)
-            options.Parameters.Add(new Parameter(item.Key, item.Value));
-        options.Query.Remove(options.Query.Length - 1, 1);
-        options.Query.Append(")");
+        source.Query.Remove(_indexColumn - 1, 1);
+        source.Query.Insert(_indexColumn - 1, ")");
 
-        options.Query.Append("\r\nvalues (");
-        options.Query.Append(_sourceValues.Query);
-        foreach (var item in _sourceValues.Parameters)
-            options.Parameters.Add(new Parameter(item.Key, item.Value));
-        options.Query.Remove(options.Query.Length - 1, 1);
-        options.Query.Append(")");
+        source.Query.Remove(_indexValue - 1, 1);
+        source.Query.Append(")");
     }
 
     public InsertTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
     {
-        new ColumnTranslator<T>().Value(column).Run(_sourceColumns);
-        new ValueTranslator<T>().Value(column, value).Run(_sourceValues);
+        Value(CommonExpression.GetColumnName(column), value);
         return this;
     }
 
     public InsertTranslator<T> Value(string column, object value)
     {
-        new ColumnTranslator<T>().Value(column).Run(_sourceColumns);
-        new ValueTranslator<T>().Value(column, value).Run(_sourceValues);
+        if (_isOpen == false)
+        {
+            source.Query.Append(" (");
+            _indexColumn = source.Query.Length;
+
+            source.Query.Append("\r\nvalues (");
+            _indexValue = source.Query.Length;
+            _isOpen = true;
+        }
+
+        source.Query.Insert(_indexColumn, column);
+        
+        _indexColumn += column.Length;
+        _indexValue += column.Length;
+
+        source.Query.Insert(_indexColumn, ",");
+        
+        _indexColumn++;
+        _indexValue++;
+
+        source.Parameters.Add(value, out string name);
+        
+        source.Query.Insert(_indexValue, "@");
+        _indexValue++;
+        
+        source.Query.Insert(_indexValue, name);
+        _indexValue += name.Length;
+        
+        source.Query.Insert(_indexValue, ",");
+        _indexValue++;
+
         return this;
     }
 
-    public static InsertTranslator<T> Make(Action<InsertTranslator<T>> inner)
+    public static InsertTranslator<T> Make(QueryBuilderSource source, Action<InsertTranslator<T>> inner)
     {
-        var obj = new InsertTranslator<T>();
+        var obj = new InsertTranslator<T>(source);
         inner?.Invoke(obj);
         return obj;
-    }
-}
-
-public class ColumnTranslator<T> : Translator
-{
-    protected string _column;
-    
-    public override void Run(QueryBuilderSource options)
-    {
-        options.Query.Append(_column);
-        options.Query.Append(",");
-    }
-
-    public ColumnTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column)
-    {
-        _column = CommonExpression.GetColumnName(column);
-        return this;
-    }
-
-    public ColumnTranslator<T> Value(string column)
-    {
-        _column = column;
-        return this;
-    }
-}
-
-public class ValueTranslator<T> : ColumnTranslator<T>
-{
-    private object _value;
-    public override void Run(QueryBuilderSource options)
-    {
-        var columnParameterName = GetColumnParameterName(_column, options.Parameters.Count());
-        options.Parameters.Add(columnParameterName, _value);
-        options.Query.Append("@").Append(columnParameterName);
-        options.Query.Append(",");
-    }
-
-    public ValueTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
-    {
-        _value = value;
-        Value(column);
-        return this;
-    }
-
-    public ValueTranslator<T> Value(string column, object value)
-    {
-        _value = value;
-        Value(column);
-        return this;
     }
 }

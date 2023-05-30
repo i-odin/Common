@@ -6,40 +6,34 @@ namespace Common.Core.QueryBuilders.Translators;
 
 public abstract class WhereTranslator<T> : CommandTranslator
 {
-    private readonly QueryBuilderSource _source = new QueryBuilderSource();
-
-    public WhereTranslator(string command) : base(command) { }
-    public override void Run(QueryBuilderSource options)
-    {
-        base.Run(options);
-        options.Query.Append(_source.Query);
-    }
-
+    public WhereTranslator(string command, QueryBuilderSource source) : base(command, source) { }
+    
     public WhereTranslator<T> EqualTo<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
     {
-        new EqualToTranslator<T>(CommonExpression.GetColumnName(column), value).Run(_source);
+        new EqualToTranslator<T>(CommonExpression.GetColumnName(column), value, source).Run();
         return this;
     }
 
     public WhereTranslator<T> EqualTo(string column, object value)
     {
-        new EqualToTranslator<T>(column, value).Run(_source);
+        new EqualToTranslator<T>(column, value, source).Run();
         return this;
     }
 
     public WhereTranslator<T> And()
     {
-        new AndTranslator().Run(_source);
+        new AndTranslator(source).Run();
         return this;
     }
 }
 
 public class MsWhereTranslator<T> : WhereTranslator<T>
 {
-    public MsWhereTranslator(string command = "where") : base(command) { }
-    public static MsWhereTranslator<T> Make(Action<WhereTranslator<T>> inner)
+    public MsWhereTranslator(string command, QueryBuilderSource source) : base(command, source) { }
+    public static MsWhereTranslator<T> Make(QueryBuilderSource source, Action<WhereTranslator<T>> inner)
     {
-        var obj = new MsWhereTranslator<T>();
+        var obj = new MsWhereTranslator<T>("where", source);
+        obj.Run();
         inner?.Invoke(obj);
         return obj;
     }
@@ -50,23 +44,24 @@ public class EqualToTranslator<T> : Translator
     private string _columnName;
     private object _value;
     
-    public EqualToTranslator(string columnName, object value)
+    public EqualToTranslator(string columnName, object value, QueryBuilderSource source) : base(source)
     {
         _value = value;
         _columnName = columnName;
     }
 
-    public override void Run(QueryBuilderSource source)
+    public override void Run()
     {
-        var columnParameterName = GetColumnParameterName(_columnName, source.Parameters.Count());
-        source.Parameters.Add(columnParameterName, _value);
-        source.Query.Append(_columnName).Append(" = @").Append(columnParameterName);
+        source.Parameters.Add(_value, out string name);
+        source.Query.Append(_columnName).Append(" = @").Append(name);
     }
 }
 
 public class AndTranslator : Translator
 {
-    public override void Run(QueryBuilderSource source)
+    public AndTranslator(QueryBuilderSource source) : base(source) { }
+
+    public override void Run()
     {
         source.Query.Append(" and ");
     }

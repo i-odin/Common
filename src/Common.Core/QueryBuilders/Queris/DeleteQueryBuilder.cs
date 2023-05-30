@@ -9,7 +9,7 @@ public abstract class DeleteQueryBuilder<T> : QueryBuilder
     public DeleteQueryBuilder<T> Delete() => Delete(inner: null);
     public DeleteQueryBuilder<T> Where(Action<WhereTranslator<T>> inner)
     {
-        MsWhereTranslator<T>.Make(inner).Run(_source);
+        MsWhereTranslator<T>.Make(_source, inner);
         return this;
     }
 }
@@ -20,7 +20,7 @@ public class MsDeleteQueryBuilder<T> : DeleteQueryBuilder<T>
     public MsDeleteQueryBuilder(QueryBuilderSource source) : base(source) { }
     public override MsDeleteQueryBuilder<T> Delete(Action<TableTranslator<T>> inner)
     {
-        MsTableTranslator<T>.Make(_command, inner).Run(_source);
+        MsTableTranslator<T>.Make(_command, _source, inner).Run();
         return this;
     }
 
@@ -36,7 +36,7 @@ public class PgDeleteQueryBuilder<T> : DeleteQueryBuilder<T>
 
     public override PgDeleteQueryBuilder<T> Delete(Action<TableTranslator<T>> inner)
     {
-        PgTableTranslator<T>.Make(_command, inner).Run(_source);
+        PgTableTranslator<T>.Make(_command, _source, inner).Run();
         return this;
     }
 

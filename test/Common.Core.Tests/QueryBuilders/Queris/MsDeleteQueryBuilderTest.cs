@@ -23,7 +23,7 @@ public class MsDeleteQueryBuilderTest
     }
 
     [Theory]
-    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @Id0 and Name = @Name1 and Age = @Age2 and Timespan = @Timespan3")]
+    [InlineData("\r\ndelete dbo.TestClass\r\nwhere Id = @0 and Name = @1 and Age = @2 and Timespan = @3")]
     public void DeleteWhere_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();

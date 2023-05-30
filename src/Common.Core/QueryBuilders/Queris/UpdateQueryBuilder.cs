@@ -10,7 +10,7 @@ public abstract class UpdateQueryBuilder<T> : QueryBuilder
     public UpdateQueryBuilder<T> Update() => Update(inner: null);
     public UpdateQueryBuilder<T> Where(Action<WhereTranslator<T>> inner)
     {
-        MsWhereTranslator<T>.Make(inner).Run(_source);
+        MsWhereTranslator<T>.Make(_source, inner);
         return this;
     }
 }
@@ -23,7 +23,7 @@ public class MsUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
 
     public override MsUpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner)
     {
-        MsTableTranslator<T>.Make(_command, inner).Run(_source);
+        MsTableTranslator<T>.Make(_command,  _source, inner).Run();
         return this;
     }
 
@@ -39,7 +39,7 @@ public class PgUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
 
     public override PgUpdateQueryBuilder<T> Update( Action<TableTranslator<T>> inner)
     {
-        PgTableTranslator<T>.Make(_command, inner).Run(_source);
+        PgTableTranslator<T>.Make(_command, _source, inner).Run();
         return this;
     }
 

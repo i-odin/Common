@@ -17,17 +17,13 @@ public class Parameter
 
 public class Parameters : IEnumerable<KeyValuePair<string, object>>
 {
-    private readonly List<Parameter> _parameters = new List<Parameter>();
+    private int _offset = 0;
+    private readonly List<KeyValuePair<string, object>> _parameters = new List<KeyValuePair<string, object>>();
 
-    public Parameters Add(string name, object value)
+    public Parameters Add(object value, out string name)
     {
-        _parameters.Add(new Parameter(name, value));
-        return this;
-    }
-
-    public Parameters Add(Parameter parameter)
-    {
-        _parameters.Add(parameter);
+        name = _offset++.ToString();
+        _parameters.Add(KeyValuePair.Create(name, value));
         return this;
     }
 
@@ -43,7 +39,7 @@ public class Parameters : IEnumerable<KeyValuePair<string, object>>
     {
         foreach (var spryParameter in _parameters)
         {
-            yield return new KeyValuePair<string, object>(spryParameter.Name, spryParameter.Value);
+            yield return spryParameter;
         }
     }
 

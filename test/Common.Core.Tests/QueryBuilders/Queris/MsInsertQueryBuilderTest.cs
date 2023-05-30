@@ -5,7 +5,7 @@ namespace Common.Core.Tests.QueryBuilders.Queris;
 public class MsInsertQueryBuilderTest
 {
     [Theory]
-    [InlineData("\r\ninsert into dbo.TestClass (Id,Timespan,Name,Age)\r\nvalues (@Id0,@Timespan1,@Name2,@Age3)")]
+    [InlineData("\r\ninsert into dbo.TestClass (Id,Timespan,Name,Age)\r\nvalues (@0,@1,@2,@3)")]
     public void Insert_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
