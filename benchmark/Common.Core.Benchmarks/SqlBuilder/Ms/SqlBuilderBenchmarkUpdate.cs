@@ -16,10 +16,10 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
             string name = null;
             var builder = new MsCommonQueryBuilder();
             builder.Insert<BenchmarkClass>()
-                   .Value(x => x.Id, guid)
-                   .Value(x => x.Timespan, date)
-                   .Value(x => x.Name, name)
-                   .Value(x => x.Age, age);
+                   .Values(y => y.Value(x => x.Id, guid)
+                                 .Value(x => x.Timespan, date)
+                                 .Value(x => x.Name, name)
+                                 .Value(x => x.Age, age));
             builder.Update<BenchmarkClass>()
                    .Where(x => x.EqualTo(y => y.Id, guid).And()
                                 .EqualTo(y => y.Name, name).And()
@@ -42,10 +42,10 @@ namespace Common.Core.Benchmarks.SqlBuilder.Ms
             string name = null;
             var builder = new MsCommonQueryBuilder();
             builder.Insert<BenchmarkClass>()
-                   .Value(nameof(BenchmarkClass.Id), guid)
-                   .Value(nameof(BenchmarkClass.Timespan), date)
-                   .Value(nameof(BenchmarkClass.Name), name)
-                   .Value(nameof(BenchmarkClass.Age), age);
+                   .Values(y => y.Value(nameof(BenchmarkClass.Id), guid)
+                                 .Value(nameof(BenchmarkClass.Timespan), date)
+                                 .Value(nameof(BenchmarkClass.Name), name)
+                                 .Value(nameof(BenchmarkClass.Age), age));
             builder.Update<BenchmarkClass>()
                    .Where(x => x.EqualTo(nameof(BenchmarkClass.Id), guid).And()
                                 .EqualTo(nameof(BenchmarkClass.Name), name).And()

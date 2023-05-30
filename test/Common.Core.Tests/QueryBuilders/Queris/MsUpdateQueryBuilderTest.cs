@@ -1,5 +1,4 @@
-﻿using Common.Core.QueryBuilders;
-using Common.Core.QueryBuilders.Queris;
+﻿using Common.Core.QueryBuilders.Queris;
 
 namespace Common.Core.Tests.QueryBuilders.Queris;
 
@@ -11,7 +10,7 @@ public class MsUpdateQueryBuilderTest
     public void Update_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new MsUpdateQueryBuilder<TestClass>().Update().Build(source);
+        new MsUpdateQueryBuilder<TestClass>(source).Update();
         Assert.Equal(expected, source.ToString());
     }
 
@@ -20,7 +19,7 @@ public class MsUpdateQueryBuilderTest
     public void UpdateUpdate_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new MsUpdateQueryBuilder<TestClass>().Update().Update().Build(source);
+        new MsUpdateQueryBuilder<TestClass>(source).Update().Update();
         Assert.Equal(expected, source.ToString());
     }
 
@@ -29,13 +28,12 @@ public class MsUpdateQueryBuilderTest
     public void UpdateWhere_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new MsUpdateQueryBuilder<TestClass>()
+        new MsUpdateQueryBuilder<TestClass>(source)
            .Update()
            .Where(x => x.EqualTo(y => y.Id, Guid.Empty).And()
                         .EqualTo(y => y.Name, null).And()
                         .EqualTo(y => y.Age, 10).And()
-                        .EqualTo(y => y.Timespan, new DateTime(2023, 04, 23)))
-           .Build(source);
+                        .EqualTo(y => y.Timespan, new DateTime(2023, 04, 23)));
         Assert.Equal(expected, source.ToString());
     }
 }

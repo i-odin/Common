@@ -10,7 +10,7 @@ public class PgUpdateQueryBuilderTest
     public void Delete_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new PgUpdateQueryBuilder<TestClass>().Update().Build(source);
+        new PgUpdateQueryBuilder<TestClass>(source).Update();
         Assert.Equal(expected, source.ToString());
     }
 
@@ -19,7 +19,7 @@ public class PgUpdateQueryBuilderTest
     public void DoubleDelete_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new PgUpdateQueryBuilder<TestClass>().Update().Update().Build(source);
+        new PgUpdateQueryBuilder<TestClass>(source).Update().Update();
         Assert.Equal(expected, source.ToString());
     }
 }

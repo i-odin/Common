@@ -4,11 +4,13 @@ namespace Common.Core.QueryBuilders.Queris;
 
 public abstract class UpdateQueryBuilder<T> : QueryBuilder
 {
+    protected UpdateQueryBuilder(QueryBuilderSource source) : base(source) {}
+
     public abstract UpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner);
     public UpdateQueryBuilder<T> Update() => Update(inner: null);
     public UpdateQueryBuilder<T> Where(Action<WhereTranslator<T>> inner)
     {
-        Add(MsWhereTranslator<T>.Make(inner));
+        MsWhereTranslator<T>.Make(inner).Run(_source);
         return this;
     }
 }
@@ -16,25 +18,31 @@ public abstract class UpdateQueryBuilder<T> : QueryBuilder
 public class MsUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
 {
     private readonly string _command = "update";
+
+    public MsUpdateQueryBuilder(QueryBuilderSource source) : base(source) {}
+
     public override MsUpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner)
     {
-        Add(MsTableTranslator<T>.Make(_command, inner));
+        MsTableTranslator<T>.Make(_command, inner).Run(_source);
         return this;
     }
 
-    public static MsUpdateQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
-        => new MsUpdateQueryBuilder<T>().Update(inner);
+    public static MsUpdateQueryBuilder<T> Make(QueryBuilderSource source, Action<TableTranslator<T>> inner)
+        => new MsUpdateQueryBuilder<T>(source).Update(inner);
 }
 
 public class PgUpdateQueryBuilder<T> : UpdateQueryBuilder<T>
 {
     private readonly string _command = "update";
-    public override PgUpdateQueryBuilder<T> Update(Action<TableTranslator<T>> inner)
+
+    public PgUpdateQueryBuilder(QueryBuilderSource source) : base(source) {}
+
+    public override PgUpdateQueryBuilder<T> Update( Action<TableTranslator<T>> inner)
     {
-        Add(PgTableTranslator<T>.Make(_command, inner));
+        PgTableTranslator<T>.Make(_command, inner).Run(_source);
         return this;
     }
 
-    public static PgUpdateQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
-        => new PgUpdateQueryBuilder<T>().Update(inner);
+    public static PgUpdateQueryBuilder<T> Make(QueryBuilderSource source, Action<TableTranslator<T>> inner)
+        => new PgUpdateQueryBuilder<T>(source).Update(inner);
 }

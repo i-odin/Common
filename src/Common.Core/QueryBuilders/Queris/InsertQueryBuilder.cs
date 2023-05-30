@@ -1,22 +1,15 @@
 ﻿using Common.Core.QueryBuilders.Translators;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
 
 namespace Common.Core.QueryBuilders.Queris;
 
 public abstract class InsertQueryBuilder<T> : QueryBuilder
 {
-    protected int _index;
+    protected InsertQueryBuilder(QueryBuilderSource _source) : base(_source) {}
     public abstract InsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner);
     public InsertQueryBuilder<T> Insert() => Insert(inner: null);
-    public InsertQueryBuilder<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
+    public InsertQueryBuilder<T> Values(Action<InsertTranslator<T>> inner)
     {
-        (Get(_index) as InsertTranslator<T>).AddValue(column, value);
-        return this;
-    }
-    public InsertQueryBuilder<T> Value(string column, object value)
-    {
-        (Get(_index) as InsertTranslator<T>).AddValue(column, value);
+        InsertTranslator<T>.Make(inner).Run(_source);
         return this;
     }
 }
@@ -24,27 +17,31 @@ public abstract class InsertQueryBuilder<T> : QueryBuilder
 public class MsInsertQueryBuilder<T> : InsertQueryBuilder<T>
 {
     private readonly string _command = "insert into";
+
+    public MsInsertQueryBuilder(QueryBuilderSource _source) : base(_source) {}
+
     public override MsInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        Add(MsTableTranslator<T>.Make(_command, inner));
-        _index = Add(new InsertTranslator<T>());
+        MsTableTranslator<T>.Make(_command, inner).Run(_source);
         return this;
     }
 
-    public static MsInsertQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
-        => new MsInsertQueryBuilder<T>().Insert(inner);
+    public static MsInsertQueryBuilder<T> Make(QueryBuilderSource source, Action<TableTranslator<T>> inner)
+        => new MsInsertQueryBuilder<T>(source).Insert(inner);
 }
 
 public class PgInsertQueryBuilder<T> : InsertQueryBuilder<T>
 {
     private readonly string _command = "insert into";
+
+    public PgInsertQueryBuilder(QueryBuilderSource _source) : base(_source) {}
+
     public override PgInsertQueryBuilder<T> Insert(Action<TableTranslator<T>> inner)
     {
-        Add(PgTableTranslator<T>.Make(_command, inner));
-        _index = Add(new InsertTranslator<T>());
+        PgTableTranslator<T>.Make(_command, inner).Run(_source);
         return this;
     }
 
-    public static PgInsertQueryBuilder<T> Make(Action<TableTranslator<T>> inner)
-        => new PgInsertQueryBuilder<T>().Insert(inner);
+    public static PgInsertQueryBuilder<T> Make(QueryBuilderSource source, Action<TableTranslator<T>> inner)
+        => new PgInsertQueryBuilder<T>(source).Insert(inner);
 }

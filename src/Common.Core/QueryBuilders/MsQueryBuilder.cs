@@ -6,11 +6,11 @@ namespace Common.Core.QueryBuilders;
 public class MsCommonQueryBuilder : CommonQueryBuilder
 {
     public override InsertQueryBuilder<T> Insert<T>(Action<TableTranslator<T>> inner) 
-        => manager.Add(MsInsertQueryBuilder<T>.Make(inner));
+        => MsInsertQueryBuilder<T>.Make(source, inner);
 
     public override UpdateQueryBuilder<T> Update<T>(Action<TableTranslator<T>> inner) 
-        => manager.Add(MsUpdateQueryBuilder<T>.Make(inner));
+        => MsUpdateQueryBuilder<T>.Make(source, inner);
 
     public override DeleteQueryBuilder<T> Delete<T>(Action<TableTranslator<T>> inner)
-        => manager.Add(MsDeleteQueryBuilder<T>.Make(inner));
+        => MsDeleteQueryBuilder<T>.Make(source, inner);
 }

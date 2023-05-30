@@ -6,38 +6,89 @@ namespace Common.Core.QueryBuilders.Translators;
 
 public class InsertTranslator<T> : Translator
 {
-    private readonly List<string> _columns = new List<string>();
-    private readonly List<object> _values = new List<object>();
+    private readonly TranslatorManager _managerColumns = new TranslatorManager();
+    private readonly TranslatorManager _managerValues = new TranslatorManager();
+
     public override void Run(QueryBuilderSource options)
     {
         options.Query.Append(" (");
-        for (int i = 0; i < _columns.Count; i++)
-        {
-            if(i != 0 && i < _columns.Count) options.Query.Append(",");
-            options.Query.Append(_columns[i]);
-        }
+        _managerColumns.Run(options);
+        options.Query.Remove(options.Query.Length - 1, 1);
         options.Query.Append(")");
 
         options.Query.Append("\r\nvalues (");
-        for (int i = 0; i < _values.Count; i++)
-        {
-            if (i != 0 && i < _columns.Count) options.Query.Append(",");
-            var columnParameterName = GetColumnParameterName(_columns[i], options.Parameters.Count());
-            options.Parameters.Add(columnParameterName, _values[i]);
-            options.Query.Append("@").Append(columnParameterName);
-        }
+        _managerValues.Run(options);
+        options.Query.Remove(options.Query.Length - 1, 1);
         options.Query.Append(")");
     }
 
-    public void AddValue<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
+    public InsertTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
     {
-        _columns.Add(CommonExpression.GetColumnName(column));
-        _values.Add(value);
+        _managerColumns.Add(new ColumnTranslator<T>().Value(column));
+        _managerValues.Add(new ValueTranslator<T>().Value(column, value));
+        return this;
     }
 
-    public void AddValue(string column, object value)
+    public InsertTranslator<T> Value(string column, object value)
     {
-        _columns.Add(column);
-        _values.Add(value);
+        _managerColumns.Add(new ColumnTranslator<T>().Value(column));
+        _managerValues.Add(new ValueTranslator<T>().Value(column, value));
+        return this;
+    }
+
+    public static InsertTranslator<T> Make(Action<InsertTranslator<T>> inner)
+    {
+        var obj = new InsertTranslator<T>();
+        inner?.Invoke(obj);
+        return obj;
+    }
+}
+
+public class ColumnTranslator<T> : Translator
+{
+    protected string _column;
+    
+    public override void Run(QueryBuilderSource options)
+    {
+        options.Query.Append(_column);
+        options.Query.Append(",");
+    }
+
+    public ColumnTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column)
+    {
+        _column = CommonExpression.GetColumnName(column);
+        return this;
+    }
+
+    public ColumnTranslator<T> Value(string column)
+    {
+        _column = column;
+        return this;
+    }
+}
+
+public class ValueTranslator<T> : ColumnTranslator<T>
+{
+    private object _value;
+    public override void Run(QueryBuilderSource options)
+    {
+        var columnParameterName = GetColumnParameterName(_column, options.Parameters.Count());
+        options.Parameters.Add(columnParameterName, _value);
+        options.Query.Append("@").Append(columnParameterName);
+        options.Query.Append(",");
+    }
+
+    public ValueTranslator<T> Value<TField>([NotNull] Expression<Func<T, TField>> column, TField value)
+    {
+        _value = value;
+        Value(column);
+        return this;
+    }
+
+    public ValueTranslator<T> Value(string column, object value)
+    {
+        _value = value;
+        Value(column);
+        return this;
     }
 }

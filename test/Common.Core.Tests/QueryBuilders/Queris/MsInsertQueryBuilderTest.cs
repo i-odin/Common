@@ -1,5 +1,4 @@
-﻿using Common.Core.QueryBuilders;
-using Common.Core.QueryBuilders.Queris;
+﻿using Common.Core.QueryBuilders.Queris;
 
 namespace Common.Core.Tests.QueryBuilders.Queris;
 
@@ -10,13 +9,12 @@ public class MsInsertQueryBuilderTest
     public void Insert_BuildSql(string expected)
     {
         var source = new QueryBuilderSource();
-        new MsInsertQueryBuilder<TestClass>()
+        new MsInsertQueryBuilder<TestClass>(source)
             .Insert()
-            .Value(x => x.Id, Guid.Empty)
-            .Value(x => x.Timespan, new DateTime(2023, 04, 30))
-            .Value(x => x.Name, null)
-            .Value(x => x.Age, 10)
-            .Build(source);
+            .Values(y => y.Value(x => x.Id, Guid.Empty)
+                          .Value(x => x.Timespan, new DateTime(2023, 04, 30))
+                          .Value(x => x.Name, null)
+                          .Value(x => x.Age, 10));
         Assert.Equal(expected, source.ToString());
     }
 }
