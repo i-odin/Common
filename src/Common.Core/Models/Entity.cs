@@ -24,7 +24,7 @@ public abstract class Entity : IHasId<Guid>, IHasTimestamp, IHasDeleted, IEquata
 
     public static bool operator !=(Entity? a, Entity? b) => !(a == b);
     public static Guid NewId() => Guid.NewGuid();
-    public static TEntity Create<TEntity>(Action<TEntity>? setting = null)
+    public static TEntity Make<TEntity>(Action<TEntity>? setting = null)
         where TEntity : Entity, new()
     {
         var entity = new TEntity {

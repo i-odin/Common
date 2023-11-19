@@ -9,7 +9,7 @@ public class JsonProviderTest
     [Fact]
     public void Add_AddObject_ReturnOneCount()
     {
-        var entityTest = TestEntity.Create<TestEntity>();
+        var entityTest = TestEntity.Make<TestEntity>();
         var jsonProvider = new MockJsonProvider();
         
         jsonProvider.Add(entityTest);
@@ -21,7 +21,7 @@ public class JsonProviderTest
     [Fact]
     public void Remove_AddAndRemoveObject_ReturnZeroCount()
     {
-        var entityTest = TestEntity.Create<TestEntity>();
+        var entityTest = TestEntity.Make<TestEntity>();
         var jsonProvider = new MockJsonProvider();
 
         jsonProvider.Add(entityTest);
