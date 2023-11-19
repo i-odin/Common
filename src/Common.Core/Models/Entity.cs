@@ -2,7 +2,7 @@
 
 namespace Common.Core.Models;
 
-public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<Entity>
+public abstract class Entity : IHasId<Guid>, IHasTimestamp, IHasDeleted, IEquatable<Entity>
 {
     object IHasId.Id => Id;
     public Guid Id { get; init; }
@@ -10,8 +10,8 @@ public abstract class Entity : IHasId<Guid>, ITimestamp, IDeleted, IEquatable<En
     public bool Deleted { get; set; }
 
     public bool Equals([MaybeNull] Entity? other) => ((IHasId<Guid>)this).Equals(other) && 
-                                                     ((ITimestamp)this).Equals(other) &&
-                                                     ((IDeleted)this).Equals(other);
+                                                     ((IHasTimestamp)this).Equals(other) &&
+                                                     ((IHasDeleted)this).Equals(other);
     public override bool Equals([MaybeNull] object? obj) => Equals(obj as Entity);
     public override int GetHashCode() => HashCode.Combine(Id, Timestamp, Deleted);
 
@@ -54,11 +54,11 @@ public interface IHasId<TKey> : IHasId, IEquatable<IHasId<TKey>>
     }
 }
 
-public interface ITimestamp : IEquatable<ITimestamp>
+public interface IHasTimestamp : IEquatable<IHasTimestamp>
 {
     DateTime Timestamp { get; }
 
-    bool IEquatable<ITimestamp>.Equals(ITimestamp? other)
+    bool IEquatable<IHasTimestamp>.Equals(IHasTimestamp? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
@@ -66,11 +66,11 @@ public interface ITimestamp : IEquatable<ITimestamp>
     }
 }
 
-public interface IDeleted : IEquatable<IDeleted>
+public interface IHasDeleted : IEquatable<IHasDeleted>
 {
     public bool Deleted { get; set; }
 
-    bool IEquatable<IDeleted>.Equals(IDeleted? other)
+    bool IEquatable<IHasDeleted>.Equals(IHasDeleted? other)
     {
         if (other is null) return false;
         if (ReferenceEquals(this, other)) return true;
