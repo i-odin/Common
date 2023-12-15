@@ -5,7 +5,7 @@ namespace Common.Core.Models;
 public abstract class Entity : IHasId<Guid>, IHasTimestamp, IHasDeleted, IEquatable<Entity>
 {
     object IHasId.Id => Id;
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
     public DateTime Timestamp { get; init; }
     public bool Deleted { get; set; }
 
