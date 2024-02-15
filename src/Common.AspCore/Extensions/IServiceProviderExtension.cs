@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using Common.Core.Attributes;
+﻿using Common.AspCore.Attributes;
+using System.Reflection;
 
 namespace Common.ANCore.Extensions;
 internal static class IServiceProviderExtension

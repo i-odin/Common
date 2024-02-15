@@ -1,4 +1,5 @@
-﻿using Common.Core.Models;
+﻿
+using Common.EFCore.Models;
 
 namespace Common.Core.Tests.Models;
 
